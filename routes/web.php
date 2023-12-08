@@ -16,9 +16,21 @@ use Inertia\Inertia;
 |
 */
 
+Route::get('/schedule', function () {
+    return Inertia::render('Schedule');
+})->name('schedule');
+
 Route::get('/orders', function () {
     return Inertia::render('Orders');
-});
+})->name('orders');
+
+Route::get('/sellers', function () {
+    return Inertia::render('Sellers');
+})->name('sellers');
+
+Route::get('/couriers', function () {
+    return Inertia::render('Couriers');
+})->name('couriers');
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [

@@ -1,9 +1,12 @@
-import { DashboardLayout } from "@/Layouts/DashboardLayout"
+import { DashboardLayout } from "@/Layouts/DashboardLayout";
 
 const Orders = () => {
     return (
-        <DashboardLayout/>
-    )
-}
+        <DashboardLayout
+            title="Pesanan"
+            description="Daftar pesanan yang telah dibuat."
+        />
+    );
+};
 
-export default Orders
+export default Orders;
