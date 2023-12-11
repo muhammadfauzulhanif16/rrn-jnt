@@ -11,15 +11,15 @@ class Order extends Model
 
     protected $fillable=[
         'invoice_number',
-        'seller_id',
+        'seller',
         'customer_name',
         'customer_address',
         'delivery_distance',
         'delivery_schedule',
     ];
 
-    public function seller()
-    {
-        return $this->belongsTo(Seller::class);
-    }
+    // public function seller()
+    // {
+    //     return $this->belongsTo(Seller::class);
+    // }
 }

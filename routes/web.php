@@ -3,6 +3,9 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\SellerController;
+use App\Http\Controllers\CourierController;
 use Inertia\Inertia;
 
 /*
@@ -20,17 +23,22 @@ Route::get('/schedule', function () {
     return Inertia::render('Schedule');
 })->name('schedule');
 
-Route::get('/orders', function () {
-    return Inertia::render('Orders');
-})->name('orders');
+// Route::get('/orders', function () {
+//     return Inertia::render('Orders');
+// })->name('orders');
+// Route::get('/orders', [OrderController::class, 'index'])->name('orders');
 
-Route::get('/sellers', function () {
-    return Inertia::render('Sellers');
-})->name('sellers');
+Route::resource('orders', OrderController::class);
+Route::resource('sellers', SellerController::class);
+Route::resource('couriers', CourierController::class);
 
-Route::get('/couriers', function () {
-    return Inertia::render('Couriers');
-})->name('couriers');
+// Route::get('/sellers', function () {
+//     return Inertia::render('Sellers');
+// })->name('sellers');
+
+// Route::get('/couriers', function () {
+//     return Inertia::render('Couriers');
+// })->name('couriers');
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -50,5 +58,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+// Route::resource('orders', \App\Http\Controllers\OrderController::class);
 
 require __DIR__.'/auth.php';

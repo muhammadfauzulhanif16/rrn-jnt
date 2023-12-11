@@ -2,18 +2,17 @@ import { Header } from "@/Components/Header";
 import { NavBar } from "@/Components/NavBar";
 import { PageHeadings } from "@/Components/PageHeadings";
 import { Table } from "@/Components/Table";
-import { ScrollArea } from "@/Components/ui/scroll-area";
 import { Head } from "@inertiajs/react";
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 
 interface DashboardLayoutProps {
     title: string;
-    description: string;
+    children?: any;
 }
 
 export const DashboardLayout: FC<DashboardLayoutProps> = ({
     title,
-    description,
+    children,
 }: DashboardLayoutProps) => {
     return (
         <div className="h-screen flex flex-col">
@@ -24,12 +23,8 @@ export const DashboardLayout: FC<DashboardLayoutProps> = ({
             <div className="grow flex-col-reverse flex md:flex-row">
                 <NavBar title={title} />
 
-                <div className="flex grow flex-col p-8 gap-4">
-                    <PageHeadings title={title} description={description} />
-
-                    {/* <ScrollArea className="grow rounded-md h-2"> */}
-                    <Table />
-                    {/* </ScrollArea> */}
+                <div className="flex grow flex-col p-8 gap-8 overflow-auto">
+                    {children}
                 </div>
             </div>
         </div>

@@ -22,14 +22,14 @@ class DatabaseSeeder extends Seeder
             'role' => 'admin',
         ]);
         // \App\Models\User::factory(10)->create();
-        User::factory(10)->create();
+        // User::factory(10)->create();
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
 
-        Seller::factory(10)->create();
+        // Seller::factory(10)->create();
 
-        Order::factory(10)->create();
+        // Order::factory(10)->create();
     }
 }

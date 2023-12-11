@@ -22,29 +22,29 @@ export const NavBar: FC<NavBarProps> = ({ title }: NavBarProps) => {
 
     const navigations: Array<navigationState> = [
         {
-            label: "Penjadwalan",
+            label: "Schedule",
             icon: <Calendar className="h-4 w-4" />,
             link: "schedule",
         },
         {
-            label: "Pesanan",
+            label: "Orders",
             icon: <Package className="h-4 w-4" />,
-            link: "orders",
+            link: "orders.index",
         },
         {
-            label: "Penjual",
+            label: "Sellers",
             icon: <Store className="h-4 w-4" />,
-            link: "sellers",
+            link: "sellers.index",
         },
         {
-            label: "Kurir",
+            label: "Couriers",
             icon: <Users className="h-4 w-4" />,
-            link: "couriers",
+            link: "couriers.index",
         },
     ];
 
     return (
-        <div className="md:h-full flex-none flex md:flex-col justify-center p-4 gap-4 md:border-r border-t md:border-t-0">
+        <div className="md:h-full flex-none grid md:grid-row-4 grid-cols-4 md:grid-cols-1 md:flex-col p-4 gap-4 md:border-r border-t md:border-t-0">
             {navigations.map(
                 ({ label, icon, link }: navigationState, id: number) => (
                     <TooltipProvider key={id}>
@@ -53,11 +53,11 @@ export const NavBar: FC<NavBarProps> = ({ title }: NavBarProps) => {
                                 <Link href={route(link)}>
                                     <Button
                                         variant={
-                                            label === title
+                                            title.includes(label.slice(0, -1))
                                                 ? "default"
                                                 : "outline"
                                         }
-                                        size="icon"
+                                        className="w-full h-full"
                                     >
                                         {icon}
                                     </Button>
