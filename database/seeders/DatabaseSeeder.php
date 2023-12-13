@@ -7,6 +7,7 @@ use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Seller;
 use App\Models\Order;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -16,6 +17,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         User::factory()->create([
+            'id' => Str::uuid(),
             'full_name' => 'Admin',
             'username' => 'admin',
             'password' => 'admin',

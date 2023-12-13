@@ -9,7 +9,11 @@ class Seller extends Model
 {
     use HasFactory;
 
+    public $incrementing = false;
+    protected $keyType = 'string';
+
     protected $fillable = [
+        'id',
         'name',
         'phone_number',
         'address',

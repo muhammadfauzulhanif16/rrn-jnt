@@ -27,11 +27,13 @@ export const Select: FC<SelectProps> = ({
     name,
     value,
 }: SelectProps) => {
+    // console.log(value,typeof value, 'value');
+    // console.log(value);
     return (
         <ShadcnSelect
             // open={true}
             onValueChange={(value) => setData(name, value)}
-            // required={!value}
+            required={!value}
         >
             <SelectTrigger className="w-full mt-2">
                 <SelectValue placeholder={value ? value : placeholder} />
@@ -41,6 +43,7 @@ export const Select: FC<SelectProps> = ({
                 <SelectGroup>
                     <SelectLabel>{label}</SelectLabel>
                     {data.map((item: any, id: number) => {
+                        // console.log(typeof item.value, 'item.value');
                         return (
                             <SelectItem
                                 value={item.value}

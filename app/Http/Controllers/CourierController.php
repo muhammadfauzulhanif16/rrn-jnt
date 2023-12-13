@@ -9,6 +9,7 @@ use Inertia\Inertia;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Str;
 
 class CourierController extends Controller
 {
@@ -41,6 +42,7 @@ class CourierController extends Controller
     public function store(Request $request)
     {
         User::create([
+            'id' => Str::uuid(),
             'full_name' => $request->full_name,
             'username' => $request->username,
             'password' => $request->password,

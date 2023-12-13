@@ -19,47 +19,35 @@ import {
     DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu";
 
-const Couriers = ({ title, description, data, auth }: any) => {
-    console.log(data);
+const OrdersBySeller = ({ title, description, auth, data }: any) => {
+    console.log(data)
     const columns: ColumnDef<any>[] = [
         {
-            accessorKey: "full_name",
-            header: ({ column }) => {
-                return (
-                    <Button
-                        variant="ghost"
-                        onClick={() =>
-                            column.toggleSorting(column.getIsSorted() === "asc")
-                        }
-                    >
-                        Nama Lengkap
-                        <ArrowUpDown className="ml-2 h-4 w-4" />
-                    </Button>
-                );
-            },
-            cell: ({ row }) => <div>{row.getValue("full_name")}</div>,
+            accessorKey: "customer_address",
+            header: "Alamat Penjual",
+            cell: ({ row }) => <div>{row.getValue('customer_address')}</div>,
         },
-        {
-            accessorKey: "created_at",
-            header: ({ column }) => {
-                return (
-                    <Button
-                        variant="ghost"
-                        onClick={() =>
-                            column.toggleSorting(column.getIsSorted() === "asc")
-                        }
-                    >
-                        Bergabung Pada
-                        <ArrowUpDown className="ml-2 h-4 w-4" />
-                    </Button>
-                );
-            },
-            cell: ({ row }) => (
-                <div>
-                    {new Date(row.getValue("created_at")).toLocaleString()}
-                </div>
-            ),
-        },
+        // {
+        //     accessorKey: "order_count",
+        //     header: "Jumlah Pesanan",
+        //     cell: ({ row }) => <div>{row.getValue("order_count")}</div>,
+        // },
+        // {
+        //     accessorKey: "status",
+        //     header: "Status",
+        //     cell: ({ row }) => <div>{row.getValue("status")}</div>,
+        // },
+        // {
+        //     accessorKey: "delivery_schedule",
+        //     header: "Jadwal Pengiriman",
+        //     cell: ({ row }) => (
+        //         <div>
+        //             {new Date(
+        //                 row.getValue("delivery_schedule")
+        //             ).toLocaleDateString()}
+        //         </div>
+        //     ),
+        // },
         {
             id: "actions",
             enableHiding: false,
@@ -74,23 +62,23 @@ const Couriers = ({ title, description, data, auth }: any) => {
                                 <MoreHorizontal className="h-4 w-4" />
                             </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Aksi</DropdownMenuLabel>
-                            <Link href={route("couriers.edit", data.id)}>
+                        {/* <DropdownMenuContent align="end">
+                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                            <Link href={route("orders.edit", data.id)}>
                                 <DropdownMenuItem className="cursor-pointer">
-                                    Ubah
+                                    Edit
                                 </DropdownMenuItem>
                             </Link>
 
                             <Link
                                 method="delete"
-                                href={route("couriers.destroy", data.id)}
+                                href={route("orders.destroy", data.id)}
                             >
                                 <DropdownMenuItem className="cursor-pointer">
-                                    Hapus
+                                    Delete
                                 </DropdownMenuItem>
                             </Link>
-                        </DropdownMenuContent>
+                        </DropdownMenuContent> */}
                     </DropdownMenu>
                 );
             },
@@ -106,11 +94,11 @@ const Couriers = ({ title, description, data, auth }: any) => {
                         <CardDescription>{description}</CardDescription>
                     </div>
 
-                    <Link href={route("couriers.create")}>
+                    <Link href={route("orders.create")}>
                         <div className="hidden sm:block">
                             <Button>
                                 <Plus className="w-4 h-4 mr-2" />
-                                Tambah Kurir
+                                Tambah Pesanan
                             </Button>
                         </div>
 
@@ -123,19 +111,11 @@ const Couriers = ({ title, description, data, auth }: any) => {
                 </CardHeader>
 
                 <CardContent className="flex grow p-0">
-                    <Table
-                        columns={columns}
-                        data={data}
-                        search={{
-                            placeholder:
-                                "Cari kurir berdasarkan nama lengkap...",
-                            column: "full_name",
-                        }}
-                    />
+                    <Table columns={columns} data={data} />
                 </CardContent>
             </Card>
         </DashboardLayout>
     );
 };
 
-export default Couriers;
+export default OrdersBySeller;

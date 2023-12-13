@@ -24,9 +24,6 @@ export const DropdownMenu: FC<DropdownMenuProps> = ({
             </DropdownMenuTrigger>
 
             <DropdownMenuContent>
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Profile</DropdownMenuItem>
                 <Link
                     href={route("logout")}
                     method="post"

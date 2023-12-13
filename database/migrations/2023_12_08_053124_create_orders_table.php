@@ -12,12 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('orders', function (Blueprint $table) {
-            $table->id();
-            $table->string('seller');
+            $table->uuid('id')->primary();
+            $table->uuid('seller_id');
             $table->string('customer_address');
-            $table->enum('status', ['Siap Dikirim', 'Belum Siap Dikirim']);
-            $table->string('delivery_schedule');
+            // $table->enum('status', ['Siap Dikirim', 'Belum Siap Dikirim']);
+            // $table->string('delivery_schedule');
             $table->timestamps();
+
+            $table->foreign('seller_id')->references('id')->on('sellers');
         });
     }
 

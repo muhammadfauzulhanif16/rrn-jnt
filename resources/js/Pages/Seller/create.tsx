@@ -122,12 +122,12 @@ const CreateSeller = ({ title, description, auth }: any) => {
                                     </div>
 
                                     <div className="w-full col-span-2">
-                                        <Label htmlFor="address">Address</Label>
+                                        <Label htmlFor="address">Alamat</Label>
                                         <Textarea
                                             required
                                             className="mt-2"
                                             value={data.address}
-                                            placeholder="Enter address"
+                                            placeholder="Masukkan alamat"
                                             onChange={(e) =>
                                                 setData(
                                                     "address",

@@ -7,6 +7,8 @@ use App\Http\Requests\StoreSellerRequest;
 use App\Http\Requests\UpdateSellerRequest;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use App\Models\Order;
 
 class SellerController extends Controller
 {
@@ -39,6 +41,7 @@ class SellerController extends Controller
     public function store(Request $request)
     {
         Seller::create([
+            'id' => Str::uuid(),
             'name' => $request->name,
             'phone_number' => $request->phone_number,
             'address' => $request->address,
@@ -54,7 +57,14 @@ class SellerController extends Controller
      */
     public function show(Seller $seller)
     {
+        $orders = Order::where('seller_id', $seller->id)->get();
 
+        return Inertia::render('Seller/show',[
+            "title" => "Daftar Pesanan [{$seller->name}]",
+            "description" => "Semua daftar pesanan yang tersedia.",
+            // 'currentData' => $seller,
+            'data' => $orders,
+        ]);
     }
 
     /**

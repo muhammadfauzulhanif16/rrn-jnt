@@ -9,15 +9,19 @@ class Order extends Model
 {
     use HasFactory;
 
+    public $incrementing = false;
+    protected $keyType = 'string';
+
     protected $fillable=[
-        'seller',
+        'id',
+        'seller_id',
         'customer_address',
-        'status',
-        'delivery_schedule',
+        // 'status',
+        // 'delivery_schedule',
     ];
 
-    // public function seller()
-    // {
-    //     return $this->belongsTo(Seller::class);
-    // }
+    public function seller()
+    {
+        return $this->belongsTo(Seller::class);
+    }
 }

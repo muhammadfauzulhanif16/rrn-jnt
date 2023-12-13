@@ -20,33 +20,34 @@ import {
 } from "@/Components/ui/dropdown-menu";
 
 const Orders = ({ title, description, data, auth }: any) => {
+    console.log(data)
     const columns: ColumnDef<any>[] = [
         {
-            accessorKey: "seller",
+            accessorKey: "name",
             header: "Penjual",
-            cell: ({ row }) => <div>{row.getValue("seller")}</div>,
+            cell: ({ row }) => <div>{row.getValue('name')}</div>,
         },
         {
-            accessorKey: "customer_address",
-            header: "Alamat Pembeli",
-            cell: ({ row }) => <div>{row.getValue("customer_address")}</div>,
+            accessorKey: "order_count",
+            header: "Jumlah Pesanan",
+            cell: ({ row }) => <div>{row.getValue("order_count")}</div>,
         },
-        {
-            accessorKey: "status",
-            header: "Status",
-            cell: ({ row }) => <div>{row.getValue("status")}</div>,
-        },
-        {
-            accessorKey: "delivery_schedule",
-            header: "Jadwal Pengiriman",
-            cell: ({ row }) => (
-                <div>
-                    {new Date(
-                        row.getValue("delivery_schedule")
-                    ).toLocaleDateString()}
-                </div>
-            ),
-        },
+        // {
+        //     accessorKey: "status",
+        //     header: "Status",
+        //     cell: ({ row }) => <div>{row.getValue("status")}</div>,
+        // },
+        // {
+        //     accessorKey: "delivery_schedule",
+        //     header: "Jadwal Pengiriman",
+        //     cell: ({ row }) => (
+        //         <div>
+        //             {new Date(
+        //                 row.getValue("delivery_schedule")
+        //             ).toLocaleDateString()}
+        //         </div>
+        //     ),
+        // },
         {
             id: "actions",
             enableHiding: false,
@@ -62,21 +63,21 @@ const Orders = ({ title, description, data, auth }: any) => {
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <Link href={route("orders.edit", data.id)}>
+                            <DropdownMenuLabel>Aksi</DropdownMenuLabel>
+                            <Link href={route("sellers.show", data.id)}>
                                 <DropdownMenuItem className="cursor-pointer">
-                                    Edit
+                                 Lihat Pesanan
                                 </DropdownMenuItem>
                             </Link>
 
-                            <Link
+                            {/* <Link
                                 method="delete"
                                 href={route("orders.destroy", data.id)}
                             >
                                 <DropdownMenuItem className="cursor-pointer">
                                     Delete
                                 </DropdownMenuItem>
-                            </Link>
+                            </Link> */}
                         </DropdownMenuContent>
                     </DropdownMenu>
                 );
