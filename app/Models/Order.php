@@ -15,6 +15,7 @@ class Order extends Model
     protected $fillable=[
         'id',
         'seller_id',
+        'receipt_number',
         'customer_address',
         // 'status',
         // 'delivery_schedule',

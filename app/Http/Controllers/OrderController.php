@@ -71,6 +71,7 @@ class OrderController extends Controller
             Order::create([
                 'id' => Str::uuid(),
                 'seller_id' => $request['seller_id'],
+                'receipt_number' => $item['receipt_number'],
                 'customer_address' => $item['customer_address'],
                 // 'status' => $request->status,
                 // 'delivery_schedule' => $request->delivery_schedule,

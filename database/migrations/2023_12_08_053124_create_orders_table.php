@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('seller_id');
+            $table->string('receipt_number');
             $table->string('customer_address');
             // $table->enum('status', ['Siap Dikirim', 'Belum Siap Dikirim']);
             // $table->string('delivery_schedule');

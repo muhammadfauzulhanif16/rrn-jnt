@@ -23,6 +23,11 @@ const OrdersBySeller = ({ title, description, auth, data }: any) => {
     console.log(data)
     const columns: ColumnDef<any>[] = [
         {
+            accessorKey: "receipt_number",
+            header: "Nomor Resi",
+            cell: ({ row }) => <div>{row.getValue('receipt_number')}</div>,
+        },
+        {
             accessorKey: "customer_address",
             header: "Alamat Penjual",
             cell: ({ row }) => <div>{row.getValue('customer_address')}</div>,

@@ -31,6 +31,7 @@ const CreateOrder = ({ title, description, sellers, auth }: any) => {
     const { data, setData, post, processing, errors, reset } = useForm<{
         seller_id: string;
         items: {
+            receipt_number: string,
             customer_address: string,
             // status: string,
             // delivery_schedule: string,
@@ -42,6 +43,7 @@ const CreateOrder = ({ title, description, sellers, auth }: any) => {
 
     const addOrder = () => {
         setData('items', [...data.items, {
+            receipt_number: '',
             customer_address: '',
             // status: '',
             // delivery_schedule: '',
@@ -110,7 +112,7 @@ const CreateOrder = ({ title, description, sellers, auth }: any) => {
 
                                 <CardContent className="gap-4">
                                     <div className="w-full">
-                                        <Label htmlFor="seller">Penjual</Label>
+                                        <Label htmlFor="seller">Nama Penjual</Label>
                                         <Select
                                             value={data.seller_id}
                                             name="seller_id"
@@ -132,19 +134,19 @@ const CreateOrder = ({ title, description, sellers, auth }: any) => {
                                     {data.items.map((item, index) => (
                                         <div key={index} className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                             <div className="w-full">
-                                                <Label htmlFor={`customer_address_${index}`}>
-                                                    Alamat Pembeli
+                                                <Label htmlFor={`receipt_number_${index}`}>
+                                                    Nomor Resi
                                                 </Label>
-                                                <Textarea
+                                                <Input
                                                     required
-                                                    value={item.customer_address}
+                                                    value={item.receipt_number}
                                                     onChange={(e) =>
-                                                        updateOrder(index, 'customer_address', e.target.value)
+                                                        updateOrder(index, 'receipt_number', e.target.value)
                                                     }
-                                                    name={`customer_address_${index}`}
+                                                    name={`receipt_number_${index}`}
                                                     className="mt-2 h-10"
-                                                    id={`customer_address_${index}`}
-                                                    placeholder=""
+                                                    id={`receipt_number_${index}`}
+                                                    placeholder="Masukkan nomor resi"
                                                 />
                                             </div>
 
@@ -161,7 +163,7 @@ const CreateOrder = ({ title, description, sellers, auth }: any) => {
                                                     name={`customer_address_${index}`}
                                                     className="mt-2 h-10"
                                                     id={`customer_address_${index}`}
-                                                    placeholder=""
+                                                    placeholder="Masukkan alamat pembeli"
                                                 />
                                             </div>
 
