@@ -13,7 +13,7 @@ import {
 } from "@/Components/ui/card";
 import { ScrollArea } from "@/Components/ui/scroll-area";
 
-const CreateCourier = ({ title, description }: any) => {
+const CreateCourier = ({ title, description, auth }: any) => {
     const { data, setData, post, processing, errors, reset } = useForm({
         full_name: "",
         username: "",
@@ -21,7 +21,7 @@ const CreateCourier = ({ title, description }: any) => {
     });
 
     return (
-        <DashboardLayout title={title}>
+        <DashboardLayout title={title} auth={auth}>
             <form
                 className="grow flex"
                 onSubmit={(e) => {
@@ -46,7 +46,7 @@ const CreateCourier = ({ title, description }: any) => {
                                 }
                             >
                                 <CornerRightDown className="rotate-90 w-4 h-4 mr-2" />
-                                Create Courier
+                                Tambah Kurir
                             </Button>
                         </div>
 
@@ -69,10 +69,12 @@ const CreateCourier = ({ title, description }: any) => {
                         <ScrollArea className="grow">
                             <Card className="shadow-none mb-4">
                                 <CardHeader>
-                                    <CardTitle>Personal Identity</CardTitle>
+                                    <CardTitle>Identitas Pribadi</CardTitle>
                                 </CardHeader>
                                 <CardContent>
-                                    <Label htmlFor="full_name">Full Name</Label>
+                                    <Label htmlFor="full_name">
+                                        Nama Lengkap
+                                    </Label>
                                     <Input
                                         required
                                         value={data.full_name}
@@ -82,20 +84,20 @@ const CreateCourier = ({ title, description }: any) => {
                                         name="full_name"
                                         className="mt-2"
                                         id="full_name"
-                                        placeholder="Enter full name"
+                                        placeholder="Masukkan nama lengkap"
                                     />
                                 </CardContent>
                             </Card>
 
                             <Card className="shadow-none">
                                 <CardHeader>
-                                    <CardTitle>Account</CardTitle>
+                                    <CardTitle>Akun</CardTitle>
                                 </CardHeader>
 
                                 <CardContent className="flex flex-col sm:flex-row gap-4">
                                     <div className="w-full">
                                         <Label htmlFor="username">
-                                            Username
+                                            Nama Pengguna
                                         </Label>
                                         <Input
                                             required
@@ -109,13 +111,13 @@ const CreateCourier = ({ title, description }: any) => {
                                             name="username"
                                             className="mt-2"
                                             id="username"
-                                            placeholder="Enter username"
+                                            placeholder="Masukkan nama pengguna"
                                         />
                                     </div>
 
                                     <div className="w-full">
                                         <Label htmlFor="password">
-                                            Password
+                                            Kata Sandi
                                         </Label>
                                         <Input
                                             required
@@ -129,7 +131,7 @@ const CreateCourier = ({ title, description }: any) => {
                                             type="password"
                                             className="mt-2"
                                             id="password"
-                                            placeholder="Enter password"
+                                            placeholder="Masukkan kata sandi"
                                         />
                                     </div>
                                 </CardContent>

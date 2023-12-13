@@ -8,17 +8,19 @@ import { FC, ReactNode } from "react";
 interface DashboardLayoutProps {
     title: string;
     children?: any;
+    auth: any;
 }
 
 export const DashboardLayout: FC<DashboardLayoutProps> = ({
     title,
     children,
+    auth,
 }: DashboardLayoutProps) => {
     return (
         <div className="h-screen flex flex-col">
             <Head title={title} />
 
-            <Header />
+            <Header auth={auth} />
 
             <div className="grow flex-col-reverse flex md:flex-row">
                 <NavBar title={title} />

@@ -13,8 +13,11 @@ return new class extends Migration
     {
         Schema::create('sellers', function (Blueprint $table) {
             $table->id();
-            $table->string('shop_name');
+            $table->string('name');
+            $table->string('phone_number');
             $table->string('address');
+            $table->string('item_name');
+            $table->enum('item_type', ['Barang', 'Dokumen']);
             $table->timestamps();
         });
     }

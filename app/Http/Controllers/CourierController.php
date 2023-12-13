@@ -18,8 +18,8 @@ class CourierController extends Controller
     public function index()
     {
         return Inertia::render('Courier/index',[
-            "title" => "All Couriers",
-            "description" => "List of all couriers.",
+            "title" => "Daftar Kurir",
+            "description" => "Semua daftar kurir yang terdaftar.",
             'data' => User::where('role', 'courier')->orderBy('created_at', 'desc')->get(),
         ]);
     }
@@ -30,8 +30,8 @@ class CourierController extends Controller
     public function create()
     {
         return Inertia::render('Courier/create',[
-            "title" => "Create Courier",
-            "description" => "Create a new courier.",
+            "title" => "Tambah Kurir",
+            "description" => "Tambahkan kurir baru.",
         ]);
     }
 
@@ -63,8 +63,8 @@ class CourierController extends Controller
     public function edit(User $courier)
     {
       return Inertia::render('Courier/edit',[
-        "title" => "Edit Courier",
-        "description" => "Edit courier details.",
+        "title" => "Ubah Kurir",
+        "description" => "Ubah data kurir",
         'currentData' => $courier,
     ]);
     }

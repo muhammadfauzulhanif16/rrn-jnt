@@ -22,22 +22,22 @@ export const NavBar: FC<NavBarProps> = ({ title }: NavBarProps) => {
 
     const navigations: Array<navigationState> = [
         {
-            label: "Schedule",
+            label: "Penjadwalan",
             icon: <Calendar className="h-4 w-4" />,
             link: "schedule",
         },
         {
-            label: "Orders",
+            label: "Pesanan",
             icon: <Package className="h-4 w-4" />,
             link: "orders.index",
         },
         {
-            label: "Sellers",
+            label: "Penjual",
             icon: <Store className="h-4 w-4" />,
             link: "sellers.index",
         },
         {
-            label: "Couriers",
+            label: "Kurir",
             icon: <Users className="h-4 w-4" />,
             link: "couriers.index",
         },

@@ -13,15 +13,19 @@ import {
 } from "@/Components/ui/card";
 import { ScrollArea } from "@/Components/ui/scroll-area";
 import { Textarea } from "@/Components/ui/textarea";
+import { Select } from "@/Components/Select";
 
-const EditSeller = ({ title, description, currentData }: any) => {
+const EditSeller = ({ title, description, currentData, auth }: any) => {
     const { data, setData, put, processing, errors, reset } = useForm({
-        shop_name: currentData.shop_name || "",
+        name: currentData.name || "",
+        phone_number: currentData.phone_number || "",
         address: currentData.address || "",
+        item_name: currentData.item_name || "",
+        item_type: currentData.item_type || "",
     });
 
     return (
-        <DashboardLayout title={title}>
+        <DashboardLayout title={title} auth={auth}>
             <form
                 className="grow flex"
                 onSubmit={(e) => {
@@ -39,10 +43,16 @@ const EditSeller = ({ title, description, currentData }: any) => {
                         <div className="hidden sm:block">
                             <Button
                                 type="submit"
-                                disabled={!data.shop_name || !data.address}
+                                disabled={
+                                    !data.name ||
+                                    !data.phone_number ||
+                                    !data.address ||
+                                    !data.item_name ||
+                                    !data.item_type
+                                }
                             >
                                 <CornerRightDown className="rotate-90 w-4 h-4 mr-2" />
-                                Create Seller
+                                Ubah Penjual
                             </Button>
                         </div>
 
@@ -50,7 +60,13 @@ const EditSeller = ({ title, description, currentData }: any) => {
                             <Button
                                 size="icon"
                                 type="submit"
-                                disabled={!data.shop_name || !data.address}
+                                disabled={
+                                    !data.name ||
+                                    !data.phone_number ||
+                                    !data.address ||
+                                    !data.item_name ||
+                                    !data.item_type
+                                }
                             >
                                 <CornerRightDown className="rotate-90 w-4 h-4" />
                             </Button>
@@ -59,33 +75,53 @@ const EditSeller = ({ title, description, currentData }: any) => {
 
                     <CardContent className="p-0 grow flex h-2">
                         <ScrollArea className="grow">
-                            <Card className="shadow-none">
+                            <Card className="shadow-none mb-4">
                                 <CardHeader>
-                                    <CardTitle>Identity</CardTitle>
+                                    <CardTitle>Identitas</CardTitle>
                                 </CardHeader>
 
-                                <CardContent className="flex flex-col sm:flex-row gap-4">
-                                    <div className="w-full">
-                                        <Label htmlFor="username">
-                                            Shop Name
-                                        </Label>
-                                        <Input
-                                            required
-                                            value={data.shop_name}
-                                            onChange={(e) =>
-                                                setData(
-                                                    "shop_name",
-                                                    e.target.value
-                                                )
-                                            }
-                                            name="shop_name"
-                                            className="mt-2"
-                                            id="shop_name"
-                                            placeholder="Enter shop name"
-                                        />
+                                <CardContent className="flex flex-col gap-4">
+                                    <div className="flex flex-col sm:flex-row gap-4">
+                                        <div className="w-full">
+                                            <Label htmlFor="name">Nama</Label>
+                                            <Input
+                                                required
+                                                value={data.name}
+                                                onChange={(e) =>
+                                                    setData(
+                                                        "name",
+                                                        e.target.value
+                                                    )
+                                                }
+                                                name="name"
+                                                className="mt-2"
+                                                id="name"
+                                                placeholder="Masukkan nama"
+                                            />
+                                        </div>
+
+                                        <div className="w-full">
+                                            <Label htmlFor="phone_number">
+                                                Nomor Telepon
+                                            </Label>
+                                            <Input
+                                                required
+                                                value={data.phone_number}
+                                                onChange={(e) =>
+                                                    setData(
+                                                        "phone_number",
+                                                        e.target.value
+                                                    )
+                                                }
+                                                name="phone_number"
+                                                className="mt-2"
+                                                id="phone_number"
+                                                placeholder="Masukkan nomor telepon"
+                                            />
+                                        </div>
                                     </div>
 
-                                    <div className="w-full">
+                                    <div className="w-full col-span-2">
                                         <Label htmlFor="address">Address</Label>
                                         <Textarea
                                             required
@@ -99,6 +135,55 @@ const EditSeller = ({ title, description, currentData }: any) => {
                                                 )
                                             }
                                             id="address"
+                                        />
+                                    </div>
+                                </CardContent>
+                            </Card>
+
+                            <Card className="shadow-none">
+                                <CardHeader>
+                                    <CardTitle>Barang</CardTitle>
+                                </CardHeader>
+
+                                <CardContent className="flex flex-col sm:flex-row gap-4">
+                                    <div className="w-full">
+                                        <Label htmlFor="item_name">Nama</Label>
+                                        <Input
+                                            required
+                                            value={data.item_name}
+                                            onChange={(e) =>
+                                                setData(
+                                                    "item_name",
+                                                    e.target.value
+                                                )
+                                            }
+                                            name="item_name"
+                                            className="mt-2"
+                                            id="item_name"
+                                            placeholder="Masukkan nama barang"
+                                        />
+                                    </div>
+
+                                    <div className="w-full">
+                                        <Label htmlFor="phone_number">
+                                            Jenis
+                                        </Label>
+                                        <Select
+                                            value={data.item_type}
+                                            name="item_type"
+                                            placeholder="Pilih jenis barang"
+                                            label="Jenis Barang"
+                                            data={[
+                                                {
+                                                    value: "Barang",
+                                                    label: "Barang",
+                                                },
+                                                {
+                                                    value: "Dokumen",
+                                                    label: "Dokumen",
+                                                },
+                                            ]}
+                                            setData={setData}
                                         />
                                     </div>
                                 </CardContent>

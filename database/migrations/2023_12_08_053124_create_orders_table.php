@@ -13,11 +13,9 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->string('invoice_number');
             $table->string('seller');
-            $table->string('customer_name');
             $table->string('customer_address');
-            $table->integer('delivery_distance');
+            $table->enum('status', ['Siap Dikirim', 'Belum Siap Dikirim']);
             $table->string('delivery_schedule');
             $table->timestamps();
         });

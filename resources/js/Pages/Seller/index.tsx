@@ -19,10 +19,10 @@ import {
     DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu";
 
-const Sellers = ({ title, description, data }: any) => {
+const Sellers = ({ title, description, data, auth }: any) => {
     const columns: ColumnDef<any>[] = [
         {
-            accessorKey: "shop_name",
+            accessorKey: "name",
             header: ({ column }) => {
                 return (
                     <Button
@@ -31,12 +31,29 @@ const Sellers = ({ title, description, data }: any) => {
                             column.toggleSorting(column.getIsSorted() === "asc")
                         }
                     >
-                        Shop Name
+                        Nama
                         <ArrowUpDown className="ml-2 h-4 w-4" />
                     </Button>
                 );
             },
-            cell: ({ row }) => <div>{row.getValue("shop_name")}</div>,
+            cell: ({ row }) => <div>{row.getValue("name")}</div>,
+        },
+        {
+            accessorKey: "phone_number",
+            header: ({ column }) => {
+                return (
+                    <Button
+                        variant="ghost"
+                        onClick={() =>
+                            column.toggleSorting(column.getIsSorted() === "asc")
+                        }
+                    >
+                        Nomor Telepon
+                        <ArrowUpDown className="ml-2 h-4 w-4" />
+                    </Button>
+                );
+            },
+            cell: ({ row }) => <div>{row.getValue("phone_number")}</div>,
         },
         {
             accessorKey: "address",
@@ -48,7 +65,7 @@ const Sellers = ({ title, description, data }: any) => {
                             column.toggleSorting(column.getIsSorted() === "asc")
                         }
                     >
-                        Address
+                        Alamat
                         <ArrowUpDown className="ml-2 h-4 w-4" />
                     </Button>
                 );
@@ -65,15 +82,14 @@ const Sellers = ({ title, description, data }: any) => {
                             column.toggleSorting(column.getIsSorted() === "asc")
                         }
                     >
-                        Created At
+                        Bergabung Pada
                         <ArrowUpDown className="ml-2 h-4 w-4" />
                     </Button>
                 );
             },
             cell: ({ row }) => (
                 <div>
-                    {/* {new Date(row.getValue("created_at")).toLocaleDateString()} */}
-                    {row.getValue("created_at")}
+                    {new Date(row.getValue("created_at")).toLocaleString()}
                 </div>
             ),
         },
@@ -92,10 +108,10 @@ const Sellers = ({ title, description, data }: any) => {
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                            <DropdownMenuLabel>Aksi</DropdownMenuLabel>
                             <Link href={route("sellers.edit", data.id)}>
                                 <DropdownMenuItem className="cursor-pointer">
-                                    Edit
+                                    Ubah
                                 </DropdownMenuItem>
                             </Link>
 
@@ -104,7 +120,7 @@ const Sellers = ({ title, description, data }: any) => {
                                 href={route("sellers.destroy", data.id)}
                             >
                                 <DropdownMenuItem className="cursor-pointer">
-                                    Delete
+                                    Hapus
                                 </DropdownMenuItem>
                             </Link>
                         </DropdownMenuContent>
@@ -115,7 +131,7 @@ const Sellers = ({ title, description, data }: any) => {
     ];
 
     return (
-        <DashboardLayout title={title}>
+        <DashboardLayout title={title} auth={auth}>
             <Card className="grow flex flex-col border-0 gap-8 shadow-none">
                 <CardHeader className="p-0 flex-row justify-between space-y-0 flex-none">
                     <div>
@@ -127,7 +143,7 @@ const Sellers = ({ title, description, data }: any) => {
                         <div className="hidden sm:block">
                             <Button>
                                 <Plus className="w-4 h-4 mr-2" />
-                                Create Seller
+                                Tambah Penjual
                             </Button>
                         </div>
 
@@ -144,8 +160,8 @@ const Sellers = ({ title, description, data }: any) => {
                         columns={columns}
                         data={data}
                         search={{
-                            placeholder: "Search seller by shop name...",
-                            column: "shop_name",
+                            placeholder: "Cari penjual berdasarkan nama...",
+                            column: "name",
                         }}
                     />
                 </CardContent>

@@ -15,7 +15,7 @@ import { ScrollArea } from "@/Components/ui/scroll-area";
 import { Select } from "@/Components/Select";
 import { DatePicker } from "@/Components/DatePicker";
 
-const EditOrder = ({ title, description, sellers }: any) => {
+const EditOrder = ({ title, description, sellers, auth }: any) => {
     sellers = sellers.map((seller: any) => ({
         value: seller.shop_name,
         label: seller.shop_name,
@@ -33,7 +33,7 @@ const EditOrder = ({ title, description, sellers }: any) => {
     // console.log(data.delivery_schedule, "data.delivery_schedule");
 
     return (
-        <DashboardLayout title={title}>
+        <DashboardLayout title={title} auth={auth}>
             <form
                 className="grow flex"
                 onSubmit={(e) => {

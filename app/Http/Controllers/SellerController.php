@@ -16,8 +16,8 @@ class SellerController extends Controller
     public function index()
     {
         return Inertia::render('Seller/index',[
-            "title" => "All Sellers",
-            "description" => "List of all sellers.",
+            "title" => "Daftar Penjual",
+            "description" => "Semua daftar penjual yang terdaftar.",
             'data' => Seller::orderBy('created_at', 'desc')->get(),
         ]);
     }
@@ -28,8 +28,8 @@ class SellerController extends Controller
     public function create()
     {
         return Inertia::render('Seller/create',[
-            "title" => "Create Seller",
-            "description" => "Create a new seller.",
+            "title" => "Tambah Penjual",
+            "description" => "Tambahkan penjual baru.",
         ]);
     }
 
@@ -39,8 +39,11 @@ class SellerController extends Controller
     public function store(Request $request)
     {
         Seller::create([
-            'shop_name' => $request->shop_name,
+            'name' => $request->name,
+            'phone_number' => $request->phone_number,
             'address' => $request->address,
+            'item_name' => $request->item_name,
+            'item_type' => $request->item_type,
         ]);
 
         return redirect(route('sellers.index'));
@@ -60,8 +63,8 @@ class SellerController extends Controller
     public function edit(Seller $seller)
     {
         return Inertia::render('Seller/edit',[
-            "title" => "Edit Seller",
-            "description" => "Edit seller details.",
+            "title" => "Ubah Penjual",
+            "description" => "Ubah data penjual.",
             'currentData' => $seller,
         ]);
     }

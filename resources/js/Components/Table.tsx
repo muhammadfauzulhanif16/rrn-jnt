@@ -38,7 +38,7 @@ import { ScrollArea, ScrollBar } from "./ui/scroll-area";
 interface TableProps {
     columns: ColumnDef<any>[];
     data: any[];
-    search: any;
+    search?: any;
 }
 
 export const Table = ({ columns, data, search }: TableProps) => {
@@ -71,24 +71,26 @@ export const Table = ({ columns, data, search }: TableProps) => {
     return (
         <div className="flex grow flex-col overflow-auto">
             <div className="flex mb-4 flex-none gap-4">
-                <Input
-                    placeholder={search.placeholder}
-                    value={
-                        (table
-                            .getColumn(search.column)
-                            ?.getFilterValue() as string) ?? ""
-                    }
-                    onChange={(event) =>
-                        table
-                            .getColumn(search.column)
-                            ?.setFilterValue(event.target.value)
-                    }
-                />
+                {search && (
+                    <Input
+                        placeholder={search.placeholder}
+                        value={
+                            (table
+                                .getColumn(search.column)
+                                ?.getFilterValue() as string) ?? ""
+                        }
+                        onChange={(event) =>
+                            table
+                                .getColumn(search.column)
+                                ?.setFilterValue(event.target.value)
+                        }
+                    />
+                )}
 
-                <DropdownMenu>
+                {/* <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="outline" className="ml-auto">
-                            Columns <ChevronDown className="ml-2 h-4 w-4" />
+                            Kolom <ChevronDown className="ml-2 h-4 w-4" />
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
@@ -110,7 +112,7 @@ export const Table = ({ columns, data, search }: TableProps) => {
                                 );
                             })}
                     </DropdownMenuContent>
-                </DropdownMenu>
+                </DropdownMenu> */}
             </div>
 
             <ScrollArea className="flex grow border rounded-md h-2">
@@ -160,7 +162,7 @@ export const Table = ({ columns, data, search }: TableProps) => {
                                     colSpan={columns.length}
                                     className="text-center"
                                 >
-                                    No results.
+                                    Tidak ada hasil.
                                 </TableCell>
                             </TableRow>
                         )}
@@ -172,7 +174,7 @@ export const Table = ({ columns, data, search }: TableProps) => {
 
             <div className="flex items-center justify-end space-x-2 mt-4 flex-none">
                 <div className="flex-1 text-sm text-muted-foreground">
-                    {table.getFilteredRowModel().rows.length} row(s).
+                    {table.getFilteredRowModel().rows.length} baris.
                 </div>
                 <div className="space-x-2">
                     <Button
@@ -181,7 +183,7 @@ export const Table = ({ columns, data, search }: TableProps) => {
                         onClick={() => table.previousPage()}
                         disabled={!table.getCanPreviousPage()}
                     >
-                        Previous
+                        Sebelumnya
                     </Button>
                     <Button
                         variant="outline"
@@ -189,7 +191,7 @@ export const Table = ({ columns, data, search }: TableProps) => {
                         onClick={() => table.nextPage()}
                         disabled={!table.getCanNextPage()}
                     >
-                        Next
+                        Selanjutnya
                     </Button>
                 </div>
             </div>

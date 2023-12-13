@@ -10,11 +10,9 @@ class Order extends Model
     use HasFactory;
 
     protected $fillable=[
-        'invoice_number',
         'seller',
-        'customer_name',
         'customer_address',
-        'delivery_distance',
+        'status',
         'delivery_schedule',
     ];
 

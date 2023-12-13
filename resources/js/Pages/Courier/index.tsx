@@ -19,7 +19,7 @@ import {
     DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu";
 
-const Couriers = ({ title, description, data }: any) => {
+const Couriers = ({ title, description, data, auth }: any) => {
     const columns: ColumnDef<any>[] = [
         {
             accessorKey: "full_name",
@@ -31,7 +31,7 @@ const Couriers = ({ title, description, data }: any) => {
                             column.toggleSorting(column.getIsSorted() === "asc")
                         }
                     >
-                        Full Name
+                        Nama Lengkap
                         <ArrowUpDown className="ml-2 h-4 w-4" />
                     </Button>
                 );
@@ -48,14 +48,14 @@ const Couriers = ({ title, description, data }: any) => {
                             column.toggleSorting(column.getIsSorted() === "asc")
                         }
                     >
-                        Created At
+                        Bergabung Pada
                         <ArrowUpDown className="ml-2 h-4 w-4" />
                     </Button>
                 );
             },
             cell: ({ row }) => (
                 <div>
-                    {new Date(row.getValue("created_at")).toLocaleDateString()}
+                    {new Date(row.getValue("created_at")).toLocaleString()}
                 </div>
             ),
         },
@@ -74,10 +74,10 @@ const Couriers = ({ title, description, data }: any) => {
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                            <DropdownMenuLabel>Aksi</DropdownMenuLabel>
                             <Link href={route("couriers.edit", data.id)}>
                                 <DropdownMenuItem className="cursor-pointer">
-                                    Edit
+                                    Ubah
                                 </DropdownMenuItem>
                             </Link>
 
@@ -86,7 +86,7 @@ const Couriers = ({ title, description, data }: any) => {
                                 href={route("couriers.destroy", data.id)}
                             >
                                 <DropdownMenuItem className="cursor-pointer">
-                                    Delete
+                                    Hapus
                                 </DropdownMenuItem>
                             </Link>
                         </DropdownMenuContent>
@@ -97,7 +97,7 @@ const Couriers = ({ title, description, data }: any) => {
     ];
 
     return (
-        <DashboardLayout title={title}>
+        <DashboardLayout title={title} auth={auth}>
             <Card className="grow flex flex-col border-0 gap-8 shadow-none">
                 <CardHeader className="p-0 flex-row justify-between space-y-0 flex-none">
                     <div>
@@ -109,7 +109,7 @@ const Couriers = ({ title, description, data }: any) => {
                         <div className="hidden sm:block">
                             <Button>
                                 <Plus className="w-4 h-4 mr-2" />
-                                Create Courier
+                                Tambah Kurir
                             </Button>
                         </div>
 
@@ -126,7 +126,8 @@ const Couriers = ({ title, description, data }: any) => {
                         columns={columns}
                         data={data}
                         search={{
-                            placeholder: "Search courier by full name...",
+                            placeholder:
+                                "Cari kurir berdasarkan nama lengkap...",
                             column: "full_name",
                         }}
                     />

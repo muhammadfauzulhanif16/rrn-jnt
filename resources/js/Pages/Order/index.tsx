@@ -19,108 +19,26 @@ import {
     DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu";
 
-const Orders = ({ title, description, data }: any) => {
+const Orders = ({ title, description, data, auth }: any) => {
     const columns: ColumnDef<any>[] = [
         {
-            accessorKey: "invoice_number",
-            header: ({ column }) => {
-                return (
-                    <Button
-                        variant="ghost"
-                        onClick={() =>
-                            column.toggleSorting(column.getIsSorted() === "asc")
-                        }
-                    >
-                        Invoice Number
-                        <ArrowUpDown className="ml-2 h-4 w-4" />
-                    </Button>
-                );
-            },
-            cell: ({ row }) => <div>{row.getValue("invoice_number")}</div>,
-        },
-        {
             accessorKey: "seller",
-            header: ({ column }) => {
-                return (
-                    <Button
-                        variant="ghost"
-                        onClick={() =>
-                            column.toggleSorting(column.getIsSorted() === "asc")
-                        }
-                    >
-                        Seller
-                        <ArrowUpDown className="ml-2 h-4 w-4" />
-                    </Button>
-                );
-            },
+            header: "Penjual",
             cell: ({ row }) => <div>{row.getValue("seller")}</div>,
         },
         {
-            accessorKey: "customer_name",
-            header: ({ column }) => {
-                return (
-                    <Button
-                        variant="ghost"
-                        onClick={() =>
-                            column.toggleSorting(column.getIsSorted() === "asc")
-                        }
-                    >
-                        Customer Name
-                        <ArrowUpDown className="ml-2 h-4 w-4" />
-                    </Button>
-                );
-            },
-            cell: ({ row }) => <div>{row.getValue("customer_name")}</div>,
-        },
-        {
             accessorKey: "customer_address",
-            header: ({ column }) => {
-                return (
-                    <Button
-                        variant="ghost"
-                        onClick={() =>
-                            column.toggleSorting(column.getIsSorted() === "asc")
-                        }
-                    >
-                        Customer Address
-                        <ArrowUpDown className="ml-2 h-4 w-4" />
-                    </Button>
-                );
-            },
+            header: "Alamat Pembeli",
             cell: ({ row }) => <div>{row.getValue("customer_address")}</div>,
         },
         {
-            accessorKey: "delivery_distance",
-            header: ({ column }) => {
-                return (
-                    <Button
-                        variant="ghost"
-                        onClick={() =>
-                            column.toggleSorting(column.getIsSorted() === "asc")
-                        }
-                    >
-                        Delivery Distance
-                        <ArrowUpDown className="ml-2 h-4 w-4" />
-                    </Button>
-                );
-            },
-            cell: ({ row }) => <div>{row.getValue("delivery_distance")}</div>,
+            accessorKey: "status",
+            header: "Status",
+            cell: ({ row }) => <div>{row.getValue("status")}</div>,
         },
         {
             accessorKey: "delivery_schedule",
-            header: ({ column }) => {
-                return (
-                    <Button
-                        variant="ghost"
-                        onClick={() =>
-                            column.toggleSorting(column.getIsSorted() === "asc")
-                        }
-                    >
-                        Delivery Distance
-                        <ArrowUpDown className="ml-2 h-4 w-4" />
-                    </Button>
-                );
-            },
+            header: "Jadwal Pengiriman",
             cell: ({ row }) => (
                 <div>
                     {new Date(
@@ -167,7 +85,7 @@ const Orders = ({ title, description, data }: any) => {
     ];
 
     return (
-        <DashboardLayout title={title}>
+        <DashboardLayout title={title} auth={auth}>
             <Card className="grow flex flex-col border-0 gap-8 shadow-none">
                 <CardHeader className="p-0 flex-row justify-between space-y-0 flex-none">
                     <div>
@@ -179,7 +97,7 @@ const Orders = ({ title, description, data }: any) => {
                         <div className="hidden sm:block">
                             <Button>
                                 <Plus className="w-4 h-4 mr-2" />
-                                Create Order
+                                Tambah Pesanan
                             </Button>
                         </div>
 
@@ -192,14 +110,7 @@ const Orders = ({ title, description, data }: any) => {
                 </CardHeader>
 
                 <CardContent className="flex grow p-0">
-                    <Table
-                        columns={columns}
-                        data={data}
-                        search={{
-                            placeholder: "Search order by invoice number...",
-                            column: "invoice_number",
-                        }}
-                    />
+                    <Table columns={columns} data={data} />
                 </CardContent>
             </Card>
         </DashboardLayout>

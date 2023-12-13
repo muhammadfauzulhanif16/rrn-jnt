@@ -17,8 +17,8 @@ class OrderController extends Controller
     public function index()
     {
         return Inertia::render('Order/index',[
-            "title" => "All Orders",
-            "description" => "List of all orders.",
+            "title" => "Daftar Pesanan",
+            "description" => "Semua daftar pesanan yang tersedia.",
             'data' => Order::orderBy('created_at', 'desc')->get(),
         ]);
     }
@@ -29,8 +29,8 @@ class OrderController extends Controller
     public function create()
     {
           return Inertia::render('Order/create',[
-            "title" => "Create Order",
-            "description" => "Create a new order.",
+            "title" => "Tambah Pesanan",
+            "description" => "Tambahkan pesanan baru.",
             'sellers' => Seller::all(),
           ]);
     }
@@ -40,12 +40,11 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         Order::create([
-            'invoice_number' => $request->invoice_number,
             'seller' => $request->seller,
-            'customer_name' => $request->customer_name,
             'customer_address' => $request->customer_address,
-            'delivery_distance' => $request->delivery_distance,
+            'status' => $request->status,
             'delivery_schedule' => $request->delivery_schedule,
         ]);
 
@@ -66,8 +65,8 @@ class OrderController extends Controller
     public function edit(Order $order)
     {
         return Inertia::render('Order/edit',[
-            "title" => "Edit Order",
-            "description" => "Edit an existing order.",
+            "title" => "Ubah Pesanan",
+            "description" => "Ubah data pesanan.",
             'data' => $order,
             'sellers' => Seller::all(),
         ]);
@@ -79,11 +78,9 @@ class OrderController extends Controller
     public function update(Request $request, Order $order)
     {
         $order->update([
-            'invoice_number' => $request->invoice_number,
             'seller' => $request->seller,
-            'customer_name' => $request->customer_name,
             'customer_address' => $request->customer_address,
-            'delivery_distance' => $request->delivery_distance,
+            'status' => $request->status,
             'delivery_schedule' => $request->delivery_schedule,
         ]);
 

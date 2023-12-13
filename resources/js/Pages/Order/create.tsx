@@ -14,26 +14,25 @@ import {
 import { ScrollArea } from "@/Components/ui/scroll-area";
 import { Select } from "@/Components/Select";
 import { DatePicker } from "@/Components/DatePicker";
+import { Textarea } from "@/Components/ui/textarea";
 
-const CreateOrder = ({ title, description, sellers }: any) => {
+const CreateOrder = ({ title, description, sellers, auth }: any) => {
     sellers = sellers.map((seller: any) => ({
-        value: seller.shop_name,
-        label: seller.shop_name,
+        value: seller.name,
+        label: seller.name,
     }));
 
     const { data, setData, post, processing, errors, reset } = useForm({
-        invoice_number: "",
         seller: "",
-        customer_name: "",
         customer_address: "",
-        delivery_distance: "",
+        status: "",
         delivery_schedule: "",
     });
 
     // console.log(data.delivery_schedule, "data.delivery_schedule");
 
     return (
-        <DashboardLayout title={title}>
+        <DashboardLayout title={title} auth={auth}>
             <form
                 className="grow flex"
                 onSubmit={(e) => {
@@ -52,16 +51,14 @@ const CreateOrder = ({ title, description, sellers }: any) => {
                             <Button
                                 type="submit"
                                 disabled={
-                                    !data.invoice_number ||
                                     !data.seller ||
-                                    !data.customer_name ||
                                     !data.customer_address ||
-                                    !data.delivery_distance ||
+                                    !data.status ||
                                     !data.delivery_schedule
                                 }
                             >
                                 <CornerRightDown className="rotate-90 w-4 h-4 mr-2" />
-                                Create Order
+                                Tambah Pesanan
                             </Button>
                         </div>
 
@@ -70,11 +67,9 @@ const CreateOrder = ({ title, description, sellers }: any) => {
                                 size="icon"
                                 type="submit"
                                 disabled={
-                                    !data.invoice_number ||
                                     !data.seller ||
-                                    !data.customer_name ||
                                     !data.customer_address ||
-                                    !data.delivery_distance ||
+                                    !data.status ||
                                     !data.delivery_schedule
                                 }
                             >
@@ -87,75 +82,27 @@ const CreateOrder = ({ title, description, sellers }: any) => {
                         <ScrollArea className="grow">
                             <Card className="shadow-none mb-4">
                                 <CardHeader>
-                                    <CardTitle>Order</CardTitle>
+                                    <CardTitle>Informasi</CardTitle>
                                 </CardHeader>
 
-                                <CardContent className="flex flex-col sm:flex-row gap-4">
+                                <CardContent className="grid sm:grid-row-2 sm:grid-cols-2 gap-4">
                                     <div className="w-full">
-                                        <Label htmlFor="invoice_number">
-                                            Invoice Number
-                                        </Label>
-                                        <Input
-                                            required
-                                            value={data.invoice_number}
-                                            onChange={(e) =>
-                                                setData(
-                                                    "invoice_number",
-                                                    e.target.value
-                                                )
-                                            }
-                                            name="invoice_number"
-                                            className="mt-2"
-                                            id="invoice_number"
-                                            placeholder="Enter invoice number"
-                                        />
-                                    </div>
-
-                                    <div className="w-full">
-                                        <Label htmlFor="password" className="">
-                                            Seller
-                                        </Label>
+                                        <Label htmlFor="seller">Penjual</Label>
                                         <Select
-                                            placeholder="seller"
-                                            label="Sellers"
+                                            value={data.seller}
+                                            name="seller"
+                                            placeholder="Pilih Penjual"
+                                            label="Penjual"
                                             data={sellers}
                                             setData={setData}
-                                        />
-                                    </div>
-                                </CardContent>
-                            </Card>
-
-                            <Card className="shadow-none mb-4">
-                                <CardHeader>
-                                    <CardTitle>Customer</CardTitle>
-                                </CardHeader>
-
-                                <CardContent className="flex flex-col sm:flex-row gap-4">
-                                    <div className="w-full">
-                                        <Label htmlFor="customer_name">
-                                            Name
-                                        </Label>
-                                        <Input
-                                            required
-                                            value={data.customer_name}
-                                            onChange={(e) =>
-                                                setData(
-                                                    "customer_name",
-                                                    e.target.value
-                                                )
-                                            }
-                                            name="customer_name"
-                                            className="mt-2"
-                                            id="customer_name"
-                                            placeholder="Enter name"
                                         />
                                     </div>
 
                                     <div className="w-full">
                                         <Label htmlFor="customer_address">
-                                            Address
+                                            Alamat Pembeli
                                         </Label>
-                                        <Input
+                                        <Textarea
                                             required
                                             value={data.customer_address}
                                             onChange={(e) =>
@@ -164,64 +111,42 @@ const CreateOrder = ({ title, description, sellers }: any) => {
                                                     e.target.value
                                                 )
                                             }
-                                            className="mt-2"
+                                            name="customer_address"
+                                            className="mt-2 h-10"
                                             id="customer_address"
-                                            placeholder="Enter address"
+                                            placeholder=""
                                         />
                                     </div>
-                                </CardContent>
-                            </Card>
 
-                            <Card className="shadow-none">
-                                <CardHeader>
-                                    <CardTitle>Delivery</CardTitle>
-                                </CardHeader>
-
-                                <CardContent className="flex flex-col sm:flex-row gap-4">
                                     <div className="w-full">
-                                        <Label htmlFor="delivery_distance">
-                                            Distance
-                                        </Label>
-                                        <Input
-                                            required
-                                            value={data.delivery_distance}
-                                            onChange={(e) =>
-                                                setData(
-                                                    "delivery_distance",
-                                                    e.target.value
-                                                )
-                                            }
-                                            name="delivery_distance"
-                                            className="mt-2"
-                                            type="number"
-                                            id="delivery_distance"
-                                            placeholder="Enter distance"
+                                        <Label htmlFor="status">Status</Label>
+                                        <Select
+                                            value={data.status}
+                                            name="status"
+                                            placeholder="Pilih status"
+                                            label="Status"
+                                            data={[
+                                                {
+                                                    value: "Siap Dikirim",
+                                                    label: "Siap Dikirim",
+                                                },
+                                                {
+                                                    value: "Belum Siap Dikirim",
+                                                    label: "Belum Siap Dikirim",
+                                                },
+                                            ]}
+                                            setData={setData}
                                         />
                                     </div>
 
                                     <div className="w-full">
                                         <Label htmlFor="delivery_schedule">
-                                            Schedule
+                                            Jadwal Pengiriman
                                         </Label>
-
                                         <DatePicker
                                             setData={setData}
                                             value={data.delivery_schedule}
                                         />
-                                        {/* <Input
-                                            required
-                                            value={data.password}
-                                            onChange={(e) =>
-                                                setData(
-                                                    "password",
-                                                    e.target.value
-                                                )
-                                            }
-                                            type="password"
-                                            className="mt-2"
-                                            id="password"
-                                            placeholder="Enter password"
-                                        /> */}
                                     </div>
                                 </CardContent>
                             </Card>

@@ -10,8 +10,11 @@ class Seller extends Model
     use HasFactory;
 
     protected $fillable = [
-        'shop_name',
+        'name',
+        'phone_number',
         'address',
+        'item_name',
+        'item_type',
     ];
 
     public function orders()
