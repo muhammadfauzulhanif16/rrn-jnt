@@ -8,14 +8,12 @@ import {
     SelectTrigger,
     SelectValue,
 } from "./ui/select";
-import { Check } from "lucide-react";
 
 interface SelectProps {
     placeholder: string;
     label: string;
     data: any;
-    setData: any;
-    name: string;
+    onChange: any;
     value: string;
 }
 
@@ -23,39 +21,29 @@ export const Select: FC<SelectProps> = ({
     placeholder,
     label,
     data,
-    setData,
-    name,
+    onChange,
     value,
 }: SelectProps) => {
-    // console.log(value,typeof value, 'value');
-    // console.log(value);
     return (
         <ShadcnSelect
+            value={value}
             // open={true}
-            onValueChange={(value) => setData(name, value)}
+            onValueChange={onChange}
             required={!value}
         >
             <SelectTrigger className="w-full mt-2">
-                <SelectValue placeholder={value ? value : placeholder} />
+                <SelectValue placeholder={placeholder} />
             </SelectTrigger>
 
             <SelectContent>
                 <SelectGroup>
                     <SelectLabel>{label}</SelectLabel>
                     {data.map((item: any, id: number) => {
-                        // console.log(typeof item.value, 'item.value');
                         return (
                             <SelectItem
                                 value={item.value}
                                 key={id}
-                                data-state={
-                                    item.value === value
-                                        ? "checked"
-                                        : "unchecked"
-                                }
-                                itemProp="item"
                             >
-                                {/* <Check /> */}
                                 {item.label}
                             </SelectItem>
                         );

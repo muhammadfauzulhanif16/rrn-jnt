@@ -20,7 +20,6 @@ import {
 } from "@/Components/ui/dropdown-menu";
 
 const Couriers = ({ title, description, data, auth }: any) => {
-    console.log(data);
     const columns: ColumnDef<any>[] = [
         {
             accessorKey: "full_name",
@@ -84,7 +83,9 @@ const Couriers = ({ title, description, data, auth }: any) => {
 
                             <Link
                                 method="delete"
+                                as="button"
                                 href={route("couriers.destroy", data.id)}
+                                className="w-full"
                             >
                                 <DropdownMenuItem className="cursor-pointer">
                                     Hapus

@@ -11,7 +11,7 @@ class UpdateCourierRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,9 @@ class UpdateCourierRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'full_name' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users',
+            'password' => 'required|string|max:255',
         ];
     }
 }

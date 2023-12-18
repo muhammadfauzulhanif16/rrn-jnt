@@ -17,7 +17,7 @@ class SellerController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Seller/index',[
+        return Inertia::render('Seller/index', [
             "title" => "Daftar Penjual",
             "description" => "Semua daftar penjual yang terdaftar.",
             'data' => Seller::orderBy('created_at', 'desc')->get(),
@@ -29,7 +29,7 @@ class SellerController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Seller/create',[
+        return Inertia::render('Seller/create', [
             "title" => "Tambah Penjual",
             "description" => "Tambahkan penjual baru.",
         ]);
@@ -38,7 +38,7 @@ class SellerController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreSellerRequest $request)
     {
         Seller::create([
             'id' => Str::uuid(),
@@ -49,7 +49,7 @@ class SellerController extends Controller
             'item_type' => $request->item_type,
         ]);
 
-        return redirect(route('sellers.index'));
+        return to_route('sellers.index');
     }
 
     /**
@@ -57,13 +57,10 @@ class SellerController extends Controller
      */
     public function show(Seller $seller)
     {
-        $orders = Order::where('seller_id', $seller->id)->get();
-
-        return Inertia::render('Seller/show',[
+        return Inertia::render('Seller/show', [
             "title" => "Daftar Pesanan [{$seller->name}]",
             "description" => "Semua daftar pesanan yang tersedia.",
-            // 'currentData' => $seller,
-            'data' => $orders,
+            'orders' => Order::where('seller_id', $seller->id)->get(),
         ]);
     }
 
@@ -72,10 +69,10 @@ class SellerController extends Controller
      */
     public function edit(Seller $seller)
     {
-        return Inertia::render('Seller/edit',[
+        return Inertia::render('Seller/edit', [
             "title" => "Ubah Penjual",
             "description" => "Ubah data penjual.",
-            'currentData' => $seller,
+            'seller' => $seller,
         ]);
     }
 
@@ -85,8 +82,11 @@ class SellerController extends Controller
     public function update(Request $request, Seller $seller)
     {
         $seller->update([
-            'shop_name' => $request->shop_name,
+            'name' => $request->name,
+            'phone_number' => $request->phone_number,
             'address' => $request->address,
+            'item_name' => $request->item_name,
+            'item_type' => $request->item_type,
         ]);
 
         return redirect(route('sellers.index'));

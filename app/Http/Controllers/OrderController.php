@@ -25,7 +25,7 @@ class OrderController extends Controller
             ];
         })->toArray();
 
-        return Inertia::render('Order/index',[
+        return Inertia::render('Order/index', [
             "title" => "Daftar Pesanan",
             "description" => "Semua daftar pesanan yang tersedia.",
             "data" => $sellers,
@@ -37,11 +37,11 @@ class OrderController extends Controller
      */
     public function create()
     {
-          return Inertia::render('Order/create',[
+        return Inertia::render('Order/create', [
             "title" => "Tambah Pesanan",
             "description" => "Tambahkan pesanan baru.",
             'sellers' => Seller::all(),
-          ]);
+        ]);
     }
 
     /**
@@ -73,8 +73,8 @@ class OrderController extends Controller
                 'seller_id' => $request['seller_id'],
                 'receipt_number' => $item['receipt_number'],
                 'customer_address' => $item['customer_address'],
-                // 'status' => $request->status,
-                // 'delivery_schedule' => $request->delivery_schedule,
+                'status' => $item['status'],
+                'delivery_schedule' => $item['delivery_schedule'],
             ]);
         }
 
@@ -112,7 +112,11 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        
+        return Inertia::render('Order/show', [
+            "title" => "Jadwalkan Pesanan",
+            "description" => "Jadwalkan pesanan untuk dikirim.",
+            'data' => $order,
+        ]);
     }
 
     /**
@@ -120,7 +124,7 @@ class OrderController extends Controller
      */
     public function edit(Order $order)
     {
-        return Inertia::render('Order/edit',[
+        return Inertia::render('Order/edit', [
             "title" => "Ubah Pesanan",
             "description" => "Ubah data pesanan.",
             'data' => $order,

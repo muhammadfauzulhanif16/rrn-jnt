@@ -20,7 +20,7 @@ import {
 } from "@/Components/ui/dropdown-menu";
 
 const Orders = ({ title, description, data, auth }: any) => {
-    console.log(data)
+    // console.log(data)
     const columns: ColumnDef<any>[] = [
         {
             accessorKey: "name",

@@ -15,6 +15,13 @@ import { ScrollArea } from "@/Components/ui/scroll-area";
 import { Select } from "@/Components/Select";
 import { DatePicker } from "@/Components/DatePicker";
 import { Textarea } from "@/Components/ui/textarea";
+import { Separator } from "@/Components/ui/separator";
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from "@/Components/ui/accordion";
 
 const CreateOrder = ({ title, description, sellers, auth }: any) => {
     // console.log(sellers);
@@ -31,29 +38,51 @@ const CreateOrder = ({ title, description, sellers, auth }: any) => {
     const { data, setData, post, processing, errors, reset } = useForm<{
         seller_id: string;
         items: {
-            receipt_number: string,
-            customer_address: string,
-            // status: string,
-            // delivery_schedule: string,
+            receipt_number: string;
+            customer_address: string;
+            status: string;
+            delivery_schedule: string;
         }[];
     }>({
         seller_id: "",
         items: [],
     });
 
-    const addOrder = () => {
-        setData('items', [...data.items, {
-            receipt_number: '',
-            customer_address: '',
-            // status: '',
-            // delivery_schedule: '',
-        }])
-    }
+    const addOrder = (e: any) => {
+        e.preventDefault();
+
+        setData("items", [
+            ...data.items,
+            {
+                receipt_number: "",
+                customer_address: "",
+                status: "",
+                delivery_schedule: "",
+            },
+        ]);
+    };
 
     const updateOrder = (index: any, field: any, value: any) => {
         const newItems: any = [...data.items];
         newItems[index][field] = value;
-        setData('items', newItems);
+        setData("items", newItems);
+    };
+
+    const isFormEmpty = () => {
+        if (!data.seller_id || data.items.length === 0) return true;
+    
+        for (let item of data.items) {
+            if (
+                !item.receipt_number ||
+                !item.customer_address ||
+                !item.status ||
+                !item.delivery_schedule
+            ) {
+                return true;
+            }
+        }
+    
+        return false;
     };
 
     return (
@@ -73,15 +102,7 @@ const CreateOrder = ({ title, description, sellers, auth }: any) => {
                         </div>
 
                         <div className="hidden sm:block">
-                            <Button
-                                type="submit"
-                            // disabled={
-                            //     !data.seller_id ||
-                            //     !data.customer_address ||
-                            //     !data.status ||
-                            //     !data.delivery_schedule
-                            // }
-                            >
+                            <Button type="submit" disabled={isFormEmpty()}>
                                 <CornerRightDown className="rotate-90 w-4 h-4 mr-2" />
                                 Tambah Pesanan
                             </Button>
@@ -91,12 +112,7 @@ const CreateOrder = ({ title, description, sellers, auth }: any) => {
                             <Button
                                 size="icon"
                                 type="submit"
-                            // disabled={
-                            //     !data.seller_id ||
-                            //     !data.customer_address ||
-                            //     !data.status ||
-                            //     !data.delivery_schedule
-                            // }
+                                disabled={isFormEmpty()}
                             >
                                 <CornerRightDown className="rotate-90 w-4 h-4" />
                             </Button>
@@ -112,14 +128,20 @@ const CreateOrder = ({ title, description, sellers, auth }: any) => {
 
                                 <CardContent className="gap-4">
                                     <div className="w-full">
-                                        <Label htmlFor="seller">Nama Penjual</Label>
+                                        <Label htmlFor="seller">
+                                            Nama Penjual
+                                        </Label>
                                         <Select
                                             value={data.seller_id}
-                                            name="seller_id"
                                             placeholder="Pilih Penjual"
                                             label="Penjual"
                                             data={sellers}
-                                            setData={setData}
+                                            onChange={(value: any) =>
+                                                setData({
+                                                    ...data,
+                                                    seller_id: value,
+                                                })
+                                            }
                                         />
                                     </div>
                                 </CardContent>
@@ -130,82 +152,144 @@ const CreateOrder = ({ title, description, sellers, auth }: any) => {
                                     <CardTitle>Informasi Pesanan</CardTitle>
                                 </CardHeader>
 
-                                <CardContent className="flex flex-col gap-4">
-                                    {data.items.map((item, index) => (
-                                        <div key={index} className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                                            <div className="w-full">
-                                                <Label htmlFor={`receipt_number_${index}`}>
-                                                    Nomor Resi
-                                                </Label>
-                                                <Input
-                                                    required
-                                                    value={item.receipt_number}
-                                                    onChange={(e) =>
-                                                        updateOrder(index, 'receipt_number', e.target.value)
-                                                    }
-                                                    name={`receipt_number_${index}`}
-                                                    className="mt-2 h-10"
-                                                    id={`receipt_number_${index}`}
-                                                    placeholder="Masukkan nomor resi"
-                                                />
-                                            </div>
+                                <CardContent className="flex flex-col gap-8">
+                                    <Accordion
+                                        type="single"
+                                        collapsible
+                                        className="w-full"
+                                    >
+                                        {data.items.map((item, index) => (
+                                            <AccordionItem
+                                                value={`order_${index}`}
+                                                key={index}
+                                            >
+                                                <AccordionTrigger>
+                                                    Pesanan {index + 1}
+                                                </AccordionTrigger>
 
-                                            <div className="w-full">
-                                                <Label htmlFor={`customer_address_${index}`}>
-                                                    Alamat Pembeli
-                                                </Label>
-                                                <Textarea
-                                                    required
-                                                    value={item.customer_address}
-                                                    onChange={(e) =>
-                                                        updateOrder(index, 'customer_address', e.target.value)
-                                                    }
-                                                    name={`customer_address_${index}`}
-                                                    className="mt-2 h-10"
-                                                    id={`customer_address_${index}`}
-                                                    placeholder="Masukkan alamat pembeli"
-                                                />
-                                            </div>
+                                                <AccordionContent>
+                                                    <div
+                                                        key={index}
+                                                        className="grid sm:grid-cols-2 sm:grid-cols-2 gap-4"
+                                                    >
+                                                        <div className="w-full">
+                                                            <Label
+                                                                htmlFor={`receipt_number_${index}`}
+                                                            >
+                                                                Nomor Resi
+                                                            </Label>
+                                                            <Input
+                                                                required
+                                                                value={
+                                                                    item.receipt_number
+                                                                }
+                                                                onChange={(e) =>
+                                                                    updateOrder(
+                                                                        index,
+                                                                        "receipt_number",
+                                                                        e.target
+                                                                            .value
+                                                                    )
+                                                                }
+                                                                name={`receipt_number_${index}`}
+                                                                className="mt-2 h-10"
+                                                                id={`receipt_number_${index}`}
+                                                                placeholder="Masukkan nomor resi"
+                                                            />
+                                                        </div>
 
-                                            {/* <div className="w-full">
-                                                <Label htmlFor={`status_${index}`}>Status</Label>
-                                                <Select
-                                                    value={item.status}
-                                                    name={`status_${index}`}
-                                                    placeholder="Pilih status"
-                                                    label="Status"
-                                                    data={[
-                                                        {
-                                                            value: 'Siap Dikirim',
-                                                            label: "Siap Dikirim",
-                                                        },
-                                                        {
-                                                            value: 'Belum Siap Dikirim',
-                                                            label: "Belum Siap Dikirim",
-                                                        },
-                                                    ]}
-                                                    //   setData={setData}
-                                                    setData={(e: any) =>
-                                                        updateOrder(index, 'status', e.target.value)
-                                                    }
-                                                />
-                                            </div> */}
+                                                        <div className="w-full">
+                                                            <Label
+                                                                htmlFor={`customer_address_${index}`}
+                                                            >
+                                                                Alamat Pembeli
+                                                            </Label>
+                                                            <Textarea
+                                                                required
+                                                                value={
+                                                                    item.customer_address
+                                                                }
+                                                                onChange={(e) =>
+                                                                    updateOrder(
+                                                                        index,
+                                                                        "customer_address",
+                                                                        e.target
+                                                                            .value
+                                                                    )
+                                                                }
+                                                                name={`customer_address_${index}`}
+                                                                className="mt-2 h-10"
+                                                                id={`customer_address_${index}`}
+                                                                placeholder="Masukkan alamat pembeli"
+                                                            />
+                                                        </div>
 
-                                            {/* <div className="w-full">
-                                                <Label htmlFor={`delivery_schedule_${index}`}>
-                                                    Jadwal Pengiriman
-                                                </Label>
-                                                <DatePicker
-                                                    setData={(e: any) =>
-                                                        updateOrder(index, 'delivery_schedule', e.target.value)
-                                                    }
-                                                    value={item.delivery_schedule}
-                                                />
-                                            </div> */}
-                                        </div>
-                                    ))}
+                                                        <div className="w-full">
+                                                            <Label
+                                                                htmlFor={`status_${index}`}
+                                                            >
+                                                                Status
+                                                            </Label>
+                                                            <Select
+                                                                value={
+                                                                    item.status
+                                                                }
+                                                                // name={`status_${index}`}
+                                                                placeholder="Pilih status"
+                                                                label="Status"
+                                                                data={[
+                                                                    {
+                                                                        value: "Siap Dikirim",
+                                                                        label: "Siap Dikirim",
+                                                                    },
+                                                                    {
+                                                                        value: "Belum Siap Dikirim",
+                                                                        label: "Belum Siap Dikirim",
+                                                                    },
+                                                                ]}
+                                                                onChange={(
+                                                                    value: any
+                                                                ) =>
+                                                                    updateOrder(
+                                                                        index,
+                                                                        "status",
+                                                                        value
+                                                                    )
+                                                                }
+                                                            />
+                                                        </div>
 
-                                    <Button onClick={addOrder}>Tambah Pesanan Lainnya</Button>
+                                                        <div className="w-full">
+                                                            <Label
+                                                                htmlFor={`delivery_schedule_${index}`}
+                                                            >
+                                                                Jadwal
+                                                                Pengiriman
+                                                            </Label>
+                                                            <DatePicker
+                                                                onChange={(
+                                                                    value: any
+                                                                ) =>
+                                                                    updateOrder(
+                                                                        index,
+                                                                        "delivery_schedule",
+                                                                        value
+                                                                    )
+                                                                }
+                                                                value={
+                                                                    item.delivery_schedule
+                                                                }
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                </AccordionContent>
+                                            </AccordionItem>
+                                        ))}
+                                    </Accordion>
+
+                                    <Button onClick={addOrder}>
+                                        Tambah Pesanan Lainnya
+                                    </Button>
                                 </CardContent>
                             </Card>
                         </ScrollArea>

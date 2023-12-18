@@ -24,13 +24,20 @@ export const DropdownMenu: FC<DropdownMenuProps> = ({
             </DropdownMenuTrigger>
 
             <DropdownMenuContent>
+                {/* <Link
+                    href={route("profile.edit", auth.user)}
+                    className="w-full cursor-pointer"
+                >
+                    <DropdownMenuItem>Profil</DropdownMenuItem>
+                </Link> */}
+
                 <Link
                     href={route("logout")}
                     method="post"
                     as="button"
-                    className="w-full cursor-pointer"
+                    className="w-full"
                 >
-                    <DropdownMenuItem>Logout</DropdownMenuItem>
+                    <DropdownMenuItem className="cursor-pointer">Keluar</DropdownMenuItem>
                 </Link>
             </DropdownMenuContent>
         </ShadcnDropdownMenu>

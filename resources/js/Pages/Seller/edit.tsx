@@ -15,13 +15,15 @@ import { ScrollArea } from "@/Components/ui/scroll-area";
 import { Textarea } from "@/Components/ui/textarea";
 import { Select } from "@/Components/Select";
 
-const EditSeller = ({ title, description, currentData, auth }: any) => {
+const EditSeller = ({ title, description, seller, auth }: any) => {
+    console.log(seller)
+    
     const { data, setData, put, processing, errors, reset } = useForm({
-        name: currentData.name || "",
-        phone_number: currentData.phone_number || "",
-        address: currentData.address || "",
-        item_name: currentData.item_name || "",
-        item_type: currentData.item_type || "",
+        name: seller.name || "",
+        phone_number: seller.phone_number || "",
+        address: seller.address || "",
+        item_name: seller.item_name || "",
+        item_type: seller.item_type || "",
     });
 
     return (
@@ -30,7 +32,7 @@ const EditSeller = ({ title, description, currentData, auth }: any) => {
                 className="grow flex"
                 onSubmit={(e) => {
                     e.preventDefault();
-                    put(route("sellers.update", currentData));
+                    put(route("sellers.update", seller));
                 }}
             >
                 <Card className="grow flex flex-col border-0 gap-8 shadow-none">
@@ -170,7 +172,6 @@ const EditSeller = ({ title, description, currentData, auth }: any) => {
                                         </Label>
                                         <Select
                                             value={data.item_type}
-                                            name="item_type"
                                             placeholder="Pilih jenis barang"
                                             label="Jenis Barang"
                                             data={[
@@ -183,7 +184,7 @@ const EditSeller = ({ title, description, currentData, auth }: any) => {
                                                     label: "Dokumen",
                                                 },
                                             ]}
-                                            setData={setData}
+                                            onChange={(value: any) => setData('item_type', value)}
                                         />
                                     </div>
                                 </CardContent>

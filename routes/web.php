@@ -19,6 +19,14 @@ use Inertia\Inertia;
 |
 */
 
+Route::fallback(function () {
+    if (auth()->check()) {
+        return to_route('schedule');
+    } else {
+        return to_route('login');
+    }
+});
+
 Route::get('/schedule', function () {
     return Inertia::render('Schedule');
 })->name('schedule');
@@ -55,11 +63,11 @@ Route::middleware('auth')->group(function () {
     Route::resource('orders', OrderController::class);
     Route::resource('sellers', SellerController::class);
     Route::resource('couriers', CourierController::class);
-    // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 // Route::resource('orders', \App\Http\Controllers\OrderController::class);
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

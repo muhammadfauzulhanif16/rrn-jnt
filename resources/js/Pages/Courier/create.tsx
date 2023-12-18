@@ -40,9 +40,9 @@ const CreateCourier = ({ title, description, auth }: any) => {
                             <Button
                                 type="submit"
                                 disabled={
-                                    !data.full_name ||
-                                    !data.username ||
-                                    !data.password
+                                    data.full_name.length <= 3 ||
+                                    data.username.length <= 8 ||
+                                    data.password.length <= 8
                                 }
                             >
                                 <CornerRightDown className="rotate-90 w-4 h-4 mr-2" />
@@ -55,9 +55,9 @@ const CreateCourier = ({ title, description, auth }: any) => {
                                 size="icon"
                                 type="submit"
                                 disabled={
-                                    !data.full_name ||
-                                    !data.username ||
-                                    !data.password
+                                    data.full_name.length <= 3 ||
+                                    data.username.length <= 8 ||
+                                    data.password.length <= 8
                                 }
                             >
                                 <CornerRightDown className="rotate-90 w-4 h-4" />
@@ -82,10 +82,11 @@ const CreateCourier = ({ title, description, auth }: any) => {
                                             setData("full_name", e.target.value)
                                         }
                                         name="full_name"
-                                        className="mt-2"
+                                        className="my-2"
                                         id="full_name"
                                         placeholder="Masukkan nama lengkap"
                                     />
+                                    <span className="text-sm">Nama lengkap minimal 3 karakter.</span>
                                 </CardContent>
                             </Card>
 
@@ -109,10 +110,11 @@ const CreateCourier = ({ title, description, auth }: any) => {
                                                 )
                                             }
                                             name="username"
-                                            className="mt-2"
+                                            className="my-2"
                                             id="username"
                                             placeholder="Masukkan nama pengguna"
                                         />
+                                        <span className="text-sm">Nama pengguna minimal 8 karakter.</span>
                                     </div>
 
                                     <div className="w-full">
@@ -121,18 +123,19 @@ const CreateCourier = ({ title, description, auth }: any) => {
                                         </Label>
                                         <Input
                                             required
-                                            value={data.password}
+                                            value={data.password.toLowerCase()}
                                             onChange={(e) =>
                                                 setData(
                                                     "password",
-                                                    e.target.value
+                                                    e.target.value.toLowerCase()
                                                 )
                                             }
                                             type="password"
-                                            className="mt-2"
+                                            className="my-2"
                                             id="password"
                                             placeholder="Masukkan kata sandi"
                                         />
+                                        <span className="text-sm">Kata sandi minimal 8 karakter.</span>
                                     </div>
                                 </CardContent>
                             </Card>

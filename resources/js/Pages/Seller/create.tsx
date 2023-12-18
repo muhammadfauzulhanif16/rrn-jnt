@@ -24,6 +24,8 @@ const CreateSeller = ({ title, description, auth }: any) => {
         item_type: "",
     });
 
+    console.log(data.item_type)
+
     return (
         <DashboardLayout title={title} auth={auth}>
             <form
@@ -170,7 +172,6 @@ const CreateSeller = ({ title, description, auth }: any) => {
                                         </Label>
                                         <Select
                                             value={data.item_type}
-                                            name="item_type"
                                             placeholder="Pilih jenis barang"
                                             label="Jenis Barang"
                                             data={[
@@ -183,7 +184,7 @@ const CreateSeller = ({ title, description, auth }: any) => {
                                                     label: "Dokumen",
                                                 },
                                             ]}
-                                            setData={setData}
+                                            onChange={(value:any) => setData("item_type", value)}
                                         />
                                     </div>
                                 </CardContent>

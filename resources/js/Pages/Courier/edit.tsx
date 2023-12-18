@@ -13,11 +13,11 @@ import {
 } from "@/Components/ui/card";
 import { ScrollArea } from "@/Components/ui/scroll-area";
 
-const EditCourier = ({ currentData, title, description, auth }: any) => {
+const EditCourier = ({ courier, title, description, auth }: any) => {
     const { data, setData, put, processing, errors, reset } = useForm({
-        full_name: currentData.full_name || "",
-        username: currentData.username || "",
-        password: currentData.data || "",
+        full_name: courier.full_name || "",
+        username: courier.username || "",
+        password: courier.data || "",
     });
 
     return (
@@ -26,7 +26,7 @@ const EditCourier = ({ currentData, title, description, auth }: any) => {
                 className="grow flex"
                 onSubmit={(e) => {
                     e.preventDefault();
-                    put(route("couriers.update", currentData));
+                    put(route("couriers.update", courier));
                 }}
             >
                 <Card className="grow flex flex-col border-0 gap-8 shadow-none">
@@ -39,7 +39,11 @@ const EditCourier = ({ currentData, title, description, auth }: any) => {
                         <div className="hidden sm:block">
                             <Button
                                 type="submit"
-                                disabled={!data.full_name || !data.username}
+                                disabled={
+                                    data.full_name.length <= 3 ||
+                                    data.username.length <= 8 ||
+                                    data.password.length <= 8
+                                }
                             >
                                 <CornerRightDown className="rotate-90 w-4 h-4 mr-2" />
                                 Ubah Kurir
@@ -50,7 +54,11 @@ const EditCourier = ({ currentData, title, description, auth }: any) => {
                             <Button
                                 size="icon"
                                 type="submit"
-                                disabled={!data.full_name || !data.username}
+                                disabled={
+                                    data.full_name.length <= 3 ||
+                                    data.username.length <= 8 ||
+                                    data.password.length <= 8
+                                }
                             >
                                 <CornerRightDown className="rotate-90 w-4 h-4" />
                             </Button>
@@ -68,15 +76,19 @@ const EditCourier = ({ currentData, title, description, auth }: any) => {
                                         Nama Lengkap
                                     </Label>
                                     <Input
+                                        required
                                         value={data.full_name}
                                         onChange={(e) =>
                                             setData("full_name", e.target.value)
                                         }
                                         name="full_name"
-                                        className="mt-2"
+                                        className="my-2"
                                         id="full_name"
                                         placeholder="Masukkan nama lengkap"
                                     />
+                                    <span className="text-sm">
+                                        Nama lengkap minimal 3 karakter.
+                                    </span>
                                 </CardContent>
                             </Card>
 
@@ -91,6 +103,7 @@ const EditCourier = ({ currentData, title, description, auth }: any) => {
                                             Nama Pengguna
                                         </Label>
                                         <Input
+                                            required
                                             value={data.username}
                                             onChange={(e) =>
                                                 setData(
@@ -99,10 +112,13 @@ const EditCourier = ({ currentData, title, description, auth }: any) => {
                                                 )
                                             }
                                             name="username"
-                                            className="mt-2"
+                                            className="my-2"
                                             id="username"
                                             placeholder="Masukkan nama pengguna"
                                         />
+                                        <span className="text-sm">
+                                            Nama pengguna minimal 8 karakter.
+                                        </span>
                                     </div>
 
                                     <div className="w-full">
@@ -110,6 +126,7 @@ const EditCourier = ({ currentData, title, description, auth }: any) => {
                                             Kata Sandi
                                         </Label>
                                         <Input
+                                            required
                                             value={data.password}
                                             onChange={(e) =>
                                                 setData(
@@ -118,10 +135,13 @@ const EditCourier = ({ currentData, title, description, auth }: any) => {
                                                 )
                                             }
                                             type="password"
-                                            className="mt-2"
+                                            className="my-2"
                                             id="password"
                                             placeholder="Masukkan kata sandi"
                                         />
+                                        <span className="text-sm">
+                                            Kata sandi minimal 8 karakter.
+                                        </span>
                                     </div>
                                 </CardContent>
                             </Card>

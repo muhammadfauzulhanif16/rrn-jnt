@@ -18,41 +18,83 @@ import {
     DropdownMenuLabel,
     DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu";
+import { Badge } from "@/Components/ui/badge";
+import { useState } from "react";
 
-const OrdersBySeller = ({ title, description, auth, data }: any) => {
-    console.log(data)
+const OrdersBySeller = ({ title, description, auth, orders }: any) => {
+    // const [selectedOrders, setSelectedOrders] = useState([]);
+
+    // const toggleOrder = (orderId: any) => {
+    //     setSelectedOrders((prevSelectedOrders: any) => {
+    //         if (prevSelectedOrders.includes(orderId)) {
+    //             return prevSelectedOrders.filter((id: any) => id !== orderId);
+    //         } else {
+    //             return [...prevSelectedOrders, orderId];
+    //         }
+    //     });
+    // };
+
     const columns: ColumnDef<any>[] = [
+        // {
+        //     id: "selection",
+        //     header: "",
+        //     cell: ({ row }: any) => (
+        //         <input
+        //             type="checkbox"
+        //             checked={selectedOrders.includes(row.original.id)}
+        //             onChange={() => toggleOrder(row.original.id)}
+        //         />
+        //     ),
+        // },
         {
             accessorKey: "receipt_number",
-            header: "Nomor Resi",
-            cell: ({ row }) => <div>{row.getValue('receipt_number')}</div>,
+            header: ({ column }) => (
+                <div className="whitespace-nowrap">Nomor Resi</div>
+            ),
+            cell: ({ row }) => (
+                <div className="whitespace-nowrap">
+                    {row.getValue("receipt_number")}
+                </div>
+            ),
         },
         {
             accessorKey: "customer_address",
-            header: "Alamat Penjual",
-            cell: ({ row }) => <div>{row.getValue('customer_address')}</div>,
+            header: ({ column }) => (
+                <div className="whitespace-nowrap">Alamat Penjual</div>
+            ),
+            cell: ({ row }) => (
+                <div className="whitespace-nowrap">
+                    {row.getValue("customer_address")}
+                </div>
+            ),
         },
-        // {
-        //     accessorKey: "order_count",
-        //     header: "Jumlah Pesanan",
-        //     cell: ({ row }) => <div>{row.getValue("order_count")}</div>,
-        // },
-        // {
-        //     accessorKey: "status",
-        //     header: "Status",
-        //     cell: ({ row }) => <div>{row.getValue("status")}</div>,
-        // },
-        // {
-        //     accessorKey: "delivery_schedule",
-        //     header: "Jadwal Pengiriman",
-        //     cell: ({ row }) => (
-        //         <div>
-        //             {new Date(
-        //                 row.getValue("delivery_schedule")
-        //             ).toLocaleDateString()}
-        //         </div>
-        //     ),
-        // },
+        {
+            accessorKey: "status",
+            header: "Status",
+            cell: ({ row }) => (
+                <Badge
+                    className={`whitespace-nowrap ${
+                        row.getValue("status") === "Siap Dikirim"
+                            ? "hover:bg-green-500 bg-green-500"
+                            : "hover:bg-red-500 bg-red-500"
+                    }
+                    `}
+                >
+                    {row.getValue("status")}
+                </Badge>
+            ),
+        },
+        {
+            accessorKey: "delivery_schedule",
+            header: "Jadwal Pengiriman",
+            cell: ({ row }) => (
+                <div className="whitespace-nowrap">
+                    {new Date(
+                        row.getValue("delivery_schedule")
+                    ).toLocaleString()}
+                </div>
+            ),
+        },
         {
             id: "actions",
             enableHiding: false,
@@ -67,11 +109,29 @@ const OrdersBySeller = ({ title, description, auth, data }: any) => {
                                 <MoreHorizontal className="h-4 w-4" />
                             </Button>
                         </DropdownMenuTrigger>
-                        {/* <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                        <DropdownMenuContent align="end">
+                            <DropdownMenuLabel>Aksi</DropdownMenuLabel>
                             <Link href={route("orders.edit", data.id)}>
                                 <DropdownMenuItem className="cursor-pointer">
-                                    Edit
+                                    Ubah
+                                </DropdownMenuItem>
+                            </Link>
+
+                            <Link
+                                href={
+                                    row.getValue("status") === "Siap Dikirim"
+                                        ? route("orders.show", data.id)
+                                        : ""
+                                }
+                            >
+                                <DropdownMenuItem
+                                    disabled={
+                                        row.getValue("status") ===
+                                        "Belum Siap Dikirim"
+                                    }
+                                    className="cursor-pointer"
+                                >
+                                    Jadwalkan
                                 </DropdownMenuItem>
                             </Link>
 
@@ -80,10 +140,10 @@ const OrdersBySeller = ({ title, description, auth, data }: any) => {
                                 href={route("orders.destroy", data.id)}
                             >
                                 <DropdownMenuItem className="cursor-pointer">
-                                    Delete
+                                    Hapus
                                 </DropdownMenuItem>
                             </Link>
-                        </DropdownMenuContent> */}
+                        </DropdownMenuContent>
                     </DropdownMenu>
                 );
             },
@@ -116,7 +176,7 @@ const OrdersBySeller = ({ title, description, auth, data }: any) => {
                 </CardHeader>
 
                 <CardContent className="flex grow p-0">
-                    <Table columns={columns} data={data} />
+                    <Table columns={columns} data={orders} />
                 </CardContent>
             </Card>
         </DashboardLayout>

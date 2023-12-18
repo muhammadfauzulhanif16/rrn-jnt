@@ -16,8 +16,8 @@ return new class extends Migration
             $table->uuid('seller_id');
             $table->string('receipt_number');
             $table->string('customer_address');
-            // $table->enum('status', ['Siap Dikirim', 'Belum Siap Dikirim']);
-            // $table->string('delivery_schedule');
+            $table->enum('status', ['Siap Dikirim', 'Belum Siap Dikirim']);
+            $table->string('delivery_schedule');
             $table->timestamps();
 
             $table->foreign('seller_id')->references('id')->on('sellers');

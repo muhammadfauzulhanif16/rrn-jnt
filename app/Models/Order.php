@@ -17,8 +17,8 @@ class Order extends Model
         'seller_id',
         'receipt_number',
         'customer_address',
-        // 'status',
-        // 'delivery_schedule',
+        'status',
+        'delivery_schedule',
     ];
 
     public function seller()

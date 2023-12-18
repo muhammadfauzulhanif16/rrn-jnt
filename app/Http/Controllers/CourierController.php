@@ -9,6 +9,7 @@ use Inertia\Inertia;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class CourierController extends Controller
@@ -18,7 +19,7 @@ class CourierController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Courier/index',[
+        return Inertia::render('Courier/index', [
             "title" => "Daftar Kurir",
             "description" => "Semua daftar kurir yang terdaftar.",
             'data' => User::where('role', 'courier')->orderBy('created_at', 'desc')->get(),
@@ -30,7 +31,7 @@ class CourierController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Courier/create',[
+        return Inertia::render('Courier/create', [
             "title" => "Tambah Kurir",
             "description" => "Tambahkan kurir baru.",
         ]);
@@ -39,7 +40,7 @@ class CourierController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreCourierRequest $request)
     {
         User::create([
             'id' => Str::uuid(),
@@ -48,7 +49,7 @@ class CourierController extends Controller
             'password' => $request->password,
         ]);
 
-        return redirect(route('couriers.index'));
+        return to_route('couriers.index');
     }
 
     /**
@@ -64,25 +65,25 @@ class CourierController extends Controller
      */
     public function edit(User $courier)
     {
-      return Inertia::render('Courier/edit',[
-        "title" => "Ubah Kurir",
-        "description" => "Ubah data kurir",
-        'currentData' => $courier,
-    ]);
+        return Inertia::render('Courier/edit', [
+            "title" => "Ubah Kurir",
+            "description" => "Ubah data kurir",
+            'courier' => $courier,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $courier)
+    public function update(UpdateCourierRequest $request, User $courier)
     {
         $courier->update([
-        'full_name' => $request->full_name,
-        'username' => $request->username,
-        'password' => $request->password ? Hash::make($request->password) : $courier->password,
-    ]);
+            'full_name' => $request->full_name,
+            'username' => $request->username,
+            'password' => $request->password ? Hash::make($request->password) : $courier->password,
+        ]);
 
-        return redirect(route('couriers.index'));
+        return to_route('couriers.index');
     }
 
     /**

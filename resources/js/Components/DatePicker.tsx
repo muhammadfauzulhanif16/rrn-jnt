@@ -9,12 +9,12 @@ import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 
 interface DatePickerProps {
     value: any;
-    setData: any;
+    onChange: any;
 }
 
 export const DatePicker: React.FC<DatePickerProps> = ({
     value,
-    setData,
+    onChange,
 }: DatePickerProps) => {
     // const [date, setDate] = React.useState<Date>();
     // console.log(typeof date);
@@ -37,9 +37,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
                 <Calendar
                     mode="single"
                     selected={value}
-                    onSelect={(value: any) =>
-                        setData("delivery_schedule", value)
-                    }
+                    onSelect={onChange}
                     initialFocus
                 />
             </PopoverContent>
