@@ -109,7 +109,7 @@ const OrdersBySeller = ({ title, description, auth, orders }: any) => {
                                 href={route(
                                     row.getValue("status") === "Siap Dikirim"
                                         ? "schedule.index"
-                                        : "schedule.store"
+                                        : ""
                                 )}
                             >
                                 <DropdownMenuItem
