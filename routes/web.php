@@ -64,7 +64,7 @@ Route::middleware('auth')->group(function () {
     })->name('schedule.index');
 
     Route::resource('orders', OrderController::class);
-    Route::resource('sellers', SellerController::class);
+    Route::resource('customers', SellerController::class);
     Route::resource('couriers', CourierController::class);
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

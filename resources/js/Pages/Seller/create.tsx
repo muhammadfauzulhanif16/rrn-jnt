@@ -44,13 +44,13 @@ const CreateSeller = ({ title, description, auth }: any) => {
                             <Button
                                 type="submit"
                                 disabled={
-                                    data.name.length < 3 ||
+                                    !data.name ||
                                     data.name.length > 255 ||
                                     data.phone_number.length < 10 ||
                                     data.phone_number.length > 13 ||
                                     data.address.length < 3 ||
                                     data.address.length > 255 ||
-                                    data.item_name.length < 3 ||
+                                    !data.item_name ||
                                     data.item_name.length > 255 ||
                                     !data.item_type
                                 }
@@ -65,13 +65,13 @@ const CreateSeller = ({ title, description, auth }: any) => {
                                 size="icon"
                                 type="submit"
                                 disabled={
-                                    data.name.length < 3 ||
+                                    !data.name ||
                                     data.name.length > 255 ||
                                     data.phone_number.length < 10 ||
                                     data.phone_number.length > 13 ||
                                     data.address.length < 3 ||
                                     data.address.length > 255 ||
-                                    data.item_name.length < 3 ||
+                                    !data.item_name ||
                                     data.item_name.length > 255 ||
                                     !data.item_type
                                 }
@@ -102,13 +102,10 @@ const CreateSeller = ({ title, description, auth }: any) => {
                                                     )
                                                 }
                                                 name="name"
-                                                className="my-2"
+                                                className="mt-2"
                                                 id="name"
                                                 placeholder="Masukkan nama"
                                             />
-                                            <span className="text-sm">
-                                                Nama penjual minimal 3 karakter.
-                                            </span>
                                         </div>
 
                                         <div className="w-full">
@@ -126,14 +123,10 @@ const CreateSeller = ({ title, description, auth }: any) => {
                                                     )
                                                 }
                                                 name="phone_number"
-                                                className="my-2"
+                                                className="mt-2"
                                                 id="phone_number"
-                                                placeholder="Masukkan nomor telepon"
+                                                placeholder="Masukkan nomor telepon min 10 dan max 13 karakter"
                                             />
-                                            <span className="text-sm">
-                                                Nomor telepon minimal 10 dan
-                                                maksimal 13 karakter.
-                                            </span>
                                         </div>
                                     </div>
 
@@ -174,13 +167,10 @@ const CreateSeller = ({ title, description, auth }: any) => {
                                                 )
                                             }
                                             name="item_name"
-                                            className="my-2"
+                                            className="mt-2"
                                             id="item_name"
                                             placeholder="Masukkan nama barang"
                                         />
-                                        <span className="text-sm">
-                                            Nama barang minimal 3 karakter.
-                                        </span>
                                     </div>
 
                                     <div className="w-full">

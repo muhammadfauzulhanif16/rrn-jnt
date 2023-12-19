@@ -34,9 +34,9 @@ export const NavBar: FC<NavBarProps> = ({ title, auth }: NavBarProps) => {
             link: "orders.index",
         },
         {
-            label: "Penjual",
+            label: "Pelanggan",
             icon: <Store className="h-4 w-4" />,
-            link: "sellers.index",
+            link: "customers.index",
         },
         {
             label: "Kurir",

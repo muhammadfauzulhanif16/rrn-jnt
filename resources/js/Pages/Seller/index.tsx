@@ -110,7 +110,7 @@ const Sellers = ({ title, description, sellers, auth }: any) => {
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Aksi</DropdownMenuLabel>
 
-                            <Link href={route("sellers.edit", data.id)}>
+                            <Link href={route("customers.edit", data.id)}>
                                 <DropdownMenuItem className="cursor-pointer">
                                     Ubah
                                 </DropdownMenuItem>
@@ -122,7 +122,7 @@ const Sellers = ({ title, description, sellers, auth }: any) => {
                                 href={
                                     data.order_count > 0
                                         ? "#"
-                                        : route("sellers.destroy", data.id)
+                                        : route("customers.destroy", data.id)
                                 }
                             >
                                 <DropdownMenuItem
@@ -148,7 +148,7 @@ const Sellers = ({ title, description, sellers, auth }: any) => {
                         <CardDescription>{description}</CardDescription>
                     </div>
 
-                    <Link href={route("sellers.create")}>
+                    <Link href={route("customers.create")}>
                         <div className="hidden sm:block">
                             <Button>
                                 <Plus className="w-4 h-4 mr-2" />
