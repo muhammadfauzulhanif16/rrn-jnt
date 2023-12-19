@@ -2,11 +2,11 @@
 
 1. **Clone repositori**
     ```
-    git clone https://github.com/muhammadfauzulhanif16/geolokasi-warga-muhammadiyah.git
+    git clone https://github.com/muhammadfauzulhanif16/rrn-jnt.git
     ```
 2. **Navigasi ke direktori proyek**
     ```
-    cd repository
+    cd rrn-jnt
     ```
 3. **Instalasi dependensi Composer**
     ```
