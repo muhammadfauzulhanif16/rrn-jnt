@@ -93,6 +93,6 @@ class CourierController extends Controller
     {
         $courier->delete();
 
-        return redirect(route('couriers.index'));
+        return to_route('couriers.index');
     }
 }

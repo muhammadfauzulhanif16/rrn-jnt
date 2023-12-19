@@ -24,16 +24,10 @@ import {
 } from "@/Components/ui/accordion";
 
 const CreateOrder = ({ title, description, sellers, auth }: any) => {
-    // console.log(sellers);
     sellers = sellers.map((seller: any) => ({
         value: seller.id,
         label: seller.name,
     }));
-
-    // const { data, setData, post, processing, errors, reset } = useForm({
-    //     seller_id: "",
-    //     items: [],
-    // });
 
     const { data, setData, post, processing, errors, reset } = useForm<{
         seller_id: string;
@@ -70,7 +64,7 @@ const CreateOrder = ({ title, description, sellers, auth }: any) => {
 
     const isFormEmpty = () => {
         if (!data.seller_id || data.items.length === 0) return true;
-    
+
         for (let item of data.items) {
             if (
                 !item.receipt_number ||
@@ -81,7 +75,7 @@ const CreateOrder = ({ title, description, sellers, auth }: any) => {
                 return true;
             }
         }
-    
+
         return false;
     };
 
@@ -128,9 +122,7 @@ const CreateOrder = ({ title, description, sellers, auth }: any) => {
 
                                 <CardContent className="gap-4">
                                     <div className="w-full">
-                                        <Label htmlFor="seller">
-                                            Nama Penjual
-                                        </Label>
+                                        <Label htmlFor="seller">Penjual</Label>
                                         <Select
                                             value={data.seller_id}
                                             placeholder="Pilih Penjual"

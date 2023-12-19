@@ -19,7 +19,7 @@ import {
     DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu";
 
-const Sellers = ({ title, description, data, auth }: any) => {
+const Sellers = ({ title, description, sellers, auth }: any) => {
     const columns: ColumnDef<any>[] = [
         {
             accessorKey: "name",
@@ -109,6 +109,7 @@ const Sellers = ({ title, description, data, auth }: any) => {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Aksi</DropdownMenuLabel>
+
                             <Link href={route("sellers.edit", data.id)}>
                                 <DropdownMenuItem className="cursor-pointer">
                                     Ubah
@@ -116,10 +117,18 @@ const Sellers = ({ title, description, data, auth }: any) => {
                             </Link>
 
                             <Link
-                                method="delete"
-                                href={route("sellers.destroy", data.id)}
+                                method={data.order_count > 0 ? "get" : "delete"}
+                                as="div"
+                                href={
+                                    data.order_count > 0
+                                        ? "#"
+                                        : route("sellers.destroy", data.id)
+                                }
                             >
-                                <DropdownMenuItem className="cursor-pointer">
+                                <DropdownMenuItem
+                                    disabled={data.order_count > 0}
+                                    className="cursor-pointer"
+                                >
                                     Hapus
                                 </DropdownMenuItem>
                             </Link>
@@ -158,7 +167,7 @@ const Sellers = ({ title, description, data, auth }: any) => {
                 <CardContent className="flex grow p-0">
                     <Table
                         columns={columns}
-                        data={data}
+                        data={sellers}
                         search={{
                             placeholder: "Cari penjual berdasarkan nama...",
                             column: "name",

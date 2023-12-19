@@ -8,19 +8,21 @@ import {
 } from "./ui/tooltip";
 import { Link } from "@inertiajs/react";
 import { FC } from "react";
+import { cn } from "@/lib/utils";
 
 interface NavBarProps {
     title: string;
+    auth: any;
 }
 
-export const NavBar: FC<NavBarProps> = ({ title }: NavBarProps) => {
+export const NavBar: FC<NavBarProps> = ({ title, auth }: NavBarProps) => {
     interface navigationState {
         label: string;
         icon: any;
         link: string;
     }
 
-    const navigations: Array<navigationState> = [
+    let navigations: Array<navigationState> = [
         {
             label: "Penjadwalan",
             icon: <Calendar className="h-4 w-4" />,
@@ -43,8 +45,12 @@ export const NavBar: FC<NavBarProps> = ({ title }: NavBarProps) => {
         },
     ];
 
+    if (auth.user.role === "courier") {
+        navigations = navigations.filter(item => item.label === "Penjadwalan" || item.label === "Pesanan");
+    }
+
     return (
-        <div className="md:h-full flex-none grid md:grid-row-4 grid-cols-4 md:grid-cols-1 md:flex-col p-4 gap-4 md:border-r border-t md:border-t-0">
+        <div className={cn("md:h-full flex-none grid md:flex-col p-4 gap-4 md:border-r border-t md:border-t-0", auth.user.role === "admin" ? "grid-cols-4 md:grid-row-4 md:grid-cols-1" : "grid-cols-2 md:grid-row-2 md:grid-cols-1")}>
             {navigations.map(
                 ({ label, icon, link }: navigationState, id: number) => (
                     <TooltipProvider key={id}>

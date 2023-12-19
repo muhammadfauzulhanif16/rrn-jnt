@@ -49,25 +49,9 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
-        // Order::create([
-        //     'id' => Str::uuid(),
-        //     'seller_id' => $request->seller_id,
-        //     'customer_address' => $request->customer_address,
-        //     'status' => $request->status,
-        //     'delivery_schedule' => $request->delivery_schedule,
-        // ]);
-        // dd($request->all());
         $items = $request->input('items');
-        // dd($request->all());
 
         foreach ($items as $item) {
-            // dd($item['customer_address']);
-            // $item['id'] = Str::uuid();
-            // $item['seller_id'] = $request->seller_id;
-            // $item['customer_address'] = $request->customer_address;
-            // $item['status'] = $request->status;
-            // $item['delivery_schedule'] = $request->delivery_schedule;
             Order::create([
                 'id' => Str::uuid(),
                 'seller_id' => $request['seller_id'],
@@ -78,33 +62,7 @@ class OrderController extends Controller
             ]);
         }
 
-        // dd($items);
-        // $order = Order::create([
-        //     'id' => Str::uuid(),
-        //     'seller_id' => $request->seller_id,
-        //     'customer_address' => $request->customer_address,
-        //     // 'status' => $request->status,
-        //     // 'delivery_schedule' => $request->delivery_schedule,
-        // ]);
-        // foreach ($items as $item) {
-        //     // dd($item);
-        //     $item['id'] = Str::uuid();
-        //     $item['seller_id'] = $request->seller_id;
-        //     $item['customer_address'] = $item->customer_address;
-        //     // $item['status'] = $request->status;
-        //     // $item['delivery_schedule'] = $request->delivery_schedule;
-        //     // Order::create($item);
-        //     dd($item);
-        //     // $order->items()->create([
-        //     //     'id' => Str::uuid(),
-        //     //     'seller_id' => $request->seller_id,
-        //     //     'customer_address' => $item['customer_address'],
-        //     //     // 'status' => $item['status'],
-        //     //     // 'delivery_schedule' => $item['delivery_schedule'],
-        //     // ]);
-        // }
-
-        return redirect(route('orders.index'));
+        return to_route('orders.index');
     }
 
     /**
@@ -125,10 +83,9 @@ class OrderController extends Controller
     public function edit(Order $order)
     {
         return Inertia::render('Order/edit', [
-            "title" => "Ubah Pesanan",
+            "title" => "Ubah Pesanan [{$order->receipt_number}]",
             "description" => "Ubah data pesanan.",
-            'data' => $order,
-            'sellers' => Seller::all(),
+            'order' => $order,
         ]);
     }
 
@@ -139,12 +96,13 @@ class OrderController extends Controller
     {
         $order->update([
             'seller' => $request->seller,
+            'receipt_number' => $request->receipt_number,
             'customer_address' => $request->customer_address,
             'status' => $request->status,
             'delivery_schedule' => $request->delivery_schedule,
         ]);
 
-        return redirect(route('orders.index'));
+        return to_route('orders.index');
     }
 
     /**
@@ -154,6 +112,104 @@ class OrderController extends Controller
     {
         $order->delete();
 
-        return redirect(route('orders.index'));
+        return to_route('orders.index');
+    }
+}
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Courier;
+use App\Http\Requests\StoreCourierRequest;
+use App\Http\Requests\UpdateCourierRequest;
+use Inertia\Inertia;
+use App\Models\Order;
+use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+
+class CourierController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        // return Inertia::render('Schedule/index', [
+        //     "title" => "Daftar Kurir",
+        //     // "description" => "Semua daftar kurir yang terdaftar.",
+        //     // 'data' => User::where('role', 'courier')->orderBy('created_at', 'desc')->get(),
+        // ]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        // return Inertia::render('Courier/create', [
+        //     "title" => "Tambah Kurir",
+        //     "description" => "Tambahkan kurir baru.",
+        // ]);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(StoreCourierRequest $request)
+    {
+        // User::create([
+        //     'id' => Str::uuid(),
+        //     'full_name' => $request->full_name,
+        //     'username' => $request->username,
+        //     'password' => $request->password,
+        // ]);
+
+        // return to_route('couriers.index');
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Courier $courier)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(User $courier)
+    {
+        // return Inertia::render('Courier/edit', [
+        //     "title" => "Ubah Kurir",
+        //     "description" => "Ubah data kurir",
+        //     'courier' => $courier,
+        // ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(UpdateCourierRequest $request, User $courier)
+    {
+        // $courier->update([
+        //     'full_name' => $request->full_name,
+        //     'username' => $request->username,
+        //     'password' => $request->password ? Hash::make($request->password) : $courier->password,
+        // ]);
+
+        // return to_route('couriers.index');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(User $courier)
+    {
+        // $courier->delete();
+
+        // return to_route('couriers.index');
     }
 }

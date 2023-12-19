@@ -28,7 +28,10 @@ Route::fallback(function () {
 });
 
 Route::get('/schedule', function () {
-    return Inertia::render('Schedule');
+    return Inertia::render('Schedule', [
+        'title' => 'Penjadwalan',
+        'description' => 'Penjadwalan pengiriman barang.',
+    ]);
 })->name('schedule');
 
 // Route::get('/orders', function () {

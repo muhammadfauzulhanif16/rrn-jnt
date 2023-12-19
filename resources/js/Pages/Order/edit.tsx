@@ -1,4 +1,4 @@
-   import { CornerRightDown } from "lucide-react";
+import { CornerRightDown } from "lucide-react";
 import { Button } from "@/Components/ui/button";
 import { Input } from "@/Components/ui/input";
 import { DashboardLayout } from "@/Layouts/DashboardLayout";
@@ -15,22 +15,13 @@ import { ScrollArea } from "@/Components/ui/scroll-area";
 import { Select } from "@/Components/Select";
 import { DatePicker } from "@/Components/DatePicker";
 
-const EditOrder = ({ title, description, sellers, auth }: any) => {
-    sellers = sellers.map((seller: any) => ({
-        value: seller.shop_name,
-        label: seller.shop_name,
-    }));
-
-    const { data, setData, post, processing, errors, reset } = useForm({
-        invoice_number: "",
-        seller: "",
-        customer_name: "",
-        customer_address: "",
-        delivery_distance: "",
-        delivery_schedule: "",
+const EditOrder = ({ title, description, order, auth }: any) => {
+    const { data, setData, put, processing, errors, reset } = useForm({
+        receipt_number: order.receipt_number || "",
+        customer_address: order.customer_address || "",
+        status: order.status || "",
+        delivery_schedule: order.delivery_schedule || "",
     });
-
-    // console.log(data.delivery_schedule, "data.delivery_schedule");
 
     return (
         <DashboardLayout title={title} auth={auth}>
@@ -38,7 +29,7 @@ const EditOrder = ({ title, description, sellers, auth }: any) => {
                 className="grow flex"
                 onSubmit={(e) => {
                     e.preventDefault();
-                    post(route("orders.store"));
+                    put(route("orders.update", order.id));
                 }}
             >
                 <Card className="grow flex flex-col border-0 gap-8 shadow-none">
@@ -51,17 +42,17 @@ const EditOrder = ({ title, description, sellers, auth }: any) => {
                         <div className="hidden sm:block">
                             <Button
                                 type="submit"
-                                disabled={
-                                    !data.invoice_number ||
-                                    !data.seller ||
-                                    !data.customer_name ||
-                                    !data.customer_address ||
-                                    !data.delivery_distance ||
-                                    !data.delivery_schedule
-                                }
+                                // disabled={
+                                //     !data.invoice_number ||
+                                //     !data.seller ||
+                                //     !data.customer_name ||
+                                //     !data.customer_address ||
+                                //     !data.delivery_distance ||
+                                //     !data.delivery_schedule
+                                // }
                             >
                                 <CornerRightDown className="rotate-90 w-4 h-4 mr-2" />
-                                Create Order
+                                Ubah Pesanan
                             </Button>
                         </div>
 
@@ -69,14 +60,14 @@ const EditOrder = ({ title, description, sellers, auth }: any) => {
                             <Button
                                 size="icon"
                                 type="submit"
-                                disabled={
-                                    !data.invoice_number ||
-                                    !data.seller ||
-                                    !data.customer_name ||
-                                    !data.customer_address ||
-                                    !data.delivery_distance ||
-                                    !data.delivery_schedule
-                                }
+                                // disabled={
+                                //     !data.invoice_number ||
+                                //     !data.seller ||
+                                //     !data.customer_name ||
+                                //     !data.customer_address ||
+                                //     !data.delivery_distance ||
+                                //     !data.delivery_schedule
+                                // }
                             >
                                 <CornerRightDown className="rotate-90 w-4 h-4" />
                             </Button>
@@ -85,75 +76,31 @@ const EditOrder = ({ title, description, sellers, auth }: any) => {
 
                     <CardContent className="p-0 grow flex h-2">
                         <ScrollArea className="grow">
-                            <Card className="shadow-none mb-4">
-                                <CardHeader>
-                                    <CardTitle>Order</CardTitle>
-                                </CardHeader>
-
-                                <CardContent className="flex flex-col sm:flex-row gap-4">
+                            <Card className="shadow-none">
+                                <CardContent className="grid grid-cols-1 md:grid-row-2 md:grid-cols-2 gap-4 p-6">
                                     <div className="w-full">
-                                        <Label htmlFor="invoice_number">
-                                            Invoice Number
+                                        <Label htmlFor="receipt_number">
+                                            Nomor Resi
                                         </Label>
                                         <Input
                                             required
-                                            value={data.invoice_number}
+                                            value={data.receipt_number}
                                             onChange={(e) =>
                                                 setData(
-                                                    "invoice_number",
+                                                    "receipt_number",
                                                     e.target.value
                                                 )
                                             }
-                                            name="invoice_number"
-                                            className="mt-2"
-                                            id="invoice_number"
-                                            placeholder="Enter invoice number"
-                                        />
-                                    </div>
-
-                                    <div className="w-full">
-                                        <Label htmlFor="password" className="">
-                                            Seller
-                                        </Label>
-                                        <Select
-                                            placeholder="seller"
-                                            label="Sellers"
-                                            data={sellers}
-                                            setData={setData}
-                                        />
-                                    </div>
-                                </CardContent>
-                            </Card>
-
-                            <Card className="shadow-none mb-4">
-                                <CardHeader>
-                                    <CardTitle>Customer</CardTitle>
-                                </CardHeader>
-
-                                <CardContent className="flex flex-col sm:flex-row gap-4">
-                                    <div className="w-full">
-                                        <Label htmlFor="customer_name">
-                                            Name
-                                        </Label>
-                                        <Input
-                                            required
-                                            value={data.customer_name}
-                                            onChange={(e) =>
-                                                setData(
-                                                    "customer_name",
-                                                    e.target.value
-                                                )
-                                            }
-                                            name="customer_name"
-                                            className="mt-2"
-                                            id="customer_name"
-                                            placeholder="Enter name"
+                                            name="receipt_number"
+                                            className="mt-2 h-10"
+                                            id="receipt_number"
+                                            placeholder="Masukkan nomor resi"
                                         />
                                     </div>
 
                                     <div className="w-full">
                                         <Label htmlFor="customer_address">
-                                            Address
+                                            Alamat Pembeli
                                         </Label>
                                         <Input
                                             required
@@ -164,64 +111,49 @@ const EditOrder = ({ title, description, sellers, auth }: any) => {
                                                     e.target.value
                                                 )
                                             }
-                                            className="mt-2"
+                                            name="customer_address"
+                                            className="mt-2 h-10"
                                             id="customer_address"
-                                            placeholder="Enter address"
+                                            placeholder="Masukkan alamat pembeli"
                                         />
                                     </div>
-                                </CardContent>
-                            </Card>
 
-                            <Card className="shadow-none">
-                                <CardHeader>
-                                    <CardTitle>Delivery</CardTitle>
-                                </CardHeader>
-
-                                <CardContent className="flex flex-col sm:flex-row gap-4">
                                     <div className="w-full">
-                                        <Label htmlFor="delivery_distance">
-                                            Distance
-                                        </Label>
-                                        <Input
-                                            required
-                                            value={data.delivery_distance}
-                                            onChange={(e) =>
-                                                setData(
-                                                    "delivery_distance",
-                                                    e.target.value
-                                                )
+                                        <Label htmlFor="status">Status</Label>
+                                        <Select
+                                            value={data.status}
+                                            // name="status"
+                                            placeholder="Pilih status"
+                                            label="Status"
+                                            data={[
+                                                {
+                                                    value: "Siap Dikirim",
+                                                    label: "Siap Dikirim",
+                                                },
+                                                {
+                                                    value: "Belum Siap Dikirim",
+                                                    label: "Belum Siap Dikirim",
+                                                },
+                                            ]}
+                                            onChange={(value: any) =>
+                                                setData("status", value)
                                             }
-                                            name="delivery_distance"
-                                            className="mt-2"
-                                            type="number"
-                                            id="delivery_distance"
-                                            placeholder="Enter distance"
                                         />
                                     </div>
 
                                     <div className="w-full">
                                         <Label htmlFor="delivery_schedule">
-                                            Schedule
+                                            Jadwal Pengiriman
                                         </Label>
-
                                         <DatePicker
-                                            setData={setData}
-                                            value={data.delivery_schedule}
-                                        />
-                                        {/* <Input
-                                            required
-                                            value={data.password}
-                                            onChange={(e) =>
+                                            onChange={(value: any) =>
                                                 setData(
-                                                    "password",
-                                                    e.target.value
+                                                    "delivery_schedule",
+                                                    value
                                                 )
                                             }
-                                            type="password"
-                                            className="mt-2"
-                                            id="password"
-                                            placeholder="Enter password"
-                                        /> */}
+                                            value={data.delivery_schedule}
+                                        />
                                     </div>
                                 </CardContent>
                             </Card>

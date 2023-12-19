@@ -22,18 +22,6 @@ import { Badge } from "@/Components/ui/badge";
 import { useState } from "react";
 
 const OrdersBySeller = ({ title, description, auth, orders }: any) => {
-    // const [selectedOrders, setSelectedOrders] = useState([]);
-
-    // const toggleOrder = (orderId: any) => {
-    //     setSelectedOrders((prevSelectedOrders: any) => {
-    //         if (prevSelectedOrders.includes(orderId)) {
-    //             return prevSelectedOrders.filter((id: any) => id !== orderId);
-    //         } else {
-    //             return [...prevSelectedOrders, orderId];
-    //         }
-    //     });
-    // };
-
     const columns: ColumnDef<any>[] = [
         // {
         //     id: "selection",
@@ -118,11 +106,11 @@ const OrdersBySeller = ({ title, description, auth, orders }: any) => {
                             </Link>
 
                             <Link
-                                href={
+                                href={route(
                                     row.getValue("status") === "Siap Dikirim"
-                                        ? route("orders.show", data.id)
-                                        : ""
-                                }
+                                        ? "schedule.index"
+                                        : "schedule.store"
+                                )}
                             >
                                 <DropdownMenuItem
                                     disabled={
@@ -136,6 +124,7 @@ const OrdersBySeller = ({ title, description, auth, orders }: any) => {
                             </Link>
 
                             <Link
+                                as="div"
                                 method="delete"
                                 href={route("orders.destroy", data.id)}
                             >

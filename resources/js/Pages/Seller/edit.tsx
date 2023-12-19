@@ -16,8 +16,6 @@ import { Textarea } from "@/Components/ui/textarea";
 import { Select } from "@/Components/Select";
 
 const EditSeller = ({ title, description, seller, auth }: any) => {
-    console.log(seller)
-    
     const { data, setData, put, processing, errors, reset } = useForm({
         name: seller.name || "",
         phone_number: seller.phone_number || "",
@@ -46,10 +44,14 @@ const EditSeller = ({ title, description, seller, auth }: any) => {
                             <Button
                                 type="submit"
                                 disabled={
-                                    !data.name ||
-                                    !data.phone_number ||
-                                    !data.address ||
-                                    !data.item_name ||
+                                    data.name.length < 3 ||
+                                    data.name.length > 255 ||
+                                    data.phone_number.length < 10 ||
+                                    data.phone_number.length > 13 ||
+                                    data.address.length < 3 ||
+                                    data.address.length > 255 ||
+                                    data.item_name.length < 3 ||
+                                    data.item_name.length > 255 ||
                                     !data.item_type
                                 }
                             >
@@ -63,10 +65,14 @@ const EditSeller = ({ title, description, seller, auth }: any) => {
                                 size="icon"
                                 type="submit"
                                 disabled={
-                                    !data.name ||
-                                    !data.phone_number ||
-                                    !data.address ||
-                                    !data.item_name ||
+                                    data.name.length < 3 ||
+                                    data.name.length > 255 ||
+                                    data.phone_number.length < 10 ||
+                                    data.phone_number.length > 13 ||
+                                    data.address.length < 3 ||
+                                    data.address.length > 255 ||
+                                    data.item_name.length < 3 ||
+                                    data.item_name.length > 255 ||
                                     !data.item_type
                                 }
                             >
@@ -96,10 +102,13 @@ const EditSeller = ({ title, description, seller, auth }: any) => {
                                                     )
                                                 }
                                                 name="name"
-                                                className="mt-2"
+                                                className="my-2"
                                                 id="name"
                                                 placeholder="Masukkan nama"
                                             />
+                                            <span className="text-sm">
+                                                Nama penjual minimal 3 karakter.
+                                            </span>
                                         </div>
 
                                         <div className="w-full">
@@ -107,19 +116,24 @@ const EditSeller = ({ title, description, seller, auth }: any) => {
                                                 Nomor Telepon
                                             </Label>
                                             <Input
+                                                type="number"
                                                 required
                                                 value={data.phone_number}
                                                 onChange={(e) =>
                                                     setData(
                                                         "phone_number",
-                                                        e.target.value
+                                                        e.target.value.toString()
                                                     )
                                                 }
                                                 name="phone_number"
-                                                className="mt-2"
+                                                className="my-2"
                                                 id="phone_number"
                                                 placeholder="Masukkan nomor telepon"
                                             />
+                                            <span className="text-sm">
+                                                Nomor telepon minimal 10 dan
+                                                maksimal 13 karakter.
+                                            </span>
                                         </div>
                                     </div>
 
@@ -160,10 +174,13 @@ const EditSeller = ({ title, description, seller, auth }: any) => {
                                                 )
                                             }
                                             name="item_name"
-                                            className="mt-2"
+                                            className="my-2"
                                             id="item_name"
                                             placeholder="Masukkan nama barang"
                                         />
+                                        <span className="text-sm">
+                                            Nama barang minimal 3 karakter.
+                                        </span>
                                     </div>
 
                                     <div className="w-full">
@@ -184,7 +201,9 @@ const EditSeller = ({ title, description, seller, auth }: any) => {
                                                     label: "Dokumen",
                                                 },
                                             ]}
-                                            onChange={(value: any) => setData('item_type', value)}
+                                            onChange={(value: any) =>
+                                                setData("item_type", value)
+                                            }
                                         />
                                     </div>
                                 </CardContent>
