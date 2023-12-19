@@ -26,7 +26,7 @@ export const NavBar: FC<NavBarProps> = ({ title, auth }: NavBarProps) => {
         {
             label: "Penjadwalan",
             icon: <Calendar className="h-4 w-4" />,
-            link: "schedule",
+            link: "schedule.index",
         },
         {
             label: "Pesanan",
@@ -46,11 +46,20 @@ export const NavBar: FC<NavBarProps> = ({ title, auth }: NavBarProps) => {
     ];
 
     if (auth.user.role === "courier") {
-        navigations = navigations.filter(item => item.label === "Penjadwalan" || item.label === "Pesanan");
+        navigations = navigations.filter(
+            (item) => item.label === "Penjadwalan" || item.label === "Pesanan"
+        );
     }
 
     return (
-        <div className={cn("md:h-full flex-none grid md:flex-col p-4 gap-4 md:border-r border-t md:border-t-0", auth.user.role === "admin" ? "grid-cols-4 md:grid-row-4 md:grid-cols-1" : "grid-cols-2 md:grid-row-2 md:grid-cols-1")}>
+        <div
+            className={cn(
+                "md:h-full flex-none grid md:flex-col p-4 gap-4 md:border-r border-t md:border-t-0",
+                auth.user.role === "admin"
+                    ? "grid-cols-4 md:grid-row-4 md:grid-cols-1"
+                    : "grid-cols-2 md:grid-row-2 md:grid-cols-1"
+            )}
+        >
             {navigations.map(
                 ({ label, icon, link }: navigationState, id: number) => (
                     <TooltipProvider key={id}>
