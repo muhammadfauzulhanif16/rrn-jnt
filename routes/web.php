@@ -27,13 +27,6 @@ Route::fallback(function () {
     }
 });
 
-Route::get('/schedule', function () {
-    return Inertia::render('Schedule', [
-        'title' => 'Penjadwalan',
-        'description' => 'Penjadwalan pengiriman barang.',
-    ]);
-})->name('schedule');
-
 // Route::get('/orders', function () {
 //     return Inertia::render('Orders');
 // })->name('orders');
@@ -63,6 +56,13 @@ Route::get('/schedule', function () {
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/schedule', function () {
+        return Inertia::render('Schedule', [
+            'title' => 'Penjadwalan',
+            'description' => 'Penjadwalan pengiriman barang.',
+        ]);
+    })->name('schedule');
+
     Route::resource('orders', OrderController::class);
     Route::resource('sellers', SellerController::class);
     Route::resource('couriers', CourierController::class);

@@ -20,7 +20,7 @@ class SellerController extends Controller
         return Inertia::render('Seller/index', [
             "title" => "Daftar Penjual",
             "description" => "Semua daftar penjual yang terdaftar.",
-             "sellers" => Seller::orderBy('created_at', 'desc')->get()->map(function ($seller) {
+            "sellers" => Seller::orderBy('created_at', 'desc')->get()->map(function ($seller) {
                 $seller->order_count = Order::where('seller_id', $seller->id)->count();
                 return $seller;
             }),
