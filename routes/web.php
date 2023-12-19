@@ -21,7 +21,7 @@ use Inertia\Inertia;
 
 Route::fallback(function () {
     if (auth()->check()) {
-        return to_route('schedule');
+        return to_route('schedule.index');
     } else {
         return to_route('login');
     }
