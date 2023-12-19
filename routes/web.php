@@ -61,7 +61,7 @@ Route::middleware('auth')->group(function () {
             'title' => 'Penjadwalan',
             'description' => 'Penjadwalan pengiriman barang.',
         ]);
-    })->name('schedule');
+    })->name('schedule.index');
 
     Route::resource('orders', OrderController::class);
     Route::resource('sellers', SellerController::class);
