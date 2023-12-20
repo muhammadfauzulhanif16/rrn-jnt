@@ -15,13 +15,13 @@ import { ScrollArea } from "@/Components/ui/scroll-area";
 import { Textarea } from "@/Components/ui/textarea";
 import { Select } from "@/Components/Select";
 
-const EditSeller = ({ title, description, seller, auth }: any) => {
+const EditSeller = ({ title, description, customer, auth }: any) => {
     const { data, setData, put, processing, errors, reset } = useForm({
-        name: seller.name || "",
-        phone_number: seller.phone_number || "",
-        address: seller.address || "",
-        item_name: seller.item_name || "",
-        item_type: seller.item_type || "",
+        name: customer.name || "",
+        phone_number: customer.phone_number || "",
+        address: customer.address || "",
+        item_name: customer.item_name || "",
+        item_type: customer.item_type || "",
     });
 
     return (
@@ -30,7 +30,7 @@ const EditSeller = ({ title, description, seller, auth }: any) => {
                 className="grow flex"
                 onSubmit={(e) => {
                     e.preventDefault();
-                    put(route("sellers.update", seller));
+                    put(route("customers.update", customer));
                 }}
             >
                 <Card className="grow flex flex-col border-0 gap-8 shadow-none">
@@ -44,19 +44,15 @@ const EditSeller = ({ title, description, seller, auth }: any) => {
                             <Button
                                 type="submit"
                                 disabled={
-                                    data.name.length < 3 ||
-                                    data.name.length > 255 ||
-                                    data.phone_number.length < 10 ||
-                                    data.phone_number.length > 13 ||
-                                    data.address.length < 3 ||
-                                    data.address.length > 255 ||
-                                    data.item_name.length < 3 ||
-                                    data.item_name.length > 255 ||
+                                    !data.name ||
+                                    !data.phone_number ||
+                                    !data.address ||
+                                    !data.item_name ||
                                     !data.item_type
                                 }
                             >
                                 <CornerRightDown className="rotate-90 w-4 h-4 mr-2" />
-                                Ubah Penjual
+                                Ubah Pelanggan
                             </Button>
                         </div>
 
@@ -65,14 +61,10 @@ const EditSeller = ({ title, description, seller, auth }: any) => {
                                 size="icon"
                                 type="submit"
                                 disabled={
-                                    data.name.length < 3 ||
-                                    data.name.length > 255 ||
-                                    data.phone_number.length < 10 ||
-                                    data.phone_number.length > 13 ||
-                                    data.address.length < 3 ||
-                                    data.address.length > 255 ||
-                                    data.item_name.length < 3 ||
-                                    data.item_name.length > 255 ||
+                                    !data.name ||
+                                    !data.phone_number ||
+                                    !data.address ||
+                                    !data.item_name ||
                                     !data.item_type
                                 }
                             >
@@ -102,13 +94,10 @@ const EditSeller = ({ title, description, seller, auth }: any) => {
                                                     )
                                                 }
                                                 name="name"
-                                                className="my-2"
+                                                className="mt-2"
                                                 id="name"
                                                 placeholder="Masukkan nama"
                                             />
-                                            <span className="text-sm">
-                                                Nama penjual minimal 3 karakter.
-                                            </span>
                                         </div>
 
                                         <div className="w-full">
@@ -126,14 +115,10 @@ const EditSeller = ({ title, description, seller, auth }: any) => {
                                                     )
                                                 }
                                                 name="phone_number"
-                                                className="my-2"
+                                                className="mt-2"
                                                 id="phone_number"
                                                 placeholder="Masukkan nomor telepon"
                                             />
-                                            <span className="text-sm">
-                                                Nomor telepon minimal 10 dan
-                                                maksimal 13 karakter.
-                                            </span>
                                         </div>
                                     </div>
 
@@ -174,13 +159,10 @@ const EditSeller = ({ title, description, seller, auth }: any) => {
                                                 )
                                             }
                                             name="item_name"
-                                            className="my-2"
+                                            className="mt-2"
                                             id="item_name"
                                             placeholder="Masukkan nama barang"
                                         />
-                                        <span className="text-sm">
-                                            Nama barang minimal 3 karakter.
-                                        </span>
                                     </div>
 
                                     <div className="w-full">

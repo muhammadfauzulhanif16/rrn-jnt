@@ -30,7 +30,7 @@ const CreateSeller = ({ title, description, auth }: any) => {
                 className="grow flex"
                 onSubmit={(e) => {
                     e.preventDefault();
-                    post(route("sellers.store"));
+                    post(route("customers.store"));
                 }}
             >
                 <Card className="grow flex flex-col border-0 gap-8 shadow-none">
@@ -45,13 +45,9 @@ const CreateSeller = ({ title, description, auth }: any) => {
                                 type="submit"
                                 disabled={
                                     !data.name ||
-                                    data.name.length > 255 ||
-                                    data.phone_number.length < 10 ||
-                                    data.phone_number.length > 13 ||
-                                    data.address.length < 3 ||
-                                    data.address.length > 255 ||
+                                    !data.phone_number ||
+                                    !data.address ||
                                     !data.item_name ||
-                                    data.item_name.length > 255 ||
                                     !data.item_type
                                 }
                             >
@@ -66,13 +62,9 @@ const CreateSeller = ({ title, description, auth }: any) => {
                                 type="submit"
                                 disabled={
                                     !data.name ||
-                                    data.name.length > 255 ||
-                                    data.phone_number.length < 10 ||
-                                    data.phone_number.length > 13 ||
-                                    data.address.length < 3 ||
-                                    data.address.length > 255 ||
+                                    !data.phone_number ||
+                                    !data.address ||
                                     !data.item_name ||
-                                    data.item_name.length > 255 ||
                                     !data.item_type
                                 }
                             >
@@ -125,7 +117,7 @@ const CreateSeller = ({ title, description, auth }: any) => {
                                                 name="phone_number"
                                                 className="mt-2"
                                                 id="phone_number"
-                                                placeholder="Masukkan nomor telepon min 10 dan max 13 karakter"
+                                                placeholder="Masukkan nomor telepon"
                                             />
                                         </div>
                                     </div>

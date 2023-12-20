@@ -22,9 +22,9 @@ class StoreCourierRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'full_name' => 'required|string|min:3|max:255',
-            'username' => 'required|string|min:8|max:255|unique:users',
-            'password' => 'required|string|min:8|max:255',
+            'full_name' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users',
+            'password' => 'required|string|max:255',
         ];
     }
 }

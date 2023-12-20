@@ -22,8 +22,8 @@ class StoreSellerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|min:3|max:255',
-            'phone_number' => 'required|min:10|max:13',
+            'name' => 'required|max:255',
+            'phone_number' => 'required',
             'address' => 'required|max:255',
             'item_name' => 'required|max:255',
             'item_type' => 'required|in:Barang,Dokumen',

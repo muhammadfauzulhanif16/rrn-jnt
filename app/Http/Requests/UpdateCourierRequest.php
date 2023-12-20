@@ -23,7 +23,7 @@ class UpdateCourierRequest extends FormRequest
     {
         return [
             'full_name' => 'required|string|max:255',
-            'username' => 'required|string|max:255|unique:users',
+            'username' => 'required|string|max:255',
             'password' => 'required|string|max:255',
         ];
     }

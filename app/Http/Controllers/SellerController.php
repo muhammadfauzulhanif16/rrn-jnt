@@ -52,7 +52,7 @@ class SellerController extends Controller
             'item_type' => $request->item_type,
         ]);
 
-        return to_route('sellers.index');
+        return to_route('customers.index');
     }
 
     /**
@@ -70,21 +70,21 @@ class SellerController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Seller $seller)
+    public function edit(Seller $customer)
     {
         return Inertia::render('Seller/edit', [
             "title" => "Ubah Pelanggan",
             "description" => "Ubah data pelanggan.",
-            'seller' => $seller,
+            'customer' => $customer,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Seller $seller)
+    public function update(Request $request, Seller $customer)
     {
-        $seller->update([
+        $customer->update([
             'name' => $request->name,
             'phone_number' => $request->phone_number,
             'address' => $request->address,
@@ -92,16 +92,16 @@ class SellerController extends Controller
             'item_type' => $request->item_type,
         ]);
 
-        return redirect(route('sellers.index'));
+        return to_route('customers.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Seller $seller)
+    public function destroy(Seller $customer)
     {
-        $seller->delete();
+        $customer->delete();
 
-        return redirect(route('sellers.index'));
+        return to_route('customers.index');
     }
 }

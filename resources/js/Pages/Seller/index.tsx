@@ -152,7 +152,7 @@ const Sellers = ({ title, description, sellers, auth }: any) => {
                         <div className="hidden sm:block">
                             <Button>
                                 <Plus className="w-4 h-4 mr-2" />
-                                Tambah Penjual
+                                Tambah Pelanggan
                             </Button>
                         </div>
 
