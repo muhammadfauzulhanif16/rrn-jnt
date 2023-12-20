@@ -16,21 +16,20 @@ class ScheduleController extends Controller
      */
     public function index()
     {
-        // $sellers = Seller::has('orders')->withCount('orders')->get()->map(function ($seller) {
-        //     return [
-        //         'id' => $seller->id,
-        //         'name' => $seller->name,
-        //         'address' => $seller->address,
-        //         'order_total' => $seller->orders_count,
-        //         'order_status' => $seller->orders->first() ? $seller->orders->first()->status : null,
-        //     ];
-        // })->toArray();
-        // // dd($sellers);
+        $sellers = Seller::has('schedules')->withCount('schedules')->get()->map(function ($seller) {
+            return [
+                'id' => $seller->id,
+                'name' => $seller->name,
+                'address' => $seller->address,
+                'schedule_total' => $seller->schedules_count,
+                'schedule_status' => $seller->schedules->first() ? $seller->schedules->first()->status : null,
+            ];
+        })->toArray();
      
         return Inertia::render('Schedule', [
             "title" => "Penjadwalan",
             "description" => "Penjadwalan pengiriman barang.",
-            // "data" => $sellers,
+            "data" => $sellers,
         ]);
     }
 
@@ -51,21 +50,22 @@ class ScheduleController extends Controller
      */
     public function store(Request $request)
     {
-        $id = $request->input('id');
-        $orders = Order::where('seller_id', $id)->get();
+        $seller_id = $request->input('seller_id');
+        $orders = Order::where('seller_id', $seller_id)->get();
         // dd($orders);
         // dd($id);
         // $items = $request->input('items');
 
         foreach ($orders as $order) {
             Schedule::create([
-                'id' => Str::uuid(),
-                'seller_id' => $request['seller_id'],
+                'seller_id' => $seller_id,
                 'receipt_number' => $order['receipt_number'],
             ]);
         }
 
-        // return to_route('orders.index');
+        Order::where('seller_id', $seller_id)->delete();
+
+        return to_route('schedules.index');
     }
 
     /**

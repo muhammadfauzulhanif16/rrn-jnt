@@ -45,22 +45,22 @@ const OrdersBySeller = ({ title, description, auth, orders }: any) => {
                 </div>
             ),
         },
-        {
-            accessorKey: "status",
-            header: "Status",
-            cell: ({ row }) => (
-                <Badge
-                    className={`whitespace-nowrap ${
-                        row.getValue("status") === "Siap Dikirim"
-                            ? "hover:bg-green-500 bg-green-500"
-                            : "hover:bg-red-500 bg-red-500"
-                    }
-                    `}
-                >
-                    {row.getValue("status")}
-                </Badge>
-            ),
-        },
+        // {
+        //     accessorKey: "status",
+        //     header: "Status",
+        //     cell: ({ row }) => (
+        //         <Badge
+        //             className={`whitespace-nowrap ${
+        //                 row.getValue("status") === "Siap Dikirim"
+        //                     ? "hover:bg-green-500 bg-green-500"
+        //                     : "hover:bg-red-500 bg-red-500"
+        //             }
+        //             `}
+        //         >
+        //             {row.getValue("status")}
+        //         </Badge>
+        //     ),
+        // },
         {
             id: "actions",
             enableHiding: false,

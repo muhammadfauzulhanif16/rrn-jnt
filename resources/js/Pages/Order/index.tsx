@@ -21,7 +21,6 @@ import {
 import { Badge } from "@/Components/ui/badge";
 
 const Orders = ({ title, description, data, auth }: any) => {
-    console.log(data)
     const columns: ColumnDef<any>[] = [
         {
             accessorKey: "name",
@@ -91,7 +90,7 @@ const Orders = ({ title, description, data, auth }: any) => {
                                     }
                                     className="cursor-pointer"
                                     onClick={() => {
-                                        router.post(route('schedules.store', { id: data.id }));
+                                        router.post(route('schedules.store', { seller_id: data.id }));
                                     }}
                                 >
                                     Jadwalkan

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name')->nullable(false);
             $table->string('phone_number')->nullable(false);
             $table->string('address')->nullable(false);
+            $table->unsignedInteger('distance')->nullable(false);
             $table->string('item_name')->nullable(false);
             $table->enum('item_type', ['Barang', 'Dokumen'])->nullable(false);
             $table->timestamps();
