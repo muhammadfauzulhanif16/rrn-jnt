@@ -33,7 +33,7 @@
     ```
 9. **Instalasi dependensi Node.js**
     ```
-    npm install
+    npm install --legacy-peer-deps
     ```
 10. **Jalankan server pengembangan**
     ```
