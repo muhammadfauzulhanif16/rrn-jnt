@@ -193,18 +193,22 @@ const CreateOrder = ({ title, description, sellers, auth, currentData }: any) =>
                                                 <AccordionTrigger>
                                                     <div className="flex items-center w-full justify-between mr-4">
                                                         Pesanan {index + 1}
-
-                                                        <Button
+                                                        {/* 
+                                                        <div
+                                                        
                                                             size="icon"
                                                             className="ml-2 w-8 h-8"
                                                             variant="outline"
-                                                            onClick={(e) => {
-                                                                e.preventDefault();
-                                                                deleteOrder(index);
-                                                            }}
+                                                            
                                                         >
                                                             <Trash className="w-4 h-4" />
-                                                        </Button>
+                                                        </Button> */}
+                                                        <div className="border p-2 rounded-md" onClick={(e) => {
+                                                            e.preventDefault();
+                                                            deleteOrder(index);
+                                                        }}>
+                                                            <Trash className="w-4 h-4 " />
+                                                        </div>
                                                     </div>
                                                 </AccordionTrigger>
 

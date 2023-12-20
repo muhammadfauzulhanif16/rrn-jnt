@@ -112,14 +112,16 @@ class OrderController extends Controller
      */
     public function update(Request $request)
     {
+        
         $items = $request->input('items');
-        $deleteOrderIds = $request->input('deleteOrderIds');
-    
+        $deleteOrderIds = $request->input('deleteOrders');
+        // dd($deleteOrderIds);
+   
         // Delete orders
         if ($deleteOrderIds) {
             Order::destroy($deleteOrderIds);
         }
-    
+
         foreach ($items as $item) {
             if (isset($item['id'])) {
                 // Update existing order
@@ -141,7 +143,7 @@ class OrderController extends Controller
                 ]);
             }
         }
-    
+
         return redirect()->route('orders.index');
     }
 

@@ -22,7 +22,6 @@ import { Badge } from "@/Components/ui/badge";
 import { useState } from "react";
 
 const OrdersBySeller = ({ title, description, auth, orders }: any) => {
-    // console.log(orders);
     const columns: ColumnDef<any>[] = [
         // {
         //     id: "selection",
@@ -109,7 +108,7 @@ const OrdersBySeller = ({ title, description, auth, orders }: any) => {
                         <CardDescription>{description}</CardDescription>
                     </div>
 
-                  
+
                 </CardHeader>
 
                 <CardContent className="flex grow p-0">

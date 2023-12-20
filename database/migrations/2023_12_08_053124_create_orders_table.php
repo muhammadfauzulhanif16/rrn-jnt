@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->uuid('seller_id')->foreign('seller_id')->references('id')->on('sellers');
             $table->string('receipt_number');
-            $table->enum('status', ['Siap Dikirim', 'Belum Siap Dikirim']);
+            $table->enum('status', ['Siap Dikirim', 'Belum Siap Dikirim', 'Belum Di Pick Up', 'Sudah Di Pick Up']);
             $table->timestamps();
         });
     }

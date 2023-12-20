@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Schedule;
 use App\Models\Seller;
 use App\Http\Requests\StoreSellerRequest;
 use App\Http\Requests\UpdateSellerRequest;
@@ -61,10 +62,12 @@ class SellerController extends Controller
      */
     public function show(Seller $customer)
     {
+
         return Inertia::render('Seller/show', [
             "title" => "Daftar Pesanan [{$customer->name}]",
             "description" => "Semua daftar pesanan yang tersedia.",
             'orders' => Order::where('seller_id', $customer->id)->get(),
+            // 'schedules' => Schedule::where('seller_id', $customer->id)->get()
         ]);
     }
 

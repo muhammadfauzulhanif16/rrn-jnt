@@ -70,11 +70,11 @@ const Schedule = ({ title, description, data, auth }: any) => {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Aksi</DropdownMenuLabel>
-                            <Link href={route("customers.show", data.id)}>
-                                <DropdownMenuItem className="cursor-pointer">
+                            {/* <Link href={route("customers.show",data.id,)}> */}
+                                <DropdownMenuItem className="cursor-pointer" onClick={() => router.get(route('customers.show', data.id))}>
                                     Lihat Pesanan
                                 </DropdownMenuItem>
-                            </Link>
+                            {/* </Link> */}
 
                             {/* <Link
                                 href={route(
@@ -83,18 +83,7 @@ const Schedule = ({ title, description, data, auth }: any) => {
                                         : ""
                                     , { id: data.id })}
                             > */}
-                                <DropdownMenuItem
-                                    disabled={
-                                        row.getValue("order_status") ===
-                                        "Belum Siap Dikirim"
-                                    }
-                                    className="cursor-pointer"
-                                    onClick={() => {
-                                        router.post(route('schedules.store', { seller_id: data.id }));
-                                    }}
-                                >
-                                    Jadwalkan
-                                </DropdownMenuItem>
+
                             {/* </Link> */}
 
                             {/* <Link
@@ -114,19 +103,19 @@ const Schedule = ({ title, description, data, auth }: any) => {
 
     return (
         <DashboardLayout title={title} auth={auth}>
-        <Card className="grow flex flex-col border-0 gap-8 shadow-none">
-            <CardHeader className="p-0 flex-row justify-between space-y-0 flex-none">
-                <div>
-                    <CardTitle className="mb-1.5">{title}</CardTitle>
-                    <CardDescription>{description}</CardDescription>
-                </div>
-            </CardHeader>
+            <Card className="grow flex flex-col border-0 gap-8 shadow-none">
+                <CardHeader className="p-0 flex-row justify-between space-y-0 flex-none">
+                    <div>
+                        <CardTitle className="mb-1.5">{title}</CardTitle>
+                        <CardDescription>{description}</CardDescription>
+                    </div>
+                </CardHeader>
 
-            <CardContent className="flex grow p-0">
-                <Table columns={columns} data={data} />
-            </CardContent>
-        </Card>
-    </DashboardLayout>
+                <CardContent className="flex grow p-0">
+                    <Table columns={columns} data={data} />
+                </CardContent>
+            </Card>
+        </DashboardLayout>
     );
 };
 

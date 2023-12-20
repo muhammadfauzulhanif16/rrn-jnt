@@ -3,7 +3,7 @@ import { Button } from "@/Components/ui/button";
 import { Input } from "@/Components/ui/input";
 import { DashboardLayout } from "@/Layouts/DashboardLayout";
 import { Label } from "@/components/ui/label";
-import { useForm } from "@inertiajs/react";
+import { router, useForm } from "@inertiajs/react";
 import {
     Card,
     CardContent,
@@ -22,9 +22,11 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/Components/ui/accordion";
+import { useState } from "react";
 
 const EditOrder = ({ title, description, sellers, auth, currentData, orders }: any) => {
-
+    const [deleteOrderIndices, setDeleteOrderIndices] = useState<string[]>([]);
+   
     sellers = sellers.map((seller: any) => ({
         value: seller.id,
         label: seller.name,
@@ -40,10 +42,12 @@ const EditOrder = ({ title, description, sellers, auth, currentData, orders }: a
         items: {
             receipt_number: string;
         }[];
+        deleteOrders: string[],
     }>({
         seller_id: currentData && currentData.id || "",
         status: currentData && currentData.orders[0].status || "",
         items: orders,
+        deleteOrders: deleteOrderIndices,
     });
 
     const addOrder = (e: any) => {
@@ -77,12 +81,14 @@ const EditOrder = ({ title, description, sellers, auth, currentData, orders }: a
         return false;
     };
 
-    const deleteOrder = (index: number) => {
-        setData(prevData => ({
-            ...prevData,
-            items: prevData.items.filter((_, itemIndex) => itemIndex !== index)
-        }));
-    };
+    // const deleteOrder = (index: number) => {
+    //     setDeleteOrderIndices((prevState: any) => ([
+    //         ...prevState,
+    //         index
+    //     ]))
+
+    //     setData('deleteOrders', );
+    // };
 
     return (
         <DashboardLayout title={title} auth={auth}>
@@ -184,7 +190,7 @@ const EditOrder = ({ title, description, sellers, auth, currentData, orders }: a
                                         collapsible
                                         className="w-full"
                                     >
-                                        {data.items.map((item, index) => (
+                                        {data.items.map((item: any, index) => (
                                             <AccordionItem
                                                 value={`order_${index}`}
                                                 key={index}
@@ -193,13 +199,7 @@ const EditOrder = ({ title, description, sellers, auth, currentData, orders }: a
                                                     <div className="flex items-center w-full justify-between mr-4">
                                                         Pesanan {index + 1}
 
-                                                        <div className="border p-2 rounded-md" onClick={(e) => {
-                                                            deleteOrder(index)
-                                                        }
-
-                                                        }>
-                                                            <Trash className="w-4 h-4 " />
-                                                        </div>
+                                                      
                                                     </div>
                                                 </AccordionTrigger>
 

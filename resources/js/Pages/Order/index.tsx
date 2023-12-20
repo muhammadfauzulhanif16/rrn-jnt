@@ -21,6 +21,8 @@ import {
 import { Badge } from "@/Components/ui/badge";
 
 const Orders = ({ title, description, data, auth }: any) => {
+    // data = data.filter((item: any) => item.order_status !== "Belum Di Pick Up" && item.order_status !== "Sudah Di Pick Up");
+
     const columns: ColumnDef<any>[] = [
         {
             accessorKey: "name",
