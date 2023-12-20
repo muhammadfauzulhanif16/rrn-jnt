@@ -31,14 +31,13 @@ const CreateOrder = ({ title, description, sellers, auth }: any) => {
 
     const { data, setData, post, processing, errors, reset } = useForm<{
         seller_id: string;
+        status: string;
         items: {
             receipt_number: string;
-            customer_address: string;
-            status: string;
-            delivery_schedule: string;
         }[];
     }>({
         seller_id: "",
+        status: "",
         items: [],
     });
 
@@ -49,9 +48,6 @@ const CreateOrder = ({ title, description, sellers, auth }: any) => {
             ...data.items,
             {
                 receipt_number: "",
-                customer_address: "",
-                status: "",
-                delivery_schedule: "",
             },
         ]);
     };
@@ -63,14 +59,11 @@ const CreateOrder = ({ title, description, sellers, auth }: any) => {
     };
 
     const isFormEmpty = () => {
-        if (!data.seller_id || data.items.length === 0) return true;
+        if (!data.seller_id || !data.status || data.items.length === 0) return true;
 
         for (let item of data.items) {
             if (
-                !item.receipt_number ||
-                !item.customer_address ||
-                !item.status ||
-                !item.delivery_schedule
+                !item.receipt_number
             ) {
                 return true;
             }
@@ -116,11 +109,7 @@ const CreateOrder = ({ title, description, sellers, auth }: any) => {
                     <CardContent className="p-0 grow flex h-2">
                         <ScrollArea className="grow">
                             <Card className="shadow-none mb-4">
-                                <CardHeader>
-                                    <CardTitle>Informasi Penjual</CardTitle>
-                                </CardHeader>
-
-                                <CardContent className="gap-4">
+                                <CardContent className="flex flex-col gap-4 p-6">
                                     <div className="w-full">
                                         <Label htmlFor="seller">Penjual</Label>
                                         <Select
@@ -133,6 +122,37 @@ const CreateOrder = ({ title, description, sellers, auth }: any) => {
                                                     ...data,
                                                     seller_id: value,
                                                 })
+                                            }
+                                        />
+                                    </div>
+
+                                    <div className="w-full">
+                                        <Label
+                                            htmlFor="status_"
+                                        >
+                                            Status
+                                        </Label>
+                                        <Select
+                                            value={data.status}
+                                            placeholder="Pilih status"
+                                            label="Status"
+                                            data={[
+                                                {
+                                                    value: "Siap Dikirim",
+                                                    label: "Siap Dikirim",
+                                                },
+                                                {
+                                                    value: "Belum Siap Dikirim",
+                                                    label: "Belum Siap Dikirim",
+                                                },
+                                            ]}
+                                            onChange={(
+                                                value: any
+                                            ) =>
+                                                setData(
+                                                    "status",
+                                                    value
+                                                )
                                             }
                                         />
                                     </div>
@@ -187,90 +207,6 @@ const CreateOrder = ({ title, description, sellers, auth }: any) => {
                                                                 className="mt-2 h-10"
                                                                 id={`receipt_number_${index}`}
                                                                 placeholder="Masukkan nomor resi"
-                                                            />
-                                                        </div>
-
-                                                        <div className="w-full">
-                                                            <Label
-                                                                htmlFor={`customer_address_${index}`}
-                                                            >
-                                                                Alamat Pembeli
-                                                            </Label>
-                                                            <Textarea
-                                                                required
-                                                                value={
-                                                                    item.customer_address
-                                                                }
-                                                                onChange={(e) =>
-                                                                    updateOrder(
-                                                                        index,
-                                                                        "customer_address",
-                                                                        e.target
-                                                                            .value
-                                                                    )
-                                                                }
-                                                                name={`customer_address_${index}`}
-                                                                className="mt-2 h-10"
-                                                                id={`customer_address_${index}`}
-                                                                placeholder="Masukkan alamat pembeli"
-                                                            />
-                                                        </div>
-
-                                                        <div className="w-full">
-                                                            <Label
-                                                                htmlFor={`status_${index}`}
-                                                            >
-                                                                Status
-                                                            </Label>
-                                                            <Select
-                                                                value={
-                                                                    item.status
-                                                                }
-                                                                // name={`status_${index}`}
-                                                                placeholder="Pilih status"
-                                                                label="Status"
-                                                                data={[
-                                                                    {
-                                                                        value: "Siap Dikirim",
-                                                                        label: "Siap Dikirim",
-                                                                    },
-                                                                    {
-                                                                        value: "Belum Siap Dikirim",
-                                                                        label: "Belum Siap Dikirim",
-                                                                    },
-                                                                ]}
-                                                                onChange={(
-                                                                    value: any
-                                                                ) =>
-                                                                    updateOrder(
-                                                                        index,
-                                                                        "status",
-                                                                        value
-                                                                    )
-                                                                }
-                                                            />
-                                                        </div>
-
-                                                        <div className="w-full">
-                                                            <Label
-                                                                htmlFor={`delivery_schedule_${index}`}
-                                                            >
-                                                                Jadwal
-                                                                Pengiriman
-                                                            </Label>
-                                                            <DatePicker
-                                                                onChange={(
-                                                                    value: any
-                                                                ) =>
-                                                                    updateOrder(
-                                                                        index,
-                                                                        "delivery_schedule",
-                                                                        value
-                                                                    )
-                                                                }
-                                                                value={
-                                                                    item.delivery_schedule
-                                                                }
                                                             />
                                                         </div>
                                                     </div>

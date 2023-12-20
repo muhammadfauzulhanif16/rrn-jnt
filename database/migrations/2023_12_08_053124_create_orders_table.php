@@ -13,14 +13,10 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('seller_id');
+            $table->uuid('seller_id')->foreign('seller_id')->references('id')->on('sellers');
             $table->string('receipt_number');
-            $table->string('customer_address');
             $table->enum('status', ['Siap Dikirim', 'Belum Siap Dikirim']);
-            $table->string('delivery_schedule');
             $table->timestamps();
-
-            $table->foreign('seller_id')->references('id')->on('sellers');
         });
     }
 
