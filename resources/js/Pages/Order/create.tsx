@@ -1,4 +1,4 @@
-import { CornerRightDown } from "lucide-react";
+import { CornerRightDown, Trash } from "lucide-react";
 import { Button } from "@/Components/ui/button";
 import { Input } from "@/Components/ui/input";
 import { DashboardLayout } from "@/Layouts/DashboardLayout";
@@ -24,20 +24,26 @@ import {
 } from "@/Components/ui/accordion";
 
 const CreateOrder = ({ title, description, sellers, auth, currentData }: any) => {
-    sellers = sellers.map((seller: any) => ({
+    sellers = sellers.filter((seller: any) => {
+        if (seller.orders_count > 0) {
+            return false;
+        }
+
+        return true;
+    }).map((seller: any) => ({
         value: seller.id,
         label: seller.name,
     }));
 
-    const { data, setData, post, processing, errors, reset } = useForm<{
+    const { data, setData, post, put, processing, errors, reset } = useForm<{
         seller_id: string;
         status: string;
         items: {
             receipt_number: string;
         }[];
     }>({
-        seller_id: currentData.seller_id || "",
-        status: currentData.status || "",
+        seller_id: currentData && currentData.seller_id || "",
+        status: currentData && currentData.status || "",
         items: [],
     });
 
@@ -50,16 +56,6 @@ const CreateOrder = ({ title, description, sellers, auth, currentData }: any) =>
                 receipt_number: "",
             },
         ]);
-    };
-
-    const cancelLastOrder = (e: any) => {
-        e.preventDefault();
-
-        setData(prevData => {
-            const newItems = [...prevData.items];
-            newItems.pop();
-            return { ...prevData, items: newItems };
-        });
     };
 
     const updateOrder = (index: any, field: any, value: any) => {
@@ -82,12 +78,20 @@ const CreateOrder = ({ title, description, sellers, auth, currentData }: any) =>
         return false;
     };
 
+    const deleteOrder = (index: number) => {
+        setData(prevData => ({
+            ...prevData,
+            items: prevData.items.filter((_, itemIndex) => itemIndex !== index)
+        }));
+    };
+
     return (
         <DashboardLayout title={title} auth={auth}>
             <form
                 className="grow flex"
                 onSubmit={(e) => {
                     e.preventDefault();
+
                     post(route("orders.store"));
                 }}
             >
@@ -99,7 +103,7 @@ const CreateOrder = ({ title, description, sellers, auth, currentData }: any) =>
                         </div>
 
                         <div className="hidden sm:block">
-                            <Button type="submit" disabled={isFormEmpty()}>
+                            <Button type="submit" disabled={!currentData && isFormEmpty()}>
                                 <CornerRightDown className="rotate-90 w-4 h-4 mr-2" />
                                 Tambah Pesanan
                             </Button>
@@ -109,7 +113,7 @@ const CreateOrder = ({ title, description, sellers, auth, currentData }: any) =>
                             <Button
                                 size="icon"
                                 type="submit"
-                                disabled={isFormEmpty()}
+                                disabled={!currentData && isFormEmpty()}
                             >
                                 <CornerRightDown className="rotate-90 w-4 h-4" />
                             </Button>
@@ -123,7 +127,7 @@ const CreateOrder = ({ title, description, sellers, auth, currentData }: any) =>
                                     <div className="w-full">
                                         <Label htmlFor="seller">Penjual</Label>
                                         <Select
-                                            disabled={currentData.seller_id}
+                                            disabled={currentData && currentData.seller_id}
                                             value={data.seller_id}
                                             placeholder="Pilih Penjual"
                                             label="Penjual"
@@ -187,7 +191,21 @@ const CreateOrder = ({ title, description, sellers, auth, currentData }: any) =>
                                                 key={index}
                                             >
                                                 <AccordionTrigger>
-                                                    Pesanan {index + 1}
+                                                    <div className="flex items-center w-full justify-between mr-4">
+                                                        Pesanan {index + 1}
+
+                                                        <Button
+                                                            size="icon"
+                                                            className="ml-2 w-8 h-8"
+                                                            variant="outline"
+                                                            onClick={(e) => {
+                                                                e.preventDefault();
+                                                                deleteOrder(index);
+                                                            }}
+                                                        >
+                                                            <Trash className="w-4 h-4" />
+                                                        </Button>
+                                                    </div>
                                                 </AccordionTrigger>
 
                                                 <AccordionContent>
@@ -215,27 +233,24 @@ const CreateOrder = ({ title, description, sellers, auth, currentData }: any) =>
                                                             id={`receipt_number_${index}`}
                                                             placeholder="Masukkan nomor resi"
                                                         />
+                                                        <button onClick={() => deleteOrder(index)}>Delete Order</button>
                                                     </div>
                                                 </AccordionContent>
                                             </AccordionItem>
                                         ))}
                                     </Accordion>
 
-                                    <div className="flex w-full gap-4">
-                                        <Button onClick={addOrder} className="w-full">
-                                            Tambah Pesanan
-                                        </Button>
 
-                                        {data.items.length > 1 && (
-                                            <Button className="w-full" variant="outline" onClick={cancelLastOrder}>Hapus Pesanan</Button>
-                                        )}</div>
+                                    <Button onClick={addOrder} className="w-full">
+                                        Tambah Pesanan
+                                    </Button>
                                 </CardContent>
                             </Card>
                         </ScrollArea>
                     </CardContent>
                 </Card>
             </form>
-        </DashboardLayout>
+        </DashboardLayout >
     );
 };
 

@@ -59,6 +59,7 @@ const Orders = ({ title, description, data, auth }: any) => {
             enableHiding: false,
             cell: ({ row }) => {
                 const data = row.original;
+                // console.log(data)
 
                 return (
                     <DropdownMenu>
@@ -76,6 +77,12 @@ const Orders = ({ title, description, data, auth }: any) => {
                                 </DropdownMenuItem>
                             </Link>
 
+                            <Link href={route("orders.edit", data.id)}>
+                                <DropdownMenuItem className="cursor-pointer">
+                                    Ubah
+                                </DropdownMenuItem>
+                            </Link>
+
                             {/* <Link
                                 href={route(
                                     row.getValue("order_status") === "Siap Dikirim"
@@ -83,18 +90,18 @@ const Orders = ({ title, description, data, auth }: any) => {
                                         : ""
                                     , { id: data.id })}
                             > */}
-                                <DropdownMenuItem
-                                    disabled={
-                                        row.getValue("order_status") ===
-                                        "Belum Siap Dikirim"
-                                    }
-                                    className="cursor-pointer"
-                                    onClick={() => {
-                                        router.post(route('schedules.store', { seller_id: data.id }));
-                                    }}
-                                >
-                                    Jadwalkan
-                                </DropdownMenuItem>
+                            <DropdownMenuItem
+                                disabled={
+                                    row.getValue("order_status") ===
+                                    "Belum Siap Dikirim"
+                                }
+                                className="cursor-pointer"
+                                onClick={() => {
+                                    router.post(route('schedules.store', { seller_id: data.id }));
+                                }}
+                            >
+                                Jadwalkan
+                            </DropdownMenuItem>
                             {/* </Link> */}
 
                             {/* <Link

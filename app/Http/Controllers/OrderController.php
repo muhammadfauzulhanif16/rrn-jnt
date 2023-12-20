@@ -44,7 +44,13 @@ class OrderController extends Controller
         return Inertia::render('Order/create', [
             "title" => "Tambah Pesanan",
             "description" => "Tambahkan pesanan baru.",
-            'sellers' => Seller::all(),
+            'sellers' => Seller::withCount('orders')->get()->map(function ($seller) {
+                return [
+                    'id' => $seller->id,
+                    'name' => $seller->name,
+                    'orders_count' => $seller->orders_count,
+                ];
+            }),
             'currentData' => $currentData,
         ]);
     }
@@ -83,12 +89,13 @@ class OrderController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Order $order)
+    public function edit(Seller $seller)
     {
+        dd($seller);
         return Inertia::render('Order/edit', [
-            "title" => "Ubah Pesanan [{$order->receipt_number}]",
+            "title" => "Ubah Pesanan [{$seller->id}]",
             "description" => "Ubah data pesanan.",
-            'order' => $order,
+            // 'order' => $order,
         ]);
     }
 
@@ -97,12 +104,12 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
-        $order->update([
-            'seller' => $request->seller,
-            'receipt_number' => $request->receipt_number,
-        ]);
+        // $order->update([
+        //     'seller' => $request->seller,
+        //     'receipt_number' => $request->receipt_number,
+        // ]);
 
-        return to_route('orders.index');
+        // return to_route('orders.index');
     }
 
     /**

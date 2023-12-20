@@ -62,42 +62,42 @@ const OrdersBySeller = ({ title, description, auth, orders }: any) => {
         //         </Badge>
         //     ),
         // },
-        {
-            id: "actions",
-            enableHiding: false,
-            cell: ({ row }) => {
-                const data = row.original;
+        // {
+        //     id: "actions",
+        //     enableHiding: false,
+        //     cell: ({ row }) => {
+        //         const data = row.original;
 
-                return (
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0">
-                                <span className="sr-only">Open menu</span>
-                                <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Aksi</DropdownMenuLabel>
-                            <Link href={route("orders.edit", data.id)}>
-                                <DropdownMenuItem className="cursor-pointer">
-                                    Ubah
-                                </DropdownMenuItem>
-                            </Link>
+        //         return (
+        //             <DropdownMenu>
+        //                 <DropdownMenuTrigger asChild>
+        //                     <Button variant="ghost" className="h-8 w-8 p-0">
+        //                         <span className="sr-only">Open menu</span>
+        //                         <MoreHorizontal className="h-4 w-4" />
+        //                     </Button>
+        //                 </DropdownMenuTrigger>
+        //                 <DropdownMenuContent align="end">
+        //                     <DropdownMenuLabel>Aksi</DropdownMenuLabel>
+        //                     <Link href={route("orders.edit", data.id)}>
+        //                         <DropdownMenuItem className="cursor-pointer">
+        //                             Ubah
+        //                         </DropdownMenuItem>
+        //                     </Link>
 
-                            <Link
-                                as="div"
-                                method="delete"
-                                href={route("orders.destroy", data.id)}
-                            >
-                                <DropdownMenuItem className="cursor-pointer">
-                                    Hapus
-                                </DropdownMenuItem>
-                            </Link>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                );
-            },
-        },
+        //                     <Link
+        //                         as="div"
+        //                         method="delete"
+        //                         href={route("orders.destroy", data.id)}
+        //                     >
+        //                         <DropdownMenuItem className="cursor-pointer">
+        //                             Hapus
+        //                         </DropdownMenuItem>
+        //                     </Link>
+        //                 </DropdownMenuContent>
+        //             </DropdownMenu>
+        //         );
+        //     },
+        // },
     ];
 
     return (
@@ -113,7 +113,7 @@ const OrdersBySeller = ({ title, description, auth, orders }: any) => {
                         <div className="hidden sm:block">
                             <Button>
                                 <Plus className="w-4 h-4 mr-2" />
-                                Tambah Pesanan
+                                Ubah Pesanan
                             </Button>
                         </div>
 
