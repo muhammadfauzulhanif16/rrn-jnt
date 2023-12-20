@@ -71,9 +71,14 @@ const Schedule = ({ title, description, data, auth }: any) => {
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Aksi</DropdownMenuLabel>
                             {/* <Link href={route("customers.show",data.id,)}> */}
-                                <DropdownMenuItem className="cursor-pointer" onClick={() => router.get(route('customers.show', data.id))}>
-                                    Lihat Pesanan
-                                </DropdownMenuItem>
+                            <DropdownMenuItem className="cursor-pointer" onClick={() => router.get(route('customers.show', {
+                                customer: data.id,
+                                extraParam: {
+                                    page: 'schedule'
+                                }
+                            }))}>
+                                Lihat Pesanan
+                            </DropdownMenuItem>
                             {/* </Link> */}
 
                             {/* <Link
