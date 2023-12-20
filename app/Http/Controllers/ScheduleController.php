@@ -16,16 +16,32 @@ class ScheduleController extends Controller
      */
     public function index()
     {
-        $sellers = Seller::has('schedules')->withCount('schedules')->get()->map(function ($seller) {
-            return [
-                'id' => $seller->id,
-                'name' => $seller->name,
-                'address' => $seller->address,
-                'schedule_total' => $seller->schedules_count,
-                'schedule_status' => $seller->schedules->first() ? $seller->schedules->first()->status : null,
-            ];
-        })->toArray();
-     
+        // $sellers = Seller::has('schedules')->withCount('schedules')->get()->map(function ($seller) {
+        //     return [
+        //         'id' => $seller->id,
+        //         'name' => $seller->name,
+        //         'address' => $seller->address,
+        //         'distance' => $seller->distance,
+        //         'schedule_total' => $seller->schedules_count,
+        //         'schedule_status' => $seller->schedules->first() ? $seller->schedules->first()->status : null,
+        //     ];
+        // })->toArray();
+
+        $sellers = Seller::has('schedules')
+            ->withCount('schedules')
+            ->get()
+            ->sortBy('distance')
+            ->map(function ($seller) {
+                return [
+                    'id' => $seller->id,
+                    'name' => $seller->name,
+                    'address' => $seller->address,
+                    'distance' => $seller->distance,
+                    'schedule_total' => $seller->schedules_count,
+                    'schedule_status' => $seller->schedules->first() ? $seller->schedules->first()->status : null,
+                ];
+            })->values()->toArray();
+
         return Inertia::render('Schedule', [
             "title" => "Penjadwalan",
             "description" => "Penjadwalan pengiriman barang.",

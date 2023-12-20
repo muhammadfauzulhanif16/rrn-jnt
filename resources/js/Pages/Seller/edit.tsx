@@ -20,6 +20,7 @@ const EditSeller = ({ title, description, customer, auth }: any) => {
         name: customer.name || "",
         phone_number: customer.phone_number || "",
         address: customer.address || "",
+        distance: customer.distance || "",
         item_name: customer.item_name || "",
         item_type: customer.item_type || "",
     });
@@ -80,55 +81,53 @@ const EditSeller = ({ title, description, customer, auth }: any) => {
                                     <CardTitle>Identitas</CardTitle>
                                 </CardHeader>
 
-                                <CardContent className="flex flex-col gap-4">
-                                    <div className="flex flex-col sm:flex-row gap-4">
-                                        <div className="w-full">
-                                            <Label htmlFor="name">Nama</Label>
-                                            <Input
-                                                required
-                                                value={data.name}
-                                                onChange={(e) =>
-                                                    setData(
-                                                        "name",
-                                                        e.target.value
-                                                    )
-                                                }
-                                                name="name"
-                                                className="mt-2"
-                                                id="name"
-                                                placeholder="Masukkan nama"
-                                            />
-                                        </div>
-
-                                        <div className="w-full">
-                                            <Label htmlFor="phone_number">
-                                                Nomor Telepon
-                                            </Label>
-                                            <Input
-                                                type="number"
-                                                required
-                                                value={data.phone_number}
-                                                onChange={(e) =>
-                                                    setData(
-                                                        "phone_number",
-                                                        e.target.value.toString()
-                                                    )
-                                                }
-                                                name="phone_number"
-                                                className="mt-2"
-                                                id="phone_number"
-                                                placeholder="Masukkan nomor telepon"
-                                            />
-                                        </div>
+                                <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div className="w-full">
+                                        <Label htmlFor="name">Nama</Label>
+                                        <Input
+                                            required
+                                            value={data.name}
+                                            onChange={(e) =>
+                                                setData(
+                                                    "name",
+                                                    e.target.value
+                                                )
+                                            }
+                                            name="name"
+                                            className="mt-2"
+                                            id="name"
+                                            placeholder="Masukkan nama"
+                                        />
                                     </div>
 
-                                    <div className="w-full col-span-2">
-                                        <Label htmlFor="address">Address</Label>
+                                    <div className="w-full">
+                                        <Label htmlFor="phone_number">
+                                            Nomor Telepon
+                                        </Label>
+                                        <Input
+                                            type="number"
+                                            required
+                                            value={data.phone_number}
+                                            onChange={(e) =>
+                                                setData(
+                                                    "phone_number",
+                                                    e.target.value.toString()
+                                                )
+                                            }
+                                            name="phone_number"
+                                            className="mt-2"
+                                            id="phone_number"
+                                            placeholder="Masukkan nomor telepon"
+                                        />
+                                    </div>
+
+                                    <div className="w-full">
+                                        <Label htmlFor="address">Alamat</Label>
                                         <Textarea
                                             required
-                                            className="mt-2"
+                                            className="mt-2 h-10"
                                             value={data.address}
-                                            placeholder="Enter address"
+                                            placeholder="Masukkan alamat"
                                             onChange={(e) =>
                                                 setData(
                                                     "address",
@@ -136,6 +135,27 @@ const EditSeller = ({ title, description, customer, auth }: any) => {
                                                 )
                                             }
                                             id="address"
+                                        />
+                                    </div>
+
+                                    <div className="w-full">
+                                        <Label htmlFor="distance">
+                                            Jarak Alamat (Meter)
+                                        </Label>
+                                        <Input
+                                            type="number"
+                                            required
+                                            value={data.distance}
+                                            onChange={(e) =>
+                                                setData(
+                                                    "distance",
+                                                    e.target.value.toString()
+                                                )
+                                            }
+                                            name="distance"
+                                            className="mt-2"
+                                            id="distance"
+                                            placeholder="Masukkan jarak alamat"
                                         />
                                     </div>
                                 </CardContent>

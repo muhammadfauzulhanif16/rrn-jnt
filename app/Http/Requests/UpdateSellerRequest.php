@@ -25,6 +25,7 @@ class UpdateSellerRequest extends FormRequest
             'name' => 'required|min:3|max:255',
             'phone_number' => 'required|min:10|max:13',
             'address' => 'required|max:255',
+            'distance' => 'required|numeric',
             'item_name' => 'required|max:255',
             'item_type' => 'required|in:Barang,Dokumen',
         ];

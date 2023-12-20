@@ -18,6 +18,7 @@ class Seller extends Model
         'name',
         'phone_number',
         'address',
+        'distance',
         'item_name',
         'item_type',
     ];

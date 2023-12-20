@@ -48,6 +48,7 @@ class SellerController extends Controller
             'name' => $request->name,
             'phone_number' => $request->phone_number,
             'address' => $request->address,
+            'distance' => $request->distance,
             'item_name' => $request->item_name,
             'item_type' => $request->item_type,
         ]);
@@ -88,6 +89,7 @@ class SellerController extends Controller
             'name' => $request->name,
             'phone_number' => $request->phone_number,
             'address' => $request->address,
+            'distance' => $request->distance,
             'item_name' => $request->item_name,
             'item_type' => $request->item_type,
         ]);
