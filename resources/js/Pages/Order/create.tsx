@@ -233,7 +233,6 @@ const CreateOrder = ({ title, description, sellers, auth, currentData }: any) =>
                                                             id={`receipt_number_${index}`}
                                                             placeholder="Masukkan nomor resi"
                                                         />
-                                                        <button onClick={() => deleteOrder(index)}>Delete Order</button>
                                                     </div>
                                                 </AccordionContent>
                                             </AccordionItem>

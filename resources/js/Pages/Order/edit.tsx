@@ -23,16 +23,15 @@ import {
     AccordionTrigger,
 } from "@/Components/ui/accordion";
 
-const EditOrder = ({ title, description, sellers, auth, currentData }: any) => {
-    // sellers = sellers.filter((seller: any) => {
-    //     if (seller.orders_count > 0) {
-    //         return false;
-    //     }
+const EditOrder = ({ title, description, sellers, auth, currentData, orders }: any) => {
 
-    //     return true;
-    // }).map((seller: any) => ({
-    //     value: seller.id,
-    //     label: seller.name,
+    sellers = sellers.map((seller: any) => ({
+        value: seller.id,
+        label: seller.name,
+    }));
+
+    // orders = orders.map((order: any) => ({
+    //     receipt_number: order.receipt_number,
     // }));
 
     const { data, setData, post, put, processing, errors, reset } = useForm<{
@@ -42,9 +41,9 @@ const EditOrder = ({ title, description, sellers, auth, currentData }: any) => {
             receipt_number: string;
         }[];
     }>({
-        seller_id: currentData && currentData.seller_id || "",
-        status: currentData && currentData.status || "",
-        items: [],
+        seller_id: currentData && currentData.id || "",
+        status: currentData && currentData.orders[0].status || "",
+        items: orders,
     });
 
     const addOrder = (e: any) => {
@@ -92,7 +91,7 @@ const EditOrder = ({ title, description, sellers, auth, currentData }: any) => {
                 onSubmit={(e) => {
                     e.preventDefault();
 
-                    post(route("orders.store"));
+                    put(route("orders.update", currentData.id));
                 }}
             >
                 <Card className="grow flex flex-col border-0 gap-8 shadow-none">
@@ -105,7 +104,7 @@ const EditOrder = ({ title, description, sellers, auth, currentData }: any) => {
                         <div className="hidden sm:block">
                             <Button type="submit" disabled={!currentData && isFormEmpty()}>
                                 <CornerRightDown className="rotate-90 w-4 h-4 mr-2" />
-                                Tambah Pesanan
+                                Ubah Pesanan
                             </Button>
                         </div>
 
@@ -126,8 +125,8 @@ const EditOrder = ({ title, description, sellers, auth, currentData }: any) => {
                                 <CardContent className="flex flex-col gap-4 p-6">
                                     <div className="w-full">
                                         <Label htmlFor="seller">Penjual</Label>
-                                        {/* <Select
-                                            disabled={currentData && currentData.seller_id}
+                                        <Select
+                                            disabled={currentData && currentData.id}
                                             value={data.seller_id}
                                             placeholder="Pilih Penjual"
                                             label="Penjual"
@@ -138,7 +137,7 @@ const EditOrder = ({ title, description, sellers, auth, currentData }: any) => {
                                                     seller_id: value,
                                                 })
                                             }
-                                        /> */}
+                                        />
                                     </div>
 
                                     <div className="w-full">
@@ -190,21 +189,17 @@ const EditOrder = ({ title, description, sellers, auth, currentData }: any) => {
                                                 value={`order_${index}`}
                                                 key={index}
                                             >
-                                                <AccordionTrigger>
+                                                <AccordionTrigger >
                                                     <div className="flex items-center w-full justify-between mr-4">
                                                         Pesanan {index + 1}
 
-                                                        <Button
-                                                            size="icon"
-                                                            className="ml-2 w-8 h-8"
-                                                            variant="outline"
-                                                            onClick={(e) => {
-                                                                e.preventDefault();
-                                                                deleteOrder(index);
-                                                            }}
-                                                        >
-                                                            <Trash className="w-4 h-4" />
-                                                        </Button>
+                                                        <div className="border p-2 rounded-md" onClick={(e) => {
+                                                            deleteOrder(index)
+                                                        }
+
+                                                        }>
+                                                            <Trash className="w-4 h-4 " />
+                                                        </div>
                                                     </div>
                                                 </AccordionTrigger>
 
@@ -233,7 +228,6 @@ const EditOrder = ({ title, description, sellers, auth, currentData }: any) => {
                                                             id={`receipt_number_${index}`}
                                                             placeholder="Masukkan nomor resi"
                                                         />
-                                                        <button onClick={() => deleteOrder(index)}>Delete Order</button>
                                                     </div>
                                                 </AccordionContent>
                                             </AccordionItem>
@@ -251,7 +245,7 @@ const EditOrder = ({ title, description, sellers, auth, currentData }: any) => {
                 </Card>
             </form>
 
-    
+
         </DashboardLayout >
     );
 };

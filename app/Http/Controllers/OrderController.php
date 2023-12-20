@@ -26,7 +26,7 @@ class OrderController extends Controller
                 'order_status' => $seller->orders->first() ? $seller->orders->first()->status : null,
             ];
         })->toArray();
-     
+
         return Inertia::render('Order/index', [
             "title" => "Daftar Pesanan",
             "description" => "Semua daftar pesanan yang tersedia.",
@@ -89,27 +89,60 @@ class OrderController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Seller $seller)
+    public function edit(Request $request, Seller $seller)
     {
-        dd($seller);
+        $seller_id = $request->route('order');
+        $seller = Seller::with('orders')->find($seller_id);
+
+        if (!$seller) {
+            abort(404, 'Seller not found');
+        }
+
         return Inertia::render('Order/edit', [
-            "title" => "Ubah Pesanan [{$seller->id}]",
+            "title" => "Ubah Pesanan [{$seller->name}]",
             "description" => "Ubah data pesanan.",
-            // 'order' => $order,
+            'currentData' => $seller,
+            'sellers' => Seller::all(),
+            'orders' => $seller->orders,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Order $order)
+    public function update(Request $request)
     {
-        // $order->update([
-        //     'seller' => $request->seller,
-        //     'receipt_number' => $request->receipt_number,
-        // ]);
-
-        // return to_route('orders.index');
+        $items = $request->input('items');
+        $deleteOrderIds = $request->input('deleteOrderIds');
+    
+        // Delete orders
+        if ($deleteOrderIds) {
+            Order::destroy($deleteOrderIds);
+        }
+    
+        foreach ($items as $item) {
+            if (isset($item['id'])) {
+                // Update existing order
+                $order = Order::updateOrCreate(
+                    ['id' => $item['id']],
+                    [
+                        'seller_id' => $request['seller_id'],
+                        'receipt_number' => $item['receipt_number'],
+                        'status' => $request['status'],
+                    ]
+                );
+            } else {
+                // Create new order
+                $order = Order::create([
+                    'id' => Str::uuid(),
+                    'seller_id' => $request['seller_id'],
+                    'receipt_number' => $item['receipt_number'],
+                    'status' => $request['status'],
+                ]);
+            }
+        }
+    
+        return redirect()->route('orders.index');
     }
 
     /**

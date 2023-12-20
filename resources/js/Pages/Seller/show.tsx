@@ -109,20 +109,7 @@ const OrdersBySeller = ({ title, description, auth, orders }: any) => {
                         <CardDescription>{description}</CardDescription>
                     </div>
 
-                    <Link href={route("orders.create", { currentData: { seller_id: orders[0].seller_id, status: orders[0].status } })}>
-                        <div className="hidden sm:block">
-                            <Button>
-                                <Plus className="w-4 h-4 mr-2" />
-                                Ubah Pesanan
-                            </Button>
-                        </div>
-
-                        <div className="sm:hidden">
-                            <Button size="icon">
-                                <Plus className="w-4 h-4" />
-                            </Button>
-                        </div>
-                    </Link>
+                  
                 </CardHeader>
 
                 <CardContent className="flex grow p-0">
