@@ -37,12 +37,15 @@ class OrderController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
+        $currentData = $request->input('currentData');
+
         return Inertia::render('Order/create', [
             "title" => "Tambah Pesanan",
             "description" => "Tambahkan pesanan baru.",
             'sellers' => Seller::all(),
+            'currentData' => $currentData,
         ]);
     }
 

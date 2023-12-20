@@ -68,9 +68,6 @@ class ScheduleController extends Controller
     {
         $seller_id = $request->input('seller_id');
         $orders = Order::where('seller_id', $seller_id)->get();
-        // dd($orders);
-        // dd($id);
-        // $items = $request->input('items');
 
         foreach ($orders as $order) {
             Schedule::create([

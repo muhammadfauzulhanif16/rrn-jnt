@@ -23,7 +23,7 @@ import {
     AccordionTrigger,
 } from "@/Components/ui/accordion";
 
-const CreateOrder = ({ title, description, sellers, auth }: any) => {
+const CreateOrder = ({ title, description, sellers, auth, currentData }: any) => {
     sellers = sellers.map((seller: any) => ({
         value: seller.id,
         label: seller.name,
@@ -36,8 +36,8 @@ const CreateOrder = ({ title, description, sellers, auth }: any) => {
             receipt_number: string;
         }[];
     }>({
-        seller_id: "",
-        status: "",
+        seller_id: currentData.seller_id || "",
+        status: currentData.status || "",
         items: [],
     });
 
@@ -52,7 +52,7 @@ const CreateOrder = ({ title, description, sellers, auth }: any) => {
         ]);
     };
 
-    const cancelLastOrder = (e:any) => {
+    const cancelLastOrder = (e: any) => {
         e.preventDefault();
 
         setData(prevData => {
@@ -123,6 +123,7 @@ const CreateOrder = ({ title, description, sellers, auth }: any) => {
                                     <div className="w-full">
                                         <Label htmlFor="seller">Penjual</Label>
                                         <Select
+                                            disabled={currentData.seller_id}
                                             value={data.seller_id}
                                             placeholder="Pilih Penjual"
                                             label="Penjual"

@@ -15,6 +15,7 @@ interface SelectProps {
     data: any;
     onChange: any;
     value: string;
+    disabled?: boolean;
 }
 
 export const Select: FC<SelectProps> = ({
@@ -23,9 +24,11 @@ export const Select: FC<SelectProps> = ({
     data,
     onChange,
     value,
+    disabled
 }: SelectProps) => {
     return (
         <ShadcnSelect
+            disabled={disabled}
             value={value}
             // open={true}
             onValueChange={onChange}

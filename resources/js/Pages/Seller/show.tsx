@@ -22,6 +22,7 @@ import { Badge } from "@/Components/ui/badge";
 import { useState } from "react";
 
 const OrdersBySeller = ({ title, description, auth, orders }: any) => {
+    // console.log(orders);
     const columns: ColumnDef<any>[] = [
         // {
         //     id: "selection",
@@ -108,7 +109,7 @@ const OrdersBySeller = ({ title, description, auth, orders }: any) => {
                         <CardDescription>{description}</CardDescription>
                     </div>
 
-                    <Link href={route("orders.create")}>
+                    <Link href={route("orders.create", { currentData: { seller_id: orders[0].seller_id, status: orders[0].status } })}>
                         <div className="hidden sm:block">
                             <Button>
                                 <Plus className="w-4 h-4 mr-2" />
