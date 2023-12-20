@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('schedules', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('seller_id')->foreign('seller_id')->references('id')->on('sellers');
+            $table->string('receipt_number');
+            $table->enum('status', ['Sudah Di Pick Up', 'Belum Di Pick Up'])->default('Belum Di Pick Up');
             $table->timestamps();
         });
     }
@@ -25,3 +27,4 @@ return new class extends Migration
         Schema::dropIfExists('schedules');
     }
 };
+

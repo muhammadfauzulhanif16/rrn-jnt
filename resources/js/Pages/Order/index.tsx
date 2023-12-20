@@ -1,5 +1,5 @@
 import { ArrowUpDown, MoreHorizontal, Plus } from "lucide-react";
-import { Link } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 import { Table } from "@/Components/Table";
 import { DashboardLayout } from "@/Layouts/DashboardLayout";
 import {
@@ -21,11 +21,11 @@ import {
 import { Badge } from "@/Components/ui/badge";
 
 const Orders = ({ title, description, data, auth }: any) => {
-    // console.log(data)
+    console.log(data)
     const columns: ColumnDef<any>[] = [
         {
             accessorKey: "name",
-            header: "Penjual",
+            header: "Pelanggan",
             cell: ({ row }) => <div>{row.getValue('name')}</div>,
         },
         {
@@ -34,15 +34,16 @@ const Orders = ({ title, description, data, auth }: any) => {
             cell: ({ row }) => <div>{row.getValue("order_total")}</div>,
         },
         {
-            accessorKey: "address",
-            header: "Alamat",
-            cell: ({ row }) => <div>{row.getValue("address")}</div>,
-        },
-        {
             accessorKey: "order_status",
             header: "Status",
             cell: ({ row }) => <Badge className={row.getValue("order_status") === "Siap Dikirim" ? "hover:bg-green-500 bg-green-500" : "hover:bg-red-500 bg-red-500"}>{row.getValue("order_status")}</Badge>,
         },
+        {
+            accessorKey: "address",
+            header: "Alamat",
+            cell: ({ row }) => <div>{row.getValue("address")}</div>,
+        },
+
         // {
         //     accessorKey: "delivery_schedule",
         //     header: "Jadwal Pengiriman",
@@ -72,9 +73,30 @@ const Orders = ({ title, description, data, auth }: any) => {
                             <DropdownMenuLabel>Aksi</DropdownMenuLabel>
                             <Link href={route("customers.show", data.id)}>
                                 <DropdownMenuItem className="cursor-pointer">
-                                 Lihat Pesanan
+                                    Lihat Pesanan
                                 </DropdownMenuItem>
                             </Link>
+
+                            {/* <Link
+                                href={route(
+                                    row.getValue("order_status") === "Siap Dikirim"
+                                        ? "schedules.store"
+                                        : ""
+                                    , { id: data.id })}
+                            > */}
+                                <DropdownMenuItem
+                                    disabled={
+                                        row.getValue("order_status") ===
+                                        "Belum Siap Dikirim"
+                                    }
+                                    className="cursor-pointer"
+                                    onClick={() => {
+                                        router.post(route('schedules.store', { id: data.id }));
+                                    }}
+                                >
+                                    Jadwalkan
+                                </DropdownMenuItem>
+                            {/* </Link> */}
 
                             {/* <Link
                                 method="delete"

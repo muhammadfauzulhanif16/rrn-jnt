@@ -26,7 +26,7 @@ export const NavBar: FC<NavBarProps> = ({ title, auth }: NavBarProps) => {
         {
             label: "Penjadwalan",
             icon: <Calendar className="h-4 w-4" />,
-            link: "schedule.index",
+            link: "schedules.index",
         },
         {
             label: "Pesanan",

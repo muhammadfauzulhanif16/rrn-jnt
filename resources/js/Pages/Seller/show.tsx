@@ -84,24 +84,6 @@ const OrdersBySeller = ({ title, description, auth, orders }: any) => {
                             </Link>
 
                             <Link
-                                href={route(
-                                    row.getValue("status") === "Siap Dikirim"
-                                        ? "schedule.index"
-                                        : ""
-                                )}
-                            >
-                                <DropdownMenuItem
-                                    disabled={
-                                        row.getValue("status") ===
-                                        "Belum Siap Dikirim"
-                                    }
-                                    className="cursor-pointer"
-                                >
-                                    Jadwalkan
-                                </DropdownMenuItem>
-                            </Link>
-
-                            <Link
                                 as="div"
                                 method="delete"
                                 href={route("orders.destroy", data.id)}

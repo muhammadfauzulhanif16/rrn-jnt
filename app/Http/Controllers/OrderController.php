@@ -26,7 +26,6 @@ class OrderController extends Controller
                 'order_status' => $seller->orders->first() ? $seller->orders->first()->status : null,
             ];
         })->toArray();
-        // dd($sellers);
      
         return Inertia::render('Order/index', [
             "title" => "Daftar Pesanan",

@@ -1,10 +1,11 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-    use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SellerController;
 use App\Http\Controllers\CourierController;
+use App\Http\Controllers\ScheduleController;
 use Inertia\Inertia;
 
 /*
@@ -55,14 +56,8 @@ Route::fallback(function () {
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/schedule', function () {
-        return Inertia::render('Schedule', [
-            'title' => 'Penjadwalan',
-            'description' => 'Penjadwalan pengiriman barang.',
-        ]);
-    })->name('schedule.index');
-
-    Route::resource('orders', OrderController::class);
+    Route::resource('schedules', ScheduleController::class);
+ Route::resource('orders', OrderController::class);
     Route::resource('customers', SellerController::class);
     Route::resource('couriers', CourierController::class);
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
