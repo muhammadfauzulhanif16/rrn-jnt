@@ -29,7 +29,7 @@
 
 8. **Jalankan migrasi database**
     ```
-    php artisan migrate
+    php artisan migrate:fresh --seed
     ```
 9. **Instalasi dependensi Node.js**
     ```
