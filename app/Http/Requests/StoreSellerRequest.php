@@ -23,7 +23,7 @@ class StoreSellerRequest extends FormRequest
     {
         return [
             'name' => 'required|max:255',
-            'phone_number' => 'required',
+            'phone_number' => 'required|numeric',
             'address' => 'required|max:255',
             'distance' => 'required|numeric',
             'item_name' => 'required|max:255',
