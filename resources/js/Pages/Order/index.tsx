@@ -18,6 +18,7 @@ import {
     DropdownMenuLabel,
     DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu";
+import { Badge } from "@/Components/ui/badge";
 
 const Orders = ({ title, description, data, auth }: any) => {
     // console.log(data)
@@ -28,15 +29,20 @@ const Orders = ({ title, description, data, auth }: any) => {
             cell: ({ row }) => <div>{row.getValue('name')}</div>,
         },
         {
-            accessorKey: "order_count",
+            accessorKey: "order_total",
             header: "Jumlah Pesanan",
-            cell: ({ row }) => <div>{row.getValue("order_count")}</div>,
+            cell: ({ row }) => <div>{row.getValue("order_total")}</div>,
         },
-        // {
-        //     accessorKey: "status",
-        //     header: "Status",
-        //     cell: ({ row }) => <div>{row.getValue("status")}</div>,
-        // },
+        {
+            accessorKey: "address",
+            header: "Alamat",
+            cell: ({ row }) => <div>{row.getValue("address")}</div>,
+        },
+        {
+            accessorKey: "order_status",
+            header: "Status",
+            cell: ({ row }) => <Badge className={row.getValue("order_status") === "Siap Dikirim" ? "hover:bg-green-500 bg-green-500" : "hover:bg-red-500 bg-red-500"}>{row.getValue("order_status")}</Badge>,
+        },
         // {
         //     accessorKey: "delivery_schedule",
         //     header: "Jadwal Pengiriman",
@@ -64,7 +70,7 @@ const Orders = ({ title, description, data, auth }: any) => {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Aksi</DropdownMenuLabel>
-                            <Link href={route("sellers.show", data.id)}>
+                            <Link href={route("customers.show", data.id)}>
                                 <DropdownMenuItem className="cursor-pointer">
                                  Lihat Pesanan
                                 </DropdownMenuItem>

@@ -58,12 +58,12 @@ class SellerController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Seller $seller)
+    public function show(Seller $customer)
     {
         return Inertia::render('Seller/show', [
-            "title" => "Daftar Pesanan [{$seller->name}]",
+            "title" => "Daftar Pesanan [{$customer->name}]",
             "description" => "Semua daftar pesanan yang tersedia.",
-            'orders' => Order::where('seller_id', $seller->id)->get(),
+            'orders' => Order::where('seller_id', $customer->id)->get(),
         ]);
     }
 

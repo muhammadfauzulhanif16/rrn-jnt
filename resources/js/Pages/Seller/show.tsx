@@ -46,17 +46,6 @@ const OrdersBySeller = ({ title, description, auth, orders }: any) => {
             ),
         },
         {
-            accessorKey: "customer_address",
-            header: ({ column }) => (
-                <div className="whitespace-nowrap">Alamat Penjual</div>
-            ),
-            cell: ({ row }) => (
-                <div className="whitespace-nowrap">
-                    {row.getValue("customer_address")}
-                </div>
-            ),
-        },
-        {
             accessorKey: "status",
             header: "Status",
             cell: ({ row }) => (
@@ -70,17 +59,6 @@ const OrdersBySeller = ({ title, description, auth, orders }: any) => {
                 >
                     {row.getValue("status")}
                 </Badge>
-            ),
-        },
-        {
-            accessorKey: "delivery_schedule",
-            header: "Jadwal Pengiriman",
-            cell: ({ row }) => (
-                <div className="whitespace-nowrap">
-                    {new Date(
-                        row.getValue("delivery_schedule")
-                    ).toLocaleString()}
-                </div>
             ),
         },
         {

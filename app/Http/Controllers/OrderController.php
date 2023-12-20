@@ -21,10 +21,13 @@ class OrderController extends Controller
             return [
                 'id' => $seller->id,
                 'name' => $seller->name,
-                'order_count' => $seller->orders_count,
+                'address' => $seller->address,
+                'order_total' => $seller->orders_count,
+                'order_status' => $seller->orders->first() ? $seller->orders->first()->status : null,
             ];
         })->toArray();
-
+        // dd($sellers);
+     
         return Inertia::render('Order/index', [
             "title" => "Daftar Pesanan",
             "description" => "Semua daftar pesanan yang tersedia.",
@@ -56,9 +59,7 @@ class OrderController extends Controller
                 'id' => Str::uuid(),
                 'seller_id' => $request['seller_id'],
                 'receipt_number' => $item['receipt_number'],
-                'customer_address' => $item['customer_address'],
-                'status' => $item['status'],
-                'delivery_schedule' => $item['delivery_schedule'],
+                'status' => $request['status'],
             ]);
         }
 
@@ -97,9 +98,6 @@ class OrderController extends Controller
         $order->update([
             'seller' => $request->seller,
             'receipt_number' => $request->receipt_number,
-            'customer_address' => $request->customer_address,
-            'status' => $request->status,
-            'delivery_schedule' => $request->delivery_schedule,
         ]);
 
         return to_route('orders.index');

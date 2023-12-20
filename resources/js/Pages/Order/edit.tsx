@@ -77,7 +77,7 @@ const EditOrder = ({ title, description, order, auth }: any) => {
                     <CardContent className="p-0 grow flex h-2">
                         <ScrollArea className="grow">
                             <Card className="shadow-none">
-                                <CardContent className="grid grid-cols-1 md:grid-row-2 md:grid-cols-2 gap-4 p-6">
+                                <CardContent className="p-6">
                                     <div className="w-full">
                                         <Label htmlFor="receipt_number">
                                             Nomor Resi
@@ -95,64 +95,6 @@ const EditOrder = ({ title, description, order, auth }: any) => {
                                             className="mt-2 h-10"
                                             id="receipt_number"
                                             placeholder="Masukkan nomor resi"
-                                        />
-                                    </div>
-
-                                    <div className="w-full">
-                                        <Label htmlFor="customer_address">
-                                            Alamat Pembeli
-                                        </Label>
-                                        <Input
-                                            required
-                                            value={data.customer_address}
-                                            onChange={(e) =>
-                                                setData(
-                                                    "customer_address",
-                                                    e.target.value
-                                                )
-                                            }
-                                            name="customer_address"
-                                            className="mt-2 h-10"
-                                            id="customer_address"
-                                            placeholder="Masukkan alamat pembeli"
-                                        />
-                                    </div>
-
-                                    <div className="w-full">
-                                        <Label htmlFor="status">Status</Label>
-                                        <Select
-                                            value={data.status}
-                                            // name="status"
-                                            placeholder="Pilih status"
-                                            label="Status"
-                                            data={[
-                                                {
-                                                    value: "Siap Dikirim",
-                                                    label: "Siap Dikirim",
-                                                },
-                                                {
-                                                    value: "Belum Siap Dikirim",
-                                                    label: "Belum Siap Dikirim",
-                                                },
-                                            ]}
-                                            onChange={(value: any) =>
-                                                setData("status", value)
-                                            }
-                                        />
-                                    </div>
-
-                                    <div className="w-full">
-                                        <Label htmlFor="delivery_schedule">
-                                            Jadwal Pengiriman
-                                        </Label>
-                                        <DatePicker
-                                            onChange={(value: any) =>
-                                                setData(
-                                                    "delivery_schedule",
-                                                    value
-                                                )
-                                            }
-                                            value={data.delivery_schedule}
                                         />
                                     </div>
                                 </CardContent>

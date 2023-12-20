@@ -52,6 +52,16 @@ const CreateOrder = ({ title, description, sellers, auth }: any) => {
         ]);
     };
 
+    const cancelLastOrder = (e:any) => {
+        e.preventDefault();
+
+        setData(prevData => {
+            const newItems = [...prevData.items];
+            newItems.pop();
+            return { ...prevData, items: newItems };
+        });
+    };
+
     const updateOrder = (index: any, field: any, value: any) => {
         const newItems: any = [...data.items];
         newItems[index][field] = value;
@@ -180,44 +190,44 @@ const CreateOrder = ({ title, description, sellers, auth }: any) => {
                                                 </AccordionTrigger>
 
                                                 <AccordionContent>
-                                                    <div
-                                                        key={index}
-                                                        className="grid sm:grid-cols-2 sm:grid-cols-2 gap-4"
-                                                    >
-                                                        <div className="w-full">
-                                                            <Label
-                                                                htmlFor={`receipt_number_${index}`}
-                                                            >
-                                                                Nomor Resi
-                                                            </Label>
-                                                            <Input
-                                                                required
-                                                                value={
-                                                                    item.receipt_number
-                                                                }
-                                                                onChange={(e) =>
-                                                                    updateOrder(
-                                                                        index,
-                                                                        "receipt_number",
-                                                                        e.target
-                                                                            .value
-                                                                    )
-                                                                }
-                                                                name={`receipt_number_${index}`}
-                                                                className="mt-2 h-10"
-                                                                id={`receipt_number_${index}`}
-                                                                placeholder="Masukkan nomor resi"
-                                                            />
-                                                        </div>
+                                                    <div className="w-full" key={index}>
+                                                        <Label
+                                                            htmlFor={`receipt_number_${index}`}
+                                                        >
+                                                            Nomor Resi
+                                                        </Label>
+                                                        <Input
+                                                            required
+                                                            value={
+                                                                item.receipt_number
+                                                            }
+                                                            onChange={(e) =>
+                                                                updateOrder(
+                                                                    index,
+                                                                    "receipt_number",
+                                                                    e.target
+                                                                        .value
+                                                                )
+                                                            }
+                                                            name={`receipt_number_${index}`}
+                                                            className="mt-2 h-10"
+                                                            id={`receipt_number_${index}`}
+                                                            placeholder="Masukkan nomor resi"
+                                                        />
                                                     </div>
                                                 </AccordionContent>
                                             </AccordionItem>
                                         ))}
                                     </Accordion>
 
-                                    <Button onClick={addOrder}>
-                                        Tambah Pesanan Lainnya
-                                    </Button>
+                                    <div className="flex w-full gap-4">
+                                        <Button onClick={addOrder} className="w-full">
+                                            Tambah Pesanan
+                                        </Button>
+
+                                        {data.items.length > 1 && (
+                                            <Button className="w-full" variant="outline" onClick={cancelLastOrder}>Hapus Pesanan</Button>
+                                        )}</div>
                                 </CardContent>
                             </Card>
                         </ScrollArea>
