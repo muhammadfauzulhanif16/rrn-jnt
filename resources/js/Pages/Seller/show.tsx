@@ -22,6 +22,7 @@ import { Badge } from "@/Components/ui/badge";
 import { useState } from "react";
 
 const OrdersBySeller = ({ title, description, auth, orders }: any) => {
+    console.log(orders)
     const columns: ColumnDef<any>[] = [
         // {
         //     id: "selection",
