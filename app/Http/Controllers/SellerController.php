@@ -62,8 +62,7 @@ class SellerController extends Controller
      */
     public function show(Request $request, Seller $customer)
     {
-        $page = $request->input('extraParam
-        .page'));
+        $page = $request->input('extraParam.page');
         return Inertia::render('Seller/show', [
             "title" => "Daftar Pesanan [{$customer->name}]",
             "description" => "Semua daftar pesanan yang tersedia.",
