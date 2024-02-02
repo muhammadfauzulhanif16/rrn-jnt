@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\User;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -19,25 +20,40 @@ class ProfileController extends Controller
     public function edit(Request $request): Response
     {
         return Inertia::render('Profile/Edit', [
-            'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
-            'status' => session('status'),
+            // 'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
+            'meta' => session('meta'),
+            'users' => User::all(),
         ]);
     }
 
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(Request $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        // dd($request->all());
+        // $request->user()->fill($request->validated());
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
+        // if ($request->user()->isDirty('email')) {
+        //     $request->user()->email_verified_at = null;
+        // }
 
-        $request->user()->save();
+        $request->user()->update(
+            [
+                'full_name' => $request->full_name,
+                'phone_number' => $request->phone_number,
+                'address' => $request->address,
+                'longitude' => $request->longitude,
+                'latitude' => $request->latitude,
+                'username' => $request->username,
+                'password' => $request->password ? bcrypt($request->password) : $request->user()->password,
+            ]
+        );
 
-        return Redirect::route('profile.edit');
+        return Redirect::route('profile.edit')->with('meta', [
+            "status" => true,
+            "title" => "Berhasil memperbarui data",
+        ]);
     }
 
     /**

@@ -12,14 +12,24 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    public $incrementing = false;
+
+    protected $keyType = 'string';
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
+        'id',
+        'full_name',
+        'phone_number',
+        'address',
+        'longitude',
+        'latitude',
+        'role',
+        'username',
         'password',
     ];
 
@@ -42,4 +52,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    // public function orders()
+    // {
+    //     return $this->hasMany(Order::class, 'courier_id');
+    // }
 }

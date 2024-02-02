@@ -20,8 +20,8 @@ class AuthenticatedSessionController extends Controller
     public function create(): Response
     {
         return Inertia::render('Auth/Login', [
-            'canResetPassword' => Route::has('password.request'),
-            'status' => session('status'),
+            // 'canResetPassword' => Route::has('password.request'),
+            'meta' => session('meta'),
         ]);
     }
 
@@ -30,11 +30,19 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $request->authenticate();
-
-        $request->session()->regenerate();
-
-        return redirect()->intended(RouteServiceProvider::HOME);
+        try {
+            $request->authenticate();
+            $request->session()->regenerate();
+            return redirect()->intended(RouteServiceProvider::HOME)->with('meta', [
+                "status" => true,
+                "title" => "Berhasil masuk akun",
+            ]);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('meta', [
+                "status" => false,
+                "title" => "Nama pengguna / kata sandi salah",
+            ]);
+        }
     }
 
     /**
@@ -48,6 +56,9 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('/login')->with('meta', [
+            "status" => true,
+            "title" => "Berhasil keluar akun",
+        ]);
     }
 }

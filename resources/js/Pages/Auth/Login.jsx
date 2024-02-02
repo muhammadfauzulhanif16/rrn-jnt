@@ -1,97 +1,151 @@
-import { useEffect } from 'react';
-import Checkbox from '@/Components/Checkbox';
-import GuestLayout from '@/Layouts/GuestLayout';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { AppLayout } from "@/Layouts/AppLayout";
+import {
+    Anchor,
+    Box,
+    Button,
+    Center,
+    Flex,
+    Image,
+    Paper,
+    PasswordInput,
+    Stack,
+    Text,
+    TextInput,
+} from "@mantine/core";
+import Logo from "../../Images/J&T_Express_logo.svg";
+import { router, useForm } from "@inertiajs/react";
 
-export default function Login({ status, canResetPassword }) {
-    const { data, setData, post, processing, errors, reset } = useForm({
-        email: '',
-        password: '',
-        remember: false,
+const Login = (props) => {
+    const form = useForm({
+        username: "",
+        password: "",
     });
 
-    useEffect(() => {
-        return () => {
-            reset('password');
-        };
-    }, []);
-
-    const submit = (e) => {
-        e.preventDefault();
-
-        post(route('login'));
-    };
-
     return (
-        <GuestLayout>
-            <Head title="Log in" />
+        <AppLayout
+            title="Masuk Akun"
+            auth={!!props.auth.user}
+            meta={props.meta}
+        >
+            {/* <Center
+                style={{
+                    flexGrow: 1,
+                }}
+            > */}
+            <Flex
+                flex={1}
+                direction="column"
+                justify="center"
+                align="center"
+                gap={32}
+            >
+                <Paper
+                    withBorder
+                    p={32}
+                    radius={20}
+                    w={{
+                        base: "100%",
+                        sm: "75%",
+                        md: "50%",
+                        lg: "25%",
+                    }}
+                >
+                    <Center mb={32}>
+                        <Image src={Logo} w={160} />
+                    </Center>
 
-            {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
+                    <form
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            !form.hasErrors && form.post(route("login"));
+                        }}
+                    >
+                        <Stack spacing={16}>
+                            <TextInput
+                                label="Nama Pengguna"
+                                placeholder="Masukkan nama pengguna"
+                                variant="filled"
+                                radius="xl"
+                                onChange={(e) => {
+                                    form.setData(
+                                        "username",
+                                        e.target.value.toLowerCase()
+                                    );
 
-            <form onSubmit={submit}>
-                <div>
-                    <InputLabel htmlFor="email" value="Email" />
+                                    if (!e.target.value) {
+                                        form.setError({
+                                            username:
+                                                "Nama pengguna tidak boleh kosong.",
+                                        });
+                                    } else {
+                                        form.clearErrors("username");
+                                    }
+                                }}
+                                styles={{
+                                    label: {
+                                        marginBottom: 8,
+                                    },
+                                }}
+                                error={form.errors.username}
+                            />
 
-                    <TextInput
-                        id="email"
-                        type="email"
-                        name="email"
-                        value={data.email}
-                        className="mt-1 block w-full"
-                        autoComplete="username"
-                        isFocused={true}
-                        onChange={(e) => setData('email', e.target.value)}
-                    />
+                            <PasswordInput
+                                label="Kata Sandi"
+                                placeholder="Masukkan kata sandi"
+                                variant="filled"
+                                radius="xl"
+                                onChange={(e) => {
+                                    form.setData("password", e.target.value);
 
-                    <InputError message={errors.email} className="mt-2" />
-                </div>
+                                    if (!e.target.value) {
+                                        form.setError({
+                                            password:
+                                                "Kata sandi tidak boleh kosong.",
+                                        });
+                                    } else {
+                                        form.clearErrors("password");
+                                    }
+                                }}
+                                styles={{
+                                    label: {
+                                        marginBottom: 8,
+                                    },
+                                }}
+                                error={form.errors.password}
+                            />
+                        </Stack>
 
-                <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
-
-                    <TextInput
-                        id="password"
-                        type="password"
-                        name="password"
-                        value={data.password}
-                        className="mt-1 block w-full"
-                        autoComplete="current-password"
-                        onChange={(e) => setData('password', e.target.value)}
-                    />
-
-                    <InputError message={errors.password} className="mt-2" />
-                </div>
-
-                <div className="block mt-4">
-                    <label className="flex items-center">
-                        <Checkbox
-                            name="remember"
-                            checked={data.remember}
-                            onChange={(e) => setData('remember', e.target.checked)}
-                        />
-                        <span className="ms-2 text-sm text-gray-600">Remember me</span>
-                    </label>
-                </div>
-
-                <div className="flex items-center justify-end mt-4">
-                    {canResetPassword && (
-                        <Link
-                            href={route('password.request')}
-                            className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        <Button
+                            loading={form.processing}
+                            disabled={
+                                form.hasErrors ||
+                                form.data.username === "" ||
+                                form.data.password === ""
+                            }
+                            type="submit"
+                            w="100%"
+                            mt={24}
+                            radius="xl"
+                            color="red.5"
                         >
-                            Forgot your password?
-                        </Link>
-                    )}
+                            Masuk Akun
+                        </Button>
+                    </form>
+                </Paper>
 
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Log in
-                    </PrimaryButton>
-                </div>
-            </form>
-        </GuestLayout>
+                <Text fw={500} size="sm">
+                    Belum punya akun?{" "}
+                    <Anchor
+                        c="red.5"
+                        fw={500}
+                        onClick={() => router.get(route("register"))}
+                    >
+                        Daftar sebagai pelanggan
+                    </Anchor>
+                </Text>
+            </Flex>
+        </AppLayout>
     );
-}
+};
+
+export default Login;

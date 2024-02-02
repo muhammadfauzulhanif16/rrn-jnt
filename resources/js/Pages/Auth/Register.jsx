@@ -1,117 +1,181 @@
-import { useEffect } from 'react';
-import GuestLayout from '@/Layouts/GuestLayout';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { AppLayout } from "@/Layouts/AppLayout";
+import {
+    Anchor,
+    Box,
+    Button,
+    Center,
+    Flex,
+    Image,
+    Paper,
+    PasswordInput,
+    Stack,
+    Text,
+    TextInput,
+} from "@mantine/core";
+import Logo from "../../Images/J&T_Express_logo.svg";
+import { router, useForm } from "@inertiajs/react";
 
-export default function Register() {
-    const { data, setData, post, processing, errors, reset } = useForm({
-        name: '',
-        email: '',
-        password: '',
-        password_confirmation: '',
+const Login = (props) => {
+    const form = useForm({
+        full_name: "",
+        username: "",
+        password: "",
     });
 
-    useEffect(() => {
-        return () => {
-            reset('password', 'password_confirmation');
-        };
-    }, []);
-
-    const submit = (e) => {
-        e.preventDefault();
-
-        post(route('register'));
-    };
-
     return (
-        <GuestLayout>
-            <Head title="Register" />
+        <AppLayout title="Buat Akun" auth={!!props.auth.user} meta={props.meta}>
+            <Flex
+                flex={1}
+                direction="column"
+                justify="center"
+                align="center"
+                gap={32}
+            >
+                <Paper
+                    withBorder
+                    p={32}
+                    radius={20}
+                    w={{
+                        base: "100%",
+                        sm: "75%",
+                        md: "50%",
+                        lg: "25%",
+                    }}
+                >
+                    <Center mb={32}>
+                        <Image src={Logo} w={160} />
+                    </Center>
 
-            <form onSubmit={submit}>
-                <div>
-                    <InputLabel htmlFor="name" value="Name" />
-
-                    <TextInput
-                        id="name"
-                        name="name"
-                        value={data.name}
-                        className="mt-1 block w-full"
-                        autoComplete="name"
-                        isFocused={true}
-                        onChange={(e) => setData('name', e.target.value)}
-                        required
-                    />
-
-                    <InputError message={errors.name} className="mt-2" />
-                </div>
-
-                <div className="mt-4">
-                    <InputLabel htmlFor="email" value="Email" />
-
-                    <TextInput
-                        id="email"
-                        type="email"
-                        name="email"
-                        value={data.email}
-                        className="mt-1 block w-full"
-                        autoComplete="username"
-                        onChange={(e) => setData('email', e.target.value)}
-                        required
-                    />
-
-                    <InputError message={errors.email} className="mt-2" />
-                </div>
-
-                <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
-
-                    <TextInput
-                        id="password"
-                        type="password"
-                        name="password"
-                        value={data.password}
-                        className="mt-1 block w-full"
-                        autoComplete="new-password"
-                        onChange={(e) => setData('password', e.target.value)}
-                        required
-                    />
-
-                    <InputError message={errors.password} className="mt-2" />
-                </div>
-
-                <div className="mt-4">
-                    <InputLabel htmlFor="password_confirmation" value="Confirm Password" />
-
-                    <TextInput
-                        id="password_confirmation"
-                        type="password"
-                        name="password_confirmation"
-                        value={data.password_confirmation}
-                        className="mt-1 block w-full"
-                        autoComplete="new-password"
-                        onChange={(e) => setData('password_confirmation', e.target.value)}
-                        required
-                    />
-
-                    <InputError message={errors.password_confirmation} className="mt-2" />
-                </div>
-
-                <div className="flex items-center justify-end mt-4">
-                    <Link
-                        href={route('login')}
-                        className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    <form
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            !form.hasErrors && form.post(route("register"));
+                        }}
                     >
-                        Already registered?
-                    </Link>
+                        <Stack spacing={16}>
+                            <TextInput
+                                label="Nama Lengkap"
+                                placeholder="Masukkan nama lengkap"
+                                variant="filled"
+                                radius="xl"
+                                onChange={(e) => {
+                                    form.setData("full_name", e.target.value);
 
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Register
-                    </PrimaryButton>
-                </div>
-            </form>
-        </GuestLayout>
+                                    if (!e.target.value) {
+                                        form.setError({
+                                            full_name:
+                                                "Nama lengkap tidak boleh kosong.",
+                                        });
+                                    } else {
+                                        form.clearErrors("full_name");
+                                    }
+                                }}
+                                styles={{
+                                    label: {
+                                        marginBottom: 8,
+                                    },
+                                }}
+                                error={form.errors.full_name}
+                            />
+
+                            <TextInput
+                                label="Nama Pengguna"
+                                placeholder="Masukkan nama pengguna"
+                                variant="filled"
+                                radius="xl"
+                                onChange={(e) => {
+                                    form.setData(
+                                        "username",
+                                        e.target.value.toLowerCase()
+                                    );
+
+                                    if (!e.target.value) {
+                                        form.setError({
+                                            username:
+                                                "Nama pengguna tidak boleh kosong.",
+                                        });
+                                    } else {
+                                        form.clearErrors("username");
+                                    }
+
+                                    if (
+                                        props.users.some(
+                                            ({ username }) =>
+                                                username ===
+                                                e.target.value.toLowerCase()
+                                        )
+                                    ) {
+                                        form.setError({
+                                            username:
+                                                "Nama pengguna sudah digunakan.",
+                                        });
+                                    }
+                                }}
+                                styles={{
+                                    label: {
+                                        marginBottom: 8,
+                                    },
+                                }}
+                                error={form.errors.username}
+                            />
+
+                            <PasswordInput
+                                label="Kata Sandi"
+                                placeholder="Masukkan kata sandi"
+                                variant="filled"
+                                radius="xl"
+                                onChange={(e) => {
+                                    form.setData("password", e.target.value);
+
+                                    if (!e.target.value) {
+                                        form.setError({
+                                            password:
+                                                "Kata sandi tidak boleh kosong.",
+                                        });
+                                    } else {
+                                        form.clearErrors("password");
+                                    }
+                                }}
+                                styles={{
+                                    label: {
+                                        marginBottom: 8,
+                                    },
+                                }}
+                                error={form.errors.password}
+                            />
+                        </Stack>
+
+                        <Button
+                            loading={form.processing}
+                            disabled={
+                                form.hasErrors ||
+                                form.data.username === "" ||
+                                form.data.password === ""
+                            }
+                            type="submit"
+                            w="100%"
+                            mt={24}
+                            radius="xl"
+                            color="red.5"
+                        >
+                            Daftar Akun
+                        </Button>
+                    </form>
+                </Paper>
+
+                <Text fw={500} size="sm">
+                    Sudah punya akun?{" "}
+                    <Anchor
+                        c="red.5"
+                        fw={500}
+                        onClick={() => router.get(route("login"))}
+                    >
+                        Masuk akun
+                    </Anchor>
+                </Text>
+            </Flex>
+        </AppLayout>
     );
-}
+};
+
+export default Login;
