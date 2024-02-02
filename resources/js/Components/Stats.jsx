@@ -30,7 +30,7 @@ export const Stats = ({ data }) => {
                     display="flex"
                     px={40}
                 >
-                    <Group gap={24}>
+                    <Group gap={20}>
                         <ThemeIcon
                             size={40}
                             variant="light"

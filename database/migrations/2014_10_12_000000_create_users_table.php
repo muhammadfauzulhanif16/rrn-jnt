@@ -19,8 +19,8 @@ return new class extends Migration
             $table->text('longitude')->nullable();
             $table->text('latitude')->nullable();
             $table->string('role');
-            $table->string('username', 8)->unique();
-            $table->string('password', 8);
+            $table->string('username')->unique();
+            $table->string('password');
             $table->timestamps();
         });
     }

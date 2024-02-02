@@ -1,12 +1,10 @@
 import {
     ActionIcon,
     Avatar,
-    Badge,
     Box,
     Center,
     Drawer,
     Image,
-    NavLink,
     SimpleGrid,
     Stack,
     Menu,
@@ -75,8 +73,8 @@ export const Header = (props) => {
 
     return (
         <SimpleGrid
-            px={32}
-            py={16}
+            px={40}
+            py={20}
             bg="white"
             cols={3}
             spacing={0}
@@ -114,7 +112,7 @@ export const Header = (props) => {
                                     <Button
                                         key={id}
                                         h={40}
-                                        px={16}
+                                        px={20}
                                         variant={
                                             props.title.includes(
                                                 navigation.label
@@ -204,6 +202,8 @@ export const Header = (props) => {
                         <Menu.Item
                             h={60}
                             disabled
+                            py={0}
+                            px={20}
                             style={{
                                 borderRadius: 20,
                             }}
@@ -216,6 +216,8 @@ export const Header = (props) => {
                         <Menu.Item
                             c="gray.9"
                             h={40}
+                            py={0}
+                            px={20}
                             style={{
                                 borderRadius: 20,
                             }}
@@ -227,6 +229,8 @@ export const Header = (props) => {
                         <Menu.Item
                             c="red"
                             h={40}
+                            py={0}
+                            px={20}
                             style={{
                                 borderRadius: 20,
                             }}

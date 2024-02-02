@@ -35,20 +35,8 @@ export const AppLayout = (props) => {
 
             {props.auth && <Header auth={props.auth} title={props.title} />}
 
-            {/* <Alert
-                variant="light"
-                color="red"
-                withCloseButton
-                title="Alert title"
-                // icon={icon}
-                onClick={() => d.toggle()}
-            >
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. At
-                officiis, quae tempore necessitatibus placeat saepe.
-            </Alert> */}
-
             <Box
-                px={32}
+                px={40}
                 py={64}
                 style={{
                     flexGrow: 1,

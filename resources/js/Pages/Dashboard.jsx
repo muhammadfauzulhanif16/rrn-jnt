@@ -274,8 +274,8 @@ const Dashboard = (props) => {
                         }}
                     >
                         <Stack gap={32}>
-                            <Paper radius={20} withBorder p={32}>
-                                <Group mb={16} justify="space-between">
+                            <Paper radius={20} withBorder p={40}>
+                                <Group mb={20} justify="space-between">
                                     <Title
                                         order={3}
                                         c="gray.8"
@@ -302,12 +302,12 @@ const Dashboard = (props) => {
                             </Paper>
 
                             {props.auth.user.role === "admin" && (
-                                <Paper radius={20} withBorder p={32}>
+                                <Paper radius={20} withBorder p={40}>
                                     <Title
                                         order={3}
                                         c="gray.8"
                                         fw={500}
-                                        mb={16}
+                                        mb={20}
                                         style={{
                                             whiteSpace: "nowrap",
                                         }}
