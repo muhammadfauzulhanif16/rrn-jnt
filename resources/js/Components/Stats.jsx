@@ -1,4 +1,6 @@
+import { router } from "@inertiajs/react";
 import {
+    Button,
     Group,
     NumberFormatter,
     SimpleGrid,
@@ -17,38 +19,46 @@ export const Stats = ({ data }) => {
                 lg: data.length,
             }}
         >
-            {data.map(({ color, icon, label, value }, id) => (
-                <Group
+            {data.map(({ color, icon, label, value, route :r}, id) => (
+                <Button
+                    h={120}
+                    color="gray"
+                    radius={20}
+                    variant="subtle"
                     key={id}
-                    p={32}
-                    style={{
-                        flexGrow: 1,
-                    }}
+                    onClick={() => router.get(route(r))}
+                    display="flex"
+                    px={40}
                 >
-                    <ThemeIcon
-                        size={40}
-                        variant="light"
-                        radius="xl"
-                        color={color}
-                    >
-                        {icon}
-                    </ThemeIcon>
-
-                    <Stack gap={4}>
-                        <Text
-                            c="gray.7"
-                            fw={500}
-                            style={{
-                                whiteSpace: "nowrap",
-                            }}
+                    <Group gap={24}>
+                        <ThemeIcon
+                            size={40}
+                            variant="light"
+                            radius="xl"
+                            color={color}
                         >
-                            Total {label}
-                        </Text>
-                        <Title order={1}>
-                            <NumberFormatter value={value} thousandSeparator />
-                        </Title>
-                    </Stack>
-                </Group>
+                            {icon}
+                        </ThemeIcon>
+
+                        <Stack gap={8} align="flex-start">
+                            <Text
+                                c="gray.7"
+                                fw={500}
+                                style={{
+                                    whiteSpace: "nowrap",
+                                }}
+                            >
+                                Total {label}
+                            </Text>
+                            <Title order={2} c="gray.8">
+                                <NumberFormatter
+                                    value={value}
+                                    thousandSeparator
+                                />
+                            </Title>
+                        </Stack>
+                    </Group>
+                </Button>
             ))}
         </SimpleGrid>
     );

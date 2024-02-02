@@ -97,6 +97,6 @@ class ScheduleController extends Controller
             'status' => 'Sudah Diambil'
         ]);
 
-        return redirect()->route('schedule.index')->with('meta', ['status' => true, 'title' => 'Berhasil mengubah status jadwal']);
+        return redirect()->route('schedule.index')->with('meta', ['status' => true, 'title' => 'Berhasil mengubah status pesanan']);
     }
 }

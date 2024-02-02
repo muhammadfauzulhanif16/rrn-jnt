@@ -73,6 +73,10 @@ const Login = (props) => {
                                 styles={{
                                     label: {
                                         marginBottom: 8,
+                                        color: "#212529",
+                                    },
+                                    input: {
+                                        height: 40,
                                     },
                                 }}
                                 error={form.errors.full_name}
@@ -114,6 +118,10 @@ const Login = (props) => {
                                 styles={{
                                     label: {
                                         marginBottom: 8,
+                                        color: "#212529",
+                                    },
+                                    input: {
+                                        height: 40,
                                     },
                                 }}
                                 error={form.errors.username}
@@ -139,6 +147,10 @@ const Login = (props) => {
                                 styles={{
                                     label: {
                                         marginBottom: 8,
+                                        color: "#212529",
+                                    },
+                                    input: {
+                                        height: 40,
                                     },
                                 }}
                                 error={form.errors.password}
@@ -157,13 +169,14 @@ const Login = (props) => {
                             mt={24}
                             radius="xl"
                             color="red.5"
+                            h={40}
                         >
                             Daftar Akun
                         </Button>
                     </form>
                 </Paper>
 
-                <Text fw={500} size="sm">
+                <Text fw={500} size="sm" c="gray.8">
                     Sudah punya akun?{" "}
                     <Anchor
                         c="red.5"

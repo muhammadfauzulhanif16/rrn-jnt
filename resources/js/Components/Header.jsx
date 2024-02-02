@@ -102,7 +102,7 @@ export const Header = (props) => {
                                 radius="xl"
                                 variant="subtle"
                                 color="red.5"
-                                c="gray.8"
+                                c="gray.9"
                             >
                                 <IconX />
                             </ActionIcon>
@@ -128,22 +128,16 @@ export const Header = (props) => {
                                                 navigation.label
                                             )
                                                 ? "red.5"
-                                                : "gray.8"
+                                                : "gray.9"
                                         }
                                         leftSection={navigation.icon}
                                         radius="xl"
-                                        // rightSection={
-                                        //     <Badge color="red.5" circle>
-                                        //         {navigation.totalData}
-                                        //     </Badge>
-                                        // }
                                         styles={{
                                             label: {
                                                 display: "flex",
                                                 gap: 8,
                                             },
                                             inner: {
-                                                // margin: "16px 0",
                                                 justifyContent: "start",
                                             },
                                         }}
@@ -162,7 +156,7 @@ export const Header = (props) => {
                 <ActionIcon
                     onClick={open}
                     size={40}
-                    c="gray.8"
+                    c="gray.9"
                     radius="xl"
                     variant="subtle"
                     color="red.5"
@@ -192,7 +186,7 @@ export const Header = (props) => {
                             h="auto"
                             radius="xl"
                             color="red.5"
-                            c="gray.8"
+                            c="gray.9"
                         >
                             <Avatar color="red.9" radius="xl" size={40} mr={4}>
                                 {GetInitialName(props.auth.full_name)}
@@ -208,6 +202,7 @@ export const Header = (props) => {
                         }}
                     >
                         <Menu.Item
+                            h={60}
                             disabled
                             style={{
                                 borderRadius: 20,
@@ -219,7 +214,8 @@ export const Header = (props) => {
                             sebagai {props.auth.role}
                         </Menu.Item>
                         <Menu.Item
-                            c="gray.8"
+                            c="gray.9"
+                            h={40}
                             style={{
                                 borderRadius: 20,
                             }}
@@ -230,6 +226,7 @@ export const Header = (props) => {
                         </Menu.Item>
                         <Menu.Item
                             c="red"
+                            h={40}
                             style={{
                                 borderRadius: 20,
                             }}

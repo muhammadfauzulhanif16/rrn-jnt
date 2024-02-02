@@ -91,7 +91,9 @@ const Edit = (props) => {
                                 sm: 4,
                             }}
                         >
-                            <Title order={3}>Profil</Title>
+                            <Title order={3} c="gray.9">
+                                Profil
+                            </Title>
                         </Grid.Col>
 
                         <Grid.Col
@@ -115,6 +117,10 @@ const Edit = (props) => {
                                         styles={{
                                             label: {
                                                 marginBottom: 8,
+                                                color: "#212529",
+                                            },
+                                            input: {
+                                                height: 40,
                                             },
                                         }}
                                         onChange={(e) => {
@@ -152,6 +158,10 @@ const Edit = (props) => {
                                                 styles={{
                                                     label: {
                                                         marginBottom: 8,
+                                                        color: "#212529",
+                                                    },
+                                                    input: {
+                                                        height: 40,
                                                     },
                                                 }}
                                                 value={form.data.phone_number}
@@ -205,6 +215,10 @@ const Edit = (props) => {
                                                 styles={{
                                                     label: {
                                                         marginBottom: 8,
+                                                        color: "#212529",
+                                                    },
+                                                    input: {
+                                                        height: 40,
                                                     },
                                                 }}
                                                 error={form.errors.address}
@@ -236,7 +250,9 @@ const Edit = (props) => {
                                 sm: 4,
                             }}
                         >
-                            <Title order={3}>Akun</Title>
+                            <Title order={3} c="gray.9">
+                                Akun
+                            </Title>
                         </Grid.Col>
 
                         <Grid.Col
@@ -284,6 +300,10 @@ const Edit = (props) => {
                                         styles={{
                                             label: {
                                                 marginBottom: 8,
+                                                color: "#212529",
+                                            },
+                                            input: {
+                                                height: 40,
                                             },
                                         }}
                                         value={form.data.username}
@@ -307,9 +327,14 @@ const Edit = (props) => {
                                             description: {
                                                 marginBottom: 16,
                                             },
+                                            label: {
+                                                color: "#212529",
+                                            },
+                                            input: {
+                                                height: 40,
+                                            },
                                         }}
                                         error={form.errors.password}
-                                        // value={form.data.password}
                                     />
                                 </Stack>
                             </Paper>
@@ -320,6 +345,7 @@ const Edit = (props) => {
 
                     <Flex justify="flex-end">
                         <Button
+                            h={40}
                             leftSection={<IconCornerDownLeft />}
                             rightSection={<Kbd>Enter</Kbd>}
                             disabled={form.hasErrors}

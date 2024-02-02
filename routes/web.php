@@ -39,27 +39,27 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
         $role = Auth::user()->role;
         $userId = Auth::user()->id;
 
-        $orders = Order::when($role === 'pelanggan', function ($query) use ($userId) {
-            return $query->where('customer_id', $userId)->whereIn('status', ['Siap Dikirim', 'Belum Siap Dikirim']);
-        }, function ($query) {
-            return $query->where('status', 'Siap Dikirim');
-        })->get();
+        // $orders = Order::when($role === 'pelanggan', function ($query) use ($userId) {
+        //     return $query->where('customer_id', $userId)->whereIn('status', ['Siap Dikirim', 'Belum Siap Dikirim']);
+        // }, function ($query) {
+        //     return $query->where('status', 'Siap Dikirim');
+        // })->get();
 
-        $schedule = Order::when($role === 'pelanggan', function ($query) use ($userId) {
-            return $query->where('customer_id', $userId);
-        }, function ($query) use ($role, $userId) {
-            if ($role === 'kurir') {
-                return $query->where('courier_id', $userId);
-            }
-        })->whereIn('status', ['Sudah Diambil', 'Belum Diambil'])->get();
+        // $schedule = Order::when($role === 'pelanggan', function ($query) use ($userId) {
+        //     return $query->where('customer_id', $userId);
+        // }, function ($query) use ($role, $userId) {
+        //     if ($role === 'kurir') {
+        //         return $query->where('courier_id', $userId);
+        //     }
+        // })->whereIn('status', ['Sudah Diambil', 'Belum Diambil'])->get();
 
         return Inertia::render('Dashboard', [
             'title' => 'Beranda',
             'meta' => session('meta'),
             'couriers' => User::where('role', 'kurir')->get(),
             'customers' => User::where('role', 'pelanggan')->get(),
-            'orders' => $orders,
-            'schedule' => $schedule
+            'orders' => Order::orderBy('created_at', 'desc')->get()
+            // 'schedule' => $schedule
         ]);
     })->name('dashboard');
 
@@ -71,7 +71,7 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
             'title' => 'Rute Pengiriman',
             // 'meta' => session('meta'),
             'customers' => Order::where('courier_id', Auth::user()->id)
-                ->whereIn('status', ['Sudah Diambil', 'Belum Diambil'])
+                ->whereIn('status', ['Belum Diambil'])
                 ->get()
                 ->map(function ($order) {
                     return $order->customer;

@@ -14,13 +14,13 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('full_name');
-            $table->string('phone_number')->unique()->nullable();
+            $table->string('phone_number', 13)->unique()->nullable();
             $table->text('address')->nullable();
             $table->text('longitude')->nullable();
             $table->text('latitude')->nullable();
             $table->string('role');
-            $table->string('username')->unique();
-            $table->string('password');
+            $table->string('username', 8)->unique();
+            $table->string('password', 8);
             $table->timestamps();
         });
     }

@@ -15,6 +15,7 @@ import {
     Group,
     NumberFormatter,
     Paper,
+    Select,
     SimpleGrid,
     Stack,
     Text,
@@ -44,25 +45,35 @@ const Dashboard = (props) => {
                     color: "violet",
                     icon: <IconCalendar />,
                     label: "Penjadwalan",
-                    value: props.schedule.length,
+                    value: props.orders.filter(
+                        ({ status }) =>
+                            status === "Sudah Diambil" ||
+                            status === "Belum Diambil"
+                    ).length,
+                    route: "schedule.index",
                 },
                 {
                     color: "cyan",
                     icon: <IconPackage />,
                     label: "Pesanan",
-                    value: props.orders.length,
+                    value: props.orders.filter(
+                        ({ status }) => status === "Siap Diambil"
+                    ).length,
+                    route: "orders.index",
                 },
                 {
                     color: "teal",
                     icon: <IconUsers />,
                     label: "Pelanggan",
                     value: props.customers.length,
+                    route: "customers.index",
                 },
                 {
                     color: "orange",
                     icon: <IconUsers />,
                     label: "Kurir",
                     value: props.couriers.length,
+                    route: "couriers.index",
                 },
             ];
             break;
@@ -72,17 +83,23 @@ const Dashboard = (props) => {
                     color: "red",
                     icon: <IconCalendarX />,
                     label: "Barang Belum Diambil",
-                    value: props.schedule.filter(
-                        ({ status }) => status === "Belum Diambil"
+                    value: props.orders.filter(
+                        ({ status, courier_id }) =>
+                            courier_id === props.auth.user.id &&
+                            status === "Belum Diambil"
                     ).length,
+                    route: "schedule.index",
                 },
                 {
                     color: "green",
                     icon: <IconCalendarCheck />,
                     label: "Barang Sudah Diambil",
-                    value: props.schedule.filter(
-                        ({ status }) => status === "Sudah Diambil"
+                    value: props.orders.filter(
+                        ({ status, courier_id }) =>
+                            courier_id === props.auth.user.id &&
+                            status === "Sudah Diambil"
                     ).length,
+                    route: "schedule.index",
                 },
             ];
             break;
@@ -92,13 +109,25 @@ const Dashboard = (props) => {
                     color: "violet",
                     icon: <IconCalendar />,
                     label: "Penjadwalan",
-                    value: props.schedule.length,
+                    value: props.orders.filter(
+                        ({ status, customer_id }) =>
+                            customer_id === props.auth.user.id &&
+                            (status === "Sudah Diambil" ||
+                                status === "Belum Diambil")
+                    ).length,
+                    route: "schedule.index",
                 },
                 {
                     color: "cyan",
                     icon: <IconPackage />,
                     label: "Pesanan",
-                    value: props.orders.length,
+                    value: props.orders.filter(
+                        ({ status, customer_id }) =>
+                            customer_id === props.auth.user.id &&
+                            (status === "Belum Siap Diambil" ||
+                                status === "Siap Diambil")
+                    ).length,
+                    route: "orders.index",
                 },
             ];
             break;
@@ -137,12 +166,27 @@ const Dashboard = (props) => {
         },
     ];
 
-    props.schedule.forEach((item) => {
-        const date = new Date(item.updated_at);
-        const day = chartData[date.getUTCDay()];
+    let orders = props.orders;
 
-        day["Jumlah Pesanan"] += 1;
-    });
+    if (props.auth.user.role === "pelanggan") {
+        orders = orders.filter(
+            (order) => order.customer_id === props.auth.user.id
+        );
+    } else if (props.auth.user.role === "kurir") {
+        orders = orders.filter(
+            (order) => order.courier_id === props.auth.user.id
+        );
+    }
+
+    orders.reduce((acc, item) => {
+        if (item.status === "Sudah Diambil") {
+            const date = new Date(item.updated_at);
+            const day = acc[date.getUTCDay()];
+            day["Jumlah Pesanan"] += 1;
+        }
+
+        return acc;
+    }, chartData);
 
     const colors = [
         "red",
@@ -204,7 +248,6 @@ const Dashboard = (props) => {
                                 radius="xl"
                                 color="gray.9"
                                 variant="filled"
-                                // c="gray.0"
                                 autoContrast
                                 onClick={() =>
                                     router.get(route("profile.edit"))
@@ -232,6 +275,18 @@ const Dashboard = (props) => {
                     >
                         <Stack gap={32}>
                             <Paper radius={20} withBorder p={32}>
+                                <Group mb={16} justify="space-between">
+                                    <Title
+                                        order={3}
+                                        c="gray.8"
+                                        fw={500}
+                                        style={{
+                                            whiteSpace: "nowrap",
+                                        }}
+                                    >
+                                        Pesanan Sudah Diambil
+                                    </Title>
+                                </Group>
                                 <AreaChart
                                     h={300}
                                     data={chartData}
@@ -248,6 +303,17 @@ const Dashboard = (props) => {
 
                             {props.auth.user.role === "admin" && (
                                 <Paper radius={20} withBorder p={32}>
+                                    <Title
+                                        order={3}
+                                        c="gray.8"
+                                        fw={500}
+                                        mb={16}
+                                        style={{
+                                            whiteSpace: "nowrap",
+                                        }}
+                                    >
+                                        Lokasi Pelanggan
+                                    </Title>
                                     <AspectRatio ratio={16 / 9}>
                                         <MapCustomers
                                             customers={props.customers}

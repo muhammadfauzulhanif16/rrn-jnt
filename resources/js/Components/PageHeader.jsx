@@ -7,7 +7,7 @@ export const PageHeader = (props) => {
             {props.breadcrumbs && <Breadcrumbs items={props.breadcrumbs} />}
 
             <Group justify="space-between">
-                <Title order={1} c="gray.8">
+                <Title order={1} c="gray.9">
                     {props.title}
                 </Title>
 

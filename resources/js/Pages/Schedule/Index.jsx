@@ -128,6 +128,12 @@ const Index = (props) => {
                     props.auth.user.role === "kurir" && (
                         <>
                             <Button
+                                disabled={
+                                    !props.orders.filter(
+                                        ({ status }) =>
+                                            status === "Belum Diambil"
+                                    ).length
+                                }
                                 radius="xl"
                                 color="red.5"
                                 h={40}
@@ -143,6 +149,12 @@ const Index = (props) => {
                                 Rute Pengiriman
                             </Button>
                             <ActionIcon
+                                disabled={
+                                    !props.orders.filter(
+                                        ({ status }) =>
+                                            status === "Belum Diambil"
+                                    ).length
+                                }
                                 size={40}
                                 color="red.5"
                                 radius="xl"

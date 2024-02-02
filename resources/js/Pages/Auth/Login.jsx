@@ -1,7 +1,6 @@
 import { AppLayout } from "@/Layouts/AppLayout";
 import {
     Anchor,
-    Box,
     Button,
     Center,
     Flex,
@@ -27,11 +26,6 @@ const Login = (props) => {
             auth={!!props.auth.user}
             meta={props.meta}
         >
-            {/* <Center
-                style={{
-                    flexGrow: 1,
-                }}
-            > */}
             <Flex
                 flex={1}
                 direction="column"
@@ -84,6 +78,10 @@ const Login = (props) => {
                                 styles={{
                                     label: {
                                         marginBottom: 8,
+                                        color: "#212529",
+                                    },
+                                    input: {
+                                        height: 40,
                                     },
                                 }}
                                 error={form.errors.username}
@@ -109,6 +107,10 @@ const Login = (props) => {
                                 styles={{
                                     label: {
                                         marginBottom: 8,
+                                        color: "#212529",
+                                    },
+                                    input: {
+                                        height: 40,
                                     },
                                 }}
                                 error={form.errors.password}
@@ -127,13 +129,14 @@ const Login = (props) => {
                             mt={24}
                             radius="xl"
                             color="red.5"
+                            h={40}
                         >
                             Masuk Akun
                         </Button>
                     </form>
                 </Paper>
 
-                <Text fw={500} size="sm">
+                <Text fw={500} size="sm" c="gray.8">
                     Belum punya akun?{" "}
                     <Anchor
                         c="red.5"
