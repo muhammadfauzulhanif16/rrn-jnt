@@ -15,11 +15,13 @@ import {
     Group,
     NumberFormatter,
     Paper,
+    ScrollArea,
     Select,
     SimpleGrid,
     Stack,
     Text,
     ThemeIcon,
+    Timeline,
     Title,
 } from "@mantine/core";
 import {
@@ -28,6 +30,7 @@ import {
     IconCalendar,
     IconCalendarCheck,
     IconCalendarX,
+    IconGitBranch,
     IconInfoCircle,
     IconPackage,
     IconUsers,
@@ -57,7 +60,7 @@ const Dashboard = (props) => {
                     icon: <IconPackage />,
                     label: "Pesanan",
                     value: props.orders.filter(
-                        ({ status }) => status === "Siap Diambil"
+                        ({ status }) => status === "Siap Dikirim"
                     ).length,
                     route: "orders.index",
                 },
@@ -124,8 +127,8 @@ const Dashboard = (props) => {
                     value: props.orders.filter(
                         ({ status, customer_id }) =>
                             customer_id === props.auth.user.id &&
-                            (status === "Belum Siap Diambil" ||
-                                status === "Siap Diambil")
+                            (status === "Belum Siap Dikirim" ||
+                                status === "Siap Dikirim")
                     ).length,
                     route: "orders.index",
                 },
@@ -179,7 +182,7 @@ const Dashboard = (props) => {
     }
 
     orders.reduce((acc, item) => {
-        if (item.status === "Sudah Diambil") {
+        if (item.status === "Sudah D------ambil") {
             const date = new Date(item.updated_at);
             const day = acc[date.getUTCDay()];
             day["Jumlah Pesanan"] += 1;
@@ -330,8 +333,61 @@ const Dashboard = (props) => {
                             md: 5,
                         }}
                     >
-                        <Paper radius={20} withBorder p={32} h="100%">
-                            sdfsfdsdf
+                        <Paper radius={20} withBorder p={40} h="100%">
+                            <ScrollArea
+                                bg="red"
+                                style={{
+                                    flexGrow: 1,
+                                    overflow: "auto",
+                                }}
+                            >
+                                <Timeline
+                                    bg="yellow"
+                                    color="red"
+                                    active={3}
+                                    bulletSize={40}
+                                >
+                                    <Timeline.Item
+                                        bullet={<IconGitBranch size={12} />}
+                                        title="New branch"
+                                    >
+                                        <Text c="dimmed" size="sm">
+                                            You&apos;ve created new branch{" "}
+                                            <Text
+                                                variant="link"
+                                                component="span"
+                                                inherit
+                                            >
+                                                fix-notifications
+                                            </Text>{" "}
+                                            from master
+                                        </Text>
+                                        <Text size="xs" mt={4}>
+                                            2 hours ago
+                                        </Text>
+                                    </Timeline.Item>
+
+                                    <Timeline.Item
+                                        bullet={<IconGitBranch size={12} />}
+                                        title="New branch"
+                                    >
+                                        <Text c="dimmed" size="sm">
+                                            You&apos;ve created new branch{" "}
+                                            <Text
+                                                variant="link"
+                                                component="span"
+                                                inherit
+                                            >
+                                                fix-notifications
+                                            </Text>{" "}
+                                            from master
+                                        </Text>
+                                        <Text size="xs" mt={4}>
+                                            2 hours ago
+                                        </Text>
+                                    </Timeline.Item>
+                                </Timeline>
+                            </ScrollArea>
                         </Paper>
                     </Grid.Col>
                 </Grid>
