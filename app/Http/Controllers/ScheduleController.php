@@ -108,7 +108,7 @@ class ScheduleController extends Controller
         History::create([
             'id' => Str::uuid(),
             'user_id' => Auth::id(),
-            'action' => 'mengubah status pesanan',
+            'action' => 'mengambil pesanan',
         ]);
 
         return redirect()->route('schedule.index')->with('meta', ['status' => true, 'title' => 'Berhasil mengubah status pesanan']);

@@ -9,6 +9,7 @@ const Index = (props) => {
         longitude: 0,
         latitude: 0,
     });
+    
     const [customers, setCustomers] = useState([]);
 
     useEffect(() => {

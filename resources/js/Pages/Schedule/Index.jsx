@@ -23,13 +23,40 @@ import {
     IconPlus,
     IconRoute,
 } from "@tabler/icons-react";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const Index = (props) => {
-    console.log(props);
+    const [orders, setOrders] = useState(props.orders);
+    useEffect(() => {
+        const fetchCustomerDistances = async () => {
+            const customersWithDistance = [];
+
+            navigator.geolocation.getCurrentPosition(async (position) => {
+                for (const order of orders) {
+                    const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${position.coords.longitude},${position.coords.latitude};${order.customer.longitude},${order.customer.latitude}?access_token=pk.eyJ1IjoiZWZ6ZWRlbDE2IiwiYSI6ImNscnhiN2NzYjBiNnQycW51Zmx3ajVjeG8ifQ.EM_vVs0ALH-nDkRQb-WSiA`;
+                    try {
+                        const response = await fetch(url);
+                        const data = await response.json();
+                        const distance = data.routes[0].distance;
+
+                        customersWithDistance.push({
+                            ...order,
+                            distance,
+                        });
+                    } catch (error) {
+                        console.error("Error:", error);
+                    }
+                }
+
+                customersWithDistance.sort((a, b) => a.distance - b.distance);
+                setOrders(customersWithDistance);
+            });
+        };
+
+        fetchCustomerDistances();
+    }, []);
 
     const role = props.auth.user.role;
-
     const createColumn = (id, header, accessor) => ({
         id,
         header,
@@ -38,11 +65,7 @@ const Index = (props) => {
         ),
     });
 
-    const baseColumns = [
-        // createColumn("items_count", "Jumlah Barang", (row) => row.items_count),
-        // createColumn("status", "Status", (row) => (
-        // )),
-    ];
+    const baseColumns = [];
 
     if (role === "admin") {
         baseColumns.unshift(
@@ -246,7 +269,7 @@ const Index = (props) => {
                 <Tabs.Panel value="Belum Diambil">
                     <DataTable
                         columns={notTakenColumns}
-                        data={props.orders.filter(
+                        data={orders.filter(
                             ({ status }) => status === "Belum Diambil"
                         )}
                         renderRowActions={

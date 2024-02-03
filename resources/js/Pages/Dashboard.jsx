@@ -7,17 +7,10 @@ import { AreaChart } from "@mantine/charts";
 import {
     Alert,
     AspectRatio,
-    Box,
     Button,
-    Divider,
-    Flex,
     Grid,
     Group,
-    NumberFormatter,
     Paper,
-    ScrollArea,
-    Select,
-    SimpleGrid,
     Stack,
     Text,
     ThemeIcon,
@@ -25,33 +18,24 @@ import {
     Title,
 } from "@mantine/core";
 import {
-    Icon123,
     IconAlertSmall,
     IconCalendar,
     IconCalendarCheck,
     IconCalendarX,
-    IconGitBranch,
-    IconInfoCircle,
     IconPackage,
     IconUsers,
 } from "@tabler/icons-react";
 
 const Dashboard = (props) => {
-    console.log(props);
-
-    let data;
-
-    switch (props.auth.user.role) {
-        case "admin":
-            data = [
+    const data =
+        {
+            admin: [
                 {
                     color: "violet",
                     icon: <IconCalendar />,
                     label: "Penjadwalan",
-                    value: props.orders.filter(
-                        ({ status }) =>
-                            status === "Sudah Diambil" ||
-                            status === "Belum Diambil"
+                    value: props.orders.filter(({ status }) =>
+                        ["Sudah Diambil", "Belum Diambil"].includes(status)
                     ).length,
                     route: "schedule.index",
                 },
@@ -78,10 +62,8 @@ const Dashboard = (props) => {
                     value: props.couriers.length,
                     route: "couriers.index",
                 },
-            ];
-            break;
-        case "kurir":
-            data = [
+            ],
+            kurir: [
                 {
                     color: "red",
                     icon: <IconCalendarX />,
@@ -104,10 +86,8 @@ const Dashboard = (props) => {
                     ).length,
                     route: "schedule.index",
                 },
-            ];
-            break;
-        case "pelanggan":
-            data = [
+            ],
+            pelanggan: [
                 {
                     color: "violet",
                     icon: <IconCalendar />,
@@ -115,8 +95,7 @@ const Dashboard = (props) => {
                     value: props.orders.filter(
                         ({ status, customer_id }) =>
                             customer_id === props.auth.user.id &&
-                            (status === "Sudah Diambil" ||
-                                status === "Belum Diambil")
+                            ["Sudah Diambil", "Belum Diambil"].includes(status)
                     ).length,
                     route: "schedule.index",
                 },
@@ -127,69 +106,85 @@ const Dashboard = (props) => {
                     value: props.orders.filter(
                         ({ status, customer_id }) =>
                             customer_id === props.auth.user.id &&
-                            (status === "Belum Siap Dikirim" ||
-                                status === "Siap Dikirim")
+                            ["Belum Siap Dikirim", "Siap Dikirim"].includes(
+                                status
+                            )
                     ).length,
                     route: "orders.index",
                 },
-            ];
-            break;
-        default:
-            data = [];
-    }
+            ],
+        }[props.auth.user.role] || [];
 
-    const chartData = [
-        {
-            date: "Minggu",
-            "Jumlah Pesanan": 0,
-        },
-        {
-            date: "Senin",
-            "Jumlah Pesanan": 0,
-        },
-        {
-            date: "Selasa",
-            "Jumlah Pesanan": 0,
-        },
-        {
-            date: "Rabu",
-            "Jumlah Pesanan": 0,
-        },
-        {
-            date: "Kamis",
-            "Jumlah Pesanan": 0,
-        },
-        {
-            date: "Jumat",
-            "Jumlah Pesanan": 0,
-        },
-        {
-            date: "Sabtu",
-            "Jumlah Pesanan": 0,
-        },
-    ];
+    const orders = props.orders.filter(
+        (order) =>
+            (props.auth.user.role === "pelanggan" &&
+                order.customer_id === props.auth.user.id) ||
+            (props.auth.user.role === "kurir" &&
+                order.courier_id === props.auth.user.id) ||
+            props.auth.user.role === "admin"
+    );
 
-    let orders = props.orders;
-
-    if (props.auth.user.role === "pelanggan") {
-        orders = orders.filter(
-            (order) => order.customer_id === props.auth.user.id
-        );
-    } else if (props.auth.user.role === "kurir") {
-        orders = orders.filter(
-            (order) => order.courier_id === props.auth.user.id
+    function getWeekOfYear(date) {
+        const firstDayOfYear = new Date(date.getUTCFullYear(), 0, 1);
+        return Math.ceil(
+            ((date - firstDayOfYear + 86400000) / 86400000 +
+                (firstDayOfYear.getUTCDay() || 7)) /
+                7
         );
     }
 
-    orders.reduce((acc, item) => {
-        if (item.status === "Sudah Diambil") {
-            const date = new Date(item.updated_at);
-            const day = acc[date.getUTCDay()];
-            day["Jumlah Pesanan"] += 1;
-        }
+    function populateChartData(orders) {
+        const chartData = [];
+        const dayNames = [
+            "Minggu",
+            "Senin",
+            "Selasa",
+            "Rabu",
+            "Kamis",
+            "Jumat",
+            "Sabtu",
+        ];
 
-        return acc;
-    }, chartData);
+        orders
+            .filter((item) => item.status === "Sudah Diambil")
+            .forEach((item) => {
+                const date = new Date(item.updated_at);
+                const dayIndex = date.getUTCDay();
+                const week = getWeekOfYear(date);
+                const year = date.getUTCFullYear();
+
+                let yearData =
+                    chartData.find((y) => y.year === year) ||
+                    chartData[chartData.push({ year, weeks: [] }) - 1];
+                let weekData =
+                    yearData.weeks.find((w) => w.week === week) ||
+                    yearData.weeks[
+                        yearData.weeks.push({
+                            week,
+                            days: dayNames.map((dayName) => ({
+                                dayName,
+                                "Jumlah Pesanan": 0,
+                            })),
+                        }) - 1
+                    ];
+
+                weekData.days[dayIndex]["Jumlah Pesanan"] += 1;
+            });
+
+        chartData.forEach((yearData) =>
+            yearData.weeks.sort((a, b) => a.week - b.week)
+        );
+
+        return chartData;
+    }
+
+    const currentDate = new Date();
+    const chartData = populateChartData(orders);
+    const currentYear = currentDate.getUTCFullYear();
+    const currentWeek = getWeekOfYear(currentDate);
+    const currentWeekData = chartData
+        .find((yearData) => yearData.year === currentYear)
+        ?.weeks.find((weekData) => weekData.week === currentWeek);
 
     const colors = [
         "red",
@@ -205,10 +200,9 @@ const Dashboard = (props) => {
         "yellow",
         "orange",
     ];
-    function getRandomColor() {
-        const randomColor = colors[Math.floor(Math.random() * colors.length)];
-        return randomColor;
-    }
+
+    const getRandomColor = () =>
+        colors[Math.floor(Math.random() * colors.length)];
 
     return (
         <AppLayout title={props.title} auth={props.auth.user} meta={props.meta}>
@@ -292,8 +286,12 @@ const Dashboard = (props) => {
                                 </Group>
                                 <AreaChart
                                     h={300}
-                                    data={chartData}
-                                    dataKey="date"
+                                    data={
+                                        currentWeekData
+                                            ? currentWeekData.days
+                                            : []
+                                    }
+                                    dataKey="dayName"
                                     series={[
                                         {
                                             name: "Jumlah Pesanan",
@@ -334,17 +332,35 @@ const Dashboard = (props) => {
                         }}
                     >
                         <Paper radius={20} withBorder p={40} h="100%">
+                            {" "}
+                            <Group mb={20} justify="space-between">
+                                <Title
+                                    order={3}
+                                    c="gray.8"
+                                    fw={500}
+                                    style={{
+                                        whiteSpace: "nowrap",
+                                    }}
+                                >
+                                    Pesanan Sudah Diambil
+                                </Title>
+                            </Group>
                             <Timeline
                                 color="red"
                                 active={props.histories.length}
                                 bulletSize={40}
+                                styles={{
+                                    itemTitle: {
+                                        color: "#343A40",
+                                    },
+                                }}
                             >
                                 {props.histories.map((history) => (
                                     <Timeline.Item
                                         key={history.id}
                                         title={`${history.full_name} ${history.action}`}
                                     >
-                                        <Text size="xs" mt={4}>
+                                        <Text size="xs" mt={4} c="gray.7">
                                             {history.created_at}
                                         </Text>
                                     </Timeline.Item>
