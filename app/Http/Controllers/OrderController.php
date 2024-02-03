@@ -7,6 +7,7 @@ use App\Models\Item;
 use App\Models\Order;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
+use App\Models\History;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -84,6 +85,12 @@ class OrderController extends Controller
                 }
             }
 
+            History::create([
+                'id' => Str::uuid(),
+                'user_id' => Auth::id(),
+                'action' => 'menambahkan pesanan',
+            ]);
+
             return redirect()->route('orders.index')->with('meta', [
                 'status' => true,
                 'title' => 'Berhasil menambahkan pesanan',
@@ -123,7 +130,6 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
-        dd($order->id);
         try {
             $order->update([
                 'status' => $request->status,
@@ -180,6 +186,12 @@ class OrderController extends Controller
                 }
             }
 
+            History::create([
+                'id' => Str::uuid(),
+                'user_id' => Auth::id(),
+                'action' => 'mengubah pesanan',
+            ]);
+
             return redirect()->route('orders.index')->with('meta', [
                 'status' => true,
                 'title' => 'Berhasil mengubah pesanan',
@@ -198,6 +210,12 @@ class OrderController extends Controller
     public function destroy(Order $order)
     {
         $order->delete();
+
+        History::create([
+            'id' => Str::uuid(),
+            'user_id' => Auth::id(),
+            'action' => 'menghapus pesanan',
+        ]);
 
         return redirect()->route('orders.index')->with('meta', [
             'status' => true,

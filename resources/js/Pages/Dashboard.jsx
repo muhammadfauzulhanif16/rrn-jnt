@@ -182,7 +182,7 @@ const Dashboard = (props) => {
     }
 
     orders.reduce((acc, item) => {
-        if (item.status === "Sudah D------ambil") {
+        if (item.status === "Sudah Diambil") {
             const date = new Date(item.updated_at);
             const day = acc[date.getUTCDay()];
             day["Jumlah Pesanan"] += 1;
@@ -334,11 +334,14 @@ const Dashboard = (props) => {
                         }}
                     >
                         <Paper radius={20} withBorder p={40} h="100%">
-                            <Timeline color="red" active={props.histories.length} bulletSize={40}>
+                            <Timeline
+                                color="red"
+                                active={props.histories.length}
+                                bulletSize={40}
+                            >
                                 {props.histories.map((history) => (
                                     <Timeline.Item
                                         key={history.id}
-                                        // bullet={<IconGitBranch size={12} />}
                                         title={`${history.full_name} ${history.action}`}
                                     >
                                         <Text size="xs" mt={4}>

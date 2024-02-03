@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\History;
 use App\Models\Order;
 use App\Models\User;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Illuminate\Support\Str;
 
 class ScheduleController extends Controller
 {
@@ -88,6 +90,12 @@ class ScheduleController extends Controller
             'status' => 'Belum Diambil'
         ]);
 
+        History::create([
+            'id' => Str::uuid(),
+            'user_id' => Auth::id(),
+            'action' => 'menambahkan jadwal',
+        ]);
+
         return redirect()->route('schedule.index')->with('meta', ['status' => true, 'title' => 'Berhasil menambahkan jadwal']);
     }
 
@@ -95,6 +103,12 @@ class ScheduleController extends Controller
     {
         $order->update([
             'status' => 'Sudah Diambil'
+        ]);
+
+        History::create([
+            'id' => Str::uuid(),
+            'user_id' => Auth::id(),
+            'action' => 'mengubah status pesanan',
         ]);
 
         return redirect()->route('schedule.index')->with('meta', ['status' => true, 'title' => 'Berhasil mengubah status pesanan']);

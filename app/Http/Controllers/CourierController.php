@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCourierRequest;
 use App\Http\Requests\UpdateCourierRequest;
+use App\Models\History;
 use App\Models\User;
 use Carbon\Carbon;
 use DateTime;
@@ -64,6 +65,12 @@ class CourierController extends Controller
                     'username' => $courier['username'],
                     'password' => bcrypt($courier['password']),
                 ]);
+
+                History::create([
+                    'id' => Str::uuid(),
+                    'user_id' => auth()->user()->id,
+                    'activity' => 'menambahkan kurir',
+                ]);
             }
 
             return redirect()->route('couriers.index')->with('meta', [
@@ -109,21 +116,20 @@ class CourierController extends Controller
      */
     public function update(Request $request, User $courier)
     {
-        try {
-            $courier->update([
-                'full_name' => $request->full_name,
-            ]);
+        $courier->update([
+            'full_name' => $request->full_name,
+        ]);
 
-            return redirect()->route('couriers.index')->with('meta', [
-                'status' => true,
-                'title' => 'Berhasil mengubah kurir',
-            ]);
-        } catch (\Throwable $th) {
-            return redirect()->back()->with('meta', [
-                'status' => false,
-                'title' => 'Gagal mengubah kurir',
-            ]);
-        }
+        History::create([
+            'id' => Str::uuid(),
+            'user_id' => auth()->user()->id,
+            'action' => 'mengubah kurir',
+        ]);
+
+        return redirect()->route('couriers.index')->with('meta', [
+            'status' => true,
+            'title' => 'Berhasil mengubah kurir',
+        ]);
     }
 
     /**

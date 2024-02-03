@@ -62,7 +62,7 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
             'customers' => User::where('role', 'pelanggan')->get(),
             'orders' => Order::orderBy('created_at', 'desc')->get(),
             // 'schedule' => $schedule
-            'histories' => History::orderBy('created_at', 'desc')->get()->map(function ($history) {
+            'histories' => History::orderBy('created_at', 'desc')->take(5)->get()->map(function ($history) {
                 return [
                     'id' => $history->id,
                     'full_name' => $history->user->full_name,
