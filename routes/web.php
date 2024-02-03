@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\CourierController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ScheduleController;
+use App\Models\History;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Foundation\Application;
@@ -58,8 +60,16 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
             'meta' => session('meta'),
             'couriers' => User::where('role', 'kurir')->get(),
             'customers' => User::where('role', 'pelanggan')->get(),
-            'orders' => Order::orderBy('created_at', 'desc')->get()
+            'orders' => Order::orderBy('created_at', 'desc')->get(),
             // 'schedule' => $schedule
+            'histories' => History::orderBy('created_at', 'desc')->get()->map(function ($history) {
+                return [
+                    'id' => $history->id,
+                    'full_name' => $history->user->full_name,
+                    'action' => $history->action,
+                    'created_at' => $history->created_at->diffForHumans(),
+                ];
+            }),
         ]);
     })->name('dashboard');
 
@@ -81,6 +91,8 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
         ]);
     })->name("schedule.routes");
     Route::put("/schedule/{order}", [ScheduleController::class, 'update'])->name("schedule.update");
+
+    Route::resource('histories', HistoryController::class);
 
     Route::get('/settings', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/settings', [ProfileController::class, 'update'])->name('profile.update');

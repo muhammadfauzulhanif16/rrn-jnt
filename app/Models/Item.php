@@ -14,10 +14,6 @@ class Item extends Model
 
     public $timestamps = false;
 
-    public $hidden = [
-        'order_id',
-    ];
-
     protected $fillable = [
         'receipt_number',
         'order_id',

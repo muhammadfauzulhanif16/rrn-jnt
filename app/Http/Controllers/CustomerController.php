@@ -76,6 +76,7 @@ class CustomerController extends Controller
      */
     public function destroy(User $customer)
     {
+        // dd($customer->id);
         try {
             $customer->delete();
 

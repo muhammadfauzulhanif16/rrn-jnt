@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\History;
 use App\Http\Requests\StoreHistoryRequest;
 use App\Http\Requests\UpdateHistoryRequest;
+use Illuminate\Http\Request;
 
 class HistoryController extends Controller
 {
@@ -27,7 +28,7 @@ class HistoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreHistoryRequest $request)
+    public function store(Request $request)
     {
         //
     }

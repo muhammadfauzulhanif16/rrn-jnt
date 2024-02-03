@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\History;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
@@ -40,12 +41,18 @@ class RegisteredUserController extends Controller
         //     'password' => ['required', 'confirmed', Rules\Password::defaults()],
         // ]);
 
-        User::create([
+        $user = User::create([
             'id' => Str::uuid(),
             'full_name' => $request->full_name,
             'role' => 'pelanggan',
             'username' => $request->username,
             'password' => bcrypt($request->password),
+        ]);
+
+        History::create([
+            'id' => Str::uuid(),
+            'user_id' => $user->id,
+            'action' => 'mendaftar akun',
         ]);
 
         // event(new Registered($user));

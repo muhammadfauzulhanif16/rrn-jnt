@@ -334,60 +334,19 @@ const Dashboard = (props) => {
                         }}
                     >
                         <Paper radius={20} withBorder p={40} h="100%">
-                            <ScrollArea
-                                bg="red"
-                                style={{
-                                    flexGrow: 1,
-                                    overflow: "auto",
-                                }}
-                            >
-                                <Timeline
-                                    bg="yellow"
-                                    color="red"
-                                    active={3}
-                                    bulletSize={40}
-                                >
+                            <Timeline color="red" active={props.histories.length} bulletSize={40}>
+                                {props.histories.map((history) => (
                                     <Timeline.Item
-                                        bullet={<IconGitBranch size={12} />}
-                                        title="New branch"
+                                        key={history.id}
+                                        // bullet={<IconGitBranch size={12} />}
+                                        title={`${history.full_name} ${history.action}`}
                                     >
-                                        <Text c="dimmed" size="sm">
-                                            You&apos;ve created new branch{" "}
-                                            <Text
-                                                variant="link"
-                                                component="span"
-                                                inherit
-                                            >
-                                                fix-notifications
-                                            </Text>{" "}
-                                            from master
-                                        </Text>
                                         <Text size="xs" mt={4}>
-                                            2 hours ago
+                                            {history.created_at}
                                         </Text>
                                     </Timeline.Item>
-
-                                    <Timeline.Item
-                                        bullet={<IconGitBranch size={12} />}
-                                        title="New branch"
-                                    >
-                                        <Text c="dimmed" size="sm">
-                                            You&apos;ve created new branch{" "}
-                                            <Text
-                                                variant="link"
-                                                component="span"
-                                                inherit
-                                            >
-                                                fix-notifications
-                                            </Text>{" "}
-                                            from master
-                                        </Text>
-                                        <Text size="xs" mt={4}>
-                                            2 hours ago
-                                        </Text>
-                                    </Timeline.Item>
-                                </Timeline>
-                            </ScrollArea>
+                                ))}
+                            </Timeline>
                         </Paper>
                     </Grid.Col>
                 </Grid>
