@@ -3,13 +3,21 @@ import { PageHeader } from "@/Components/PageHeader";
 import { AppLayout } from "@/Layouts/AppLayout";
 import { DateTimeFormatter } from "@/Utilities/DateTimeFormatter";
 import { router } from "@inertiajs/react";
-import { Button, Group, ActionIcon, Box, Table, Text, Menu } from "@mantine/core";
+import {
+    Button,
+    Group,
+    ActionIcon,
+    Box,
+    Table,
+    Text,
+    Menu,
+} from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconDots, IconPlus, IconTrash } from "@tabler/icons-react";
 import { useMemo } from "react";
 
 const Index = (props) => {
-    // console.log(props);
+    console.log(props);
     const columns = useMemo(
         () => [
             {
@@ -24,6 +32,32 @@ const Index = (props) => {
                 ),
                 id: "full_name",
                 header: "Nama Lengkap",
+            },
+            {
+                accessorFn: (row) => (
+                    <Text
+                        style={{
+                            whiteSpace: "nowrap",
+                        }}
+                    >
+                        {row.phone_number}
+                    </Text>
+                ),
+                id: "phone_number",
+                header: "Nomor Telepon",
+            },
+            {
+                accessorFn: (row) => (
+                    <Text
+                        style={{
+                            whiteSpace: "nowrap",
+                        }}
+                    >
+                        {row.address}
+                    </Text>
+                ),
+                id: "address",
+                header: "Alamat",
             },
             {
                 accessorFn: (row) => (
@@ -107,7 +141,9 @@ const Index = (props) => {
                                         children:
                                             "Apakah anda yakin ingin menghapus pelanggan ini?",
                                         title: (
-                                            <Text fw={500}>Hapus Pelanggan</Text>
+                                            <Text fw={500}>
+                                                Hapus Pelanggan
+                                            </Text>
                                         ),
                                         centered: true,
                                         withCloseButton: false,

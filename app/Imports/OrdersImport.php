@@ -5,11 +5,12 @@ namespace App\Imports;
 use App\Models\Item;
 use App\Models\Order;
 use Maatwebsite\Excel\Concerns\OnEachRow;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Row;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
-class OrdersImport implements OnEachRow
+class OrdersImport implements OnEachRow, WithHeadingRow
 {
     protected $request;
     protected $order;
@@ -32,9 +33,11 @@ class OrdersImport implements OnEachRow
         $rowIndex = $row->getIndex();
         $row = $row->toArray();
 
+        // dd($row);
+
         if ($rowIndex > 1) { // Skip header row
             Item::create([
-                'receipt_number' => $row[0], // Adjust this if your receipt_number is not in the first column
+                'receipt_number' => $row['nomor_resi'], // Access column by name
                 'order_id' => $this->order->id,
             ]);
         }

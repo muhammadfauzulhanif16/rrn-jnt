@@ -12,6 +12,8 @@ import {
     Text,
     Pill,
     Menu,
+    List,
+    Grid,
 } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import {
@@ -24,6 +26,7 @@ import {
 import { useMemo } from "react";
 
 const Index = (props) => {
+    console.log(props);
     const role = props.auth.user.role;
     const columns = useMemo(() => {
         const createColumn = (id, header, accessor) => ({
@@ -117,6 +120,18 @@ const Index = (props) => {
             <DataTable
                 columns={columns}
                 data={props.orders}
+                renderDetailPanel={({ row }) => (
+                    <List type="ordered">
+                        <Text mb={16} fw={500}>
+                            Nomor Resi
+                        </Text>
+                        {row.original.items.map((item) => (
+                            <List.Item key={item.receipt_number}>
+                                {item.receipt_number}
+                            </List.Item>
+                        ))}
+                    </List>
+                )}
                 renderRowActions={
                     props.auth.user.role === "admin"
                         ? ({ row }) => (

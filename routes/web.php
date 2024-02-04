@@ -62,14 +62,20 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
             'customers' => User::where('role', 'pelanggan')->get(),
             'orders' => Order::orderBy('created_at', 'desc')->get(),
             // 'schedule' => $schedule
-            'histories' => History::orderBy('created_at', 'desc')->take(5)->get()->map(function ($history) {
-                return [
-                    'id' => $history->id,
-                    'full_name' => $history->user->full_name,
-                    'action' => $history->action,
-                    'created_at' => $history->created_at->diffForHumans(),
-                ];
-            }),
+            'histories' => History::when(Auth::user()->role !== 'admin', function ($query) {
+                return $query->where('user_id', Auth::id());
+            })
+                ->orderBy('created_at', 'desc')
+                ->take(5)
+                ->get()
+                ->map(function ($history) {
+                    return [
+                        'id' => $history->id,
+                        'user' => $history->user,
+                        'action' => $history->action,
+                        'created_at' => $history->created_at->diffForHumans(),
+                    ];
+                }),
         ]);
     })->name('dashboard');
 

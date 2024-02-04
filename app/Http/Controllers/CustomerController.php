@@ -20,15 +20,16 @@ class CustomerController extends Controller
             'title' => 'Daftar Pelanggan',
             'meta' => session('meta'),
             'customers' => User::where('role', 'pelanggan')
-                ->get()
-                ->map(function ($user) {
+                ->get()->map(function ($customer) {
                     return [
-                        'id' => $user->id,
-                        'full_name' => $user->full_name,
-                        'created_at' => Carbon::parse($user->created_at)->format('d-m-Y H:i:s'),
-                        'updated_at' => Carbon::parse($user->updated_at)->format('d-m-Y H:i:s'),
+                        'id' => $customer->id,
+                        'full_name' => $customer->full_name,   
+                        'phone_number' => $customer->phone_number,
+                        'address' => $customer->address,
+                        'created_at' => Carbon::parse($customer->created_at)->format('d-m-Y H:i:s'),
+                        'updated_at' => Carbon::parse($customer->updated_at)->format('d-m-Y H:i:s'),
                     ];
-                }),
+                })
         ]);
     }
 

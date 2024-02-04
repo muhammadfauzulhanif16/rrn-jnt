@@ -14,6 +14,8 @@ import {
     Pill,
     Menu,
     Badge,
+    List,
+    Grid,
 } from "@mantine/core";
 import {
     IconCalendarCheck,
@@ -26,6 +28,7 @@ import {
 import { useEffect, useMemo, useState } from "react";
 
 const Index = (props) => {
+    console.log(props);
     const [orders, setOrders] = useState(props.orders);
     useEffect(() => {
         const fetchCustomerDistances = async () => {
@@ -272,6 +275,19 @@ const Index = (props) => {
                         data={orders.filter(
                             ({ status }) => status === "Belum Diambil"
                         )}
+                        renderDetailPanel={({ row }) => (
+                            <List type="ordered">
+                                <Text mb={16} fw={500}>
+                                    Nomor Resi
+                                </Text>
+
+                                {row.original.items.map((item) => (
+                                    <List.Item key={item.receipt_number}>
+                                        {item.receipt_number}
+                                    </List.Item>
+                                ))}
+                            </List>
+                        )}
                         renderRowActions={
                             props.auth.user.role === "kurir" &&
                             (({ row }) => (
@@ -324,6 +340,18 @@ const Index = (props) => {
                         columns={takenColumns}
                         data={props.orders.filter(
                             ({ status }) => status === "Sudah Diambil"
+                        )}
+                        renderDetailPanel={({ row }) => (
+                            <List type="ordered">
+                                <Text mb={16} fw={500}>
+                                    Nomor Resi
+                                </Text>
+                                {row.original.items.map((item) => (
+                                    <List.Item key={item.receipt_number}>
+                                        {item.receipt_number}
+                                    </List.Item>
+                                ))}
+                            </List>
                         )}
                     />
                 </Tabs.Panel>

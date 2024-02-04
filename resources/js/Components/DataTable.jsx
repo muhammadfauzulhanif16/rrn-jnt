@@ -54,6 +54,12 @@ export const DataTable = (props) => {
 
     const table = useMantineReactTable({
         ...props,
+        positionActionsColumn: "last",
+        displayColumnDefOptions: {
+            "mrt-row-actions": {
+                header: "Aksi", //change header text
+            },
+        },positionExpandColumn:"last",
         // columns: props.columns,
         // data: props.data,
         // layoutMode: 'grid',

@@ -39,7 +39,7 @@ class OrderController extends Controller
                 'status' => $order->status,
                 'created_at' => $order->created_at->format('d-m-Y H:i:s'),
                 'updated_at' => $order->updated_at->format('d-m-Y H:i:s'),
-
+                'items' => $order->items
             ];
         });
 

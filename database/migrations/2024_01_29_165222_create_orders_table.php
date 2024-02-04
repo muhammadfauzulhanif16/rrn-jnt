@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('status');
             $table->foreignUuid('customer_id')->constrained('users')->onDelete('cascade');
             $table->uuid('courier_id')->constrained('users')->nullable();
+            $table->boolean('is_auto')->default(false);
             $table->timestamps();
         });
     }

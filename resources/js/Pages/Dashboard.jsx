@@ -171,6 +171,29 @@ const Dashboard = (props) => {
                 weekData.days[dayIndex]["Jumlah Pesanan"] += 1;
             });
 
+        // Add current week if not already present
+        const currentDate = new Date();
+        const currentWeek = getWeekOfYear(currentDate);
+        const currentYear = currentDate.getUTCFullYear();
+        let currentYearData = chartData.find((y) => y.year === currentYear);
+        if (!currentYearData) {
+            currentYearData = { year: currentYear, weeks: [] };
+            chartData.push(currentYearData);
+        }
+        let currentWeekData = currentYearData.weeks.find(
+            (w) => w.week === currentWeek
+        );
+        if (!currentWeekData) {
+            currentWeekData = {
+                week: currentWeek,
+                days: dayNames.map((dayName) => ({
+                    dayName,
+                    "Jumlah Pesanan": 0,
+                })),
+            };
+            currentYearData.weeks.push(currentWeekData);
+        }
+
         chartData.forEach((yearData) =>
             yearData.weeks.sort((a, b) => a.week - b.week)
         );
@@ -185,7 +208,7 @@ const Dashboard = (props) => {
     const currentWeekData = chartData
         .find((yearData) => yearData.year === currentYear)
         ?.weeks.find((weekData) => weekData.week === currentWeek);
-
+    console.log(chartData);
     const colors = [
         "red",
         "pink",
@@ -332,7 +355,6 @@ const Dashboard = (props) => {
                         }}
                     >
                         <Paper radius={20} withBorder p={40} h="100%">
-                            {" "}
                             <Group mb={20} justify="space-between">
                                 <Title
                                     order={3}
@@ -348,7 +370,7 @@ const Dashboard = (props) => {
                             <Timeline
                                 color="red"
                                 active={props.histories.length}
-                                bulletSize={40}
+                                bulletSize={20}
                                 styles={{
                                     itemTitle: {
                                         color: "#343A40",
@@ -358,7 +380,14 @@ const Dashboard = (props) => {
                                 {props.histories.map((history) => (
                                     <Timeline.Item
                                         key={history.id}
-                                        title={`${history.full_name} ${history.action}`}
+                                        title={
+                                            props.auth.user.role === "admin"
+                                                ? `${history.user.full_name} (${history.user.role}) ${history.action}`
+                                                : history.user.id ===
+                                                  props.auth.user.id
+                                                ? history.action
+                                                : ""
+                                        }
                                     >
                                         <Text size="xs" mt={4} c="gray.7">
                                             {history.created_at}
