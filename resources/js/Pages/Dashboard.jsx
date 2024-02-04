@@ -364,7 +364,7 @@ const Dashboard = (props) => {
                                         whiteSpace: "nowrap",
                                     }}
                                 >
-                                    Pesanan Sudah Diambil
+                                  Aktivitas Terkini
                                 </Title>
                             </Group>
                             <Timeline
