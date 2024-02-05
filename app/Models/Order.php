@@ -18,7 +18,8 @@ class Order extends Model
         'status',
         'customer_id',
         'courier_id',
-        'updated_at'
+        'updated_at',
+        'is_auto'
     ];
 
     public function items()

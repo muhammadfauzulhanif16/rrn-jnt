@@ -13,16 +13,26 @@ use Illuminate\Support\Str;
 class OrdersImport implements OnEachRow, WithHeadingRow
 {
     protected $request;
-    protected $order;
+    protected $order_id;
 
     public function __construct($request)
     {
         $this->request = $request;
-        $this->order = Order::create([
-            'id' => Str::uuid(),
-            'status' => $this->request->status,
-            'customer_id' => Auth::id(),
-        ]);
+
+        if ($request->has('order_id')) {
+            $this->order_id = $request->order_id;
+
+            Item::where('order_id', $this->order_id)->delete();
+        } else {
+            $order = Order::create([
+                'id' => Str::uuid(),
+                'status' => $this->request->status,
+                'customer_id' => Auth::id(),
+                'is_auto' => true,
+            ]);
+
+            $this->order_id = $order->id;
+        }
     }
 
     /**
@@ -33,12 +43,10 @@ class OrdersImport implements OnEachRow, WithHeadingRow
         $rowIndex = $row->getIndex();
         $row = $row->toArray();
 
-        // dd($row);
-
         if ($rowIndex > 1) { // Skip header row
             Item::create([
                 'receipt_number' => $row['nomor_resi'], // Access column by name
-                'order_id' => $this->order->id,
+                'order_id' => $this->order_id,
             ]);
         }
     }

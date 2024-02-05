@@ -126,11 +126,7 @@ const Dashboard = (props) => {
 
     function getWeekOfYear(date) {
         const firstDayOfYear = new Date(date.getUTCFullYear(), 0, 1);
-        return Math.ceil(
-            ((date - firstDayOfYear + 86400000) / 86400000 +
-                (firstDayOfYear.getUTCDay() || 7)) /
-                7
-        );
+        return Math.ceil((date - firstDayOfYear + 86400000) / 86400000 / 7);
     }
 
     function populateChartData(orders) {
@@ -149,7 +145,9 @@ const Dashboard = (props) => {
             .filter((item) => item.status === "Sudah Diambil")
             .forEach((item) => {
                 const date = new Date(item.updated_at);
-                const dayIndex = date.getUTCDay();
+
+                const dayIndex = date.getUTCDay() + 1;
+
                 const week = getWeekOfYear(date);
                 const year = date.getUTCFullYear();
 
@@ -304,7 +302,8 @@ const Dashboard = (props) => {
                                             whiteSpace: "nowrap",
                                         }}
                                     >
-                                        Pesanan Sudah Diambil
+                                        Pesanan Sudah Diambil (Pekan ke{" "}
+                                        {currentWeek} di {currentYear})
                                     </Title>
                                 </Group>
                                 <AreaChart
@@ -364,7 +363,7 @@ const Dashboard = (props) => {
                                         whiteSpace: "nowrap",
                                     }}
                                 >
-                                  Aktivitas Terkini
+                                    Aktivitas Terkini
                                 </Title>
                             </Group>
                             <Timeline
@@ -382,10 +381,15 @@ const Dashboard = (props) => {
                                         key={history.id}
                                         title={
                                             props.auth.user.role === "admin"
-                                                ? `${history.user.full_name} (${history.user.role}) ${history.action}`
+                                                ? `${history.user.full_name} (${
+                                                      history.user.role
+                                                  }) ${history.action.toLowerCase()}`
                                                 : history.user.id ===
                                                   props.auth.user.id
                                                 ? history.action
+                                                      .charAt(0)
+                                                      .toUpperCase() +
+                                                  history.action.slice(1)
                                                 : ""
                                         }
                                     >

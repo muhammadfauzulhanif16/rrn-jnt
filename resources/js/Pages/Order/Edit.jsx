@@ -47,7 +47,7 @@ const Edit = (props) => {
 
     const form = useForm({
         status: props.order.status || "Belum Siap Dikirim",
-        items: props.order.items || [
+        items: !props.order.is_auto && props.order.items || [
             {
                 receipt_number: "",
             },
@@ -60,7 +60,7 @@ const Edit = (props) => {
             form.setData("file", file);
         }
     }, [file]);
-  
+
   console.log(form.data);
 
     const addReceiptNumber = () => {
@@ -94,7 +94,11 @@ const Edit = (props) => {
                     e.preventDefault();
 
                     !form.hasErrors &&
-                        form.put(route("orders.update", props.order.id));
+                    form.post(route("orders.store", {
+                        order_id: props.order.id,
+                    }), {
+                        _method: 'put',
+                    });
                 }}
             >
                 <Stack>
@@ -177,7 +181,7 @@ const Edit = (props) => {
                                 <Tabs
                                     color="red.5"
                                     radius="xs"
-                                    defaultValue="manual"
+                                    defaultValue={props.order.is_auto ? "automatic" : "manual"}
                                     styles={{
                                         tab: {
                                             padding: 16,
@@ -189,7 +193,7 @@ const Edit = (props) => {
                                 >
                                     <Tabs.List grow>
                                         <Tabs.Tab
-                                            disabled={file}
+                                            disabled={file || props.order.is_auto}
                                             value="manual"
                                         >
                                             Manual
@@ -202,7 +206,7 @@ const Edit = (props) => {
                                             )}
                                             value="automatic"
                                         >
-                                            Otomatis
+                                            Excel/CSV
                                         </Tabs.Tab>
                                     </Tabs.List>
 

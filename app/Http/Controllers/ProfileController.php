@@ -55,7 +55,7 @@ class ProfileController extends Controller
         History::create([
             'id' => Str::uuid(),
             'user_id' => $request->user()->id,
-            'action' => 'mengubah data diri',
+            'action' => 'Memperbarui data diri',
         ]);
 
         return Redirect::route('profile.edit')->with('meta', [

@@ -66,40 +66,91 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->order_id);
+        if ($request->order_id) {
+            $order = Order::find($request->order_id);
+            $order->update([
+                'status' => $request->status,
+                'customer_id' => Auth::id(),
+            ]);
 
-        try {
-            if ($request->file("file")) {
+            if ($request->hasFile('file')) {
                 Excel::import(new OrdersImport($request), $request->file('file'));
-            } else {
-                $order = Order::create([
-                    'id' => Str::uuid(),
-                    'status' => $request->status,
-                    'customer_id' => Auth::id(),
-                ]);
 
+                $order->update([
+                    'updated_at' => now(),
+                ]);
+            } else {
                 foreach ($request->items as $item) {
-                    Item::create([
-                        'receipt_number' => $item["receipt_number"],
-                        'order_id' => $order->id,
-                    ]);
+                    $itemToUpdate = Item::where('receipt_number', $item['receipt_number'])->first();
+                    if ($itemToUpdate) {
+                        // Update existing item
+                        $itemToUpdate->update([
+                            'receipt_number' => $item['receipt_number'],
+                            'order_id' => $order->id,
+                        ]);
+                    } else {
+                        // Create new item
+                        Item::create([
+                            'receipt_number' => $item['receipt_number'],
+                            'order_id' => $order->id,
+                        ]);
+                    }
                 }
+
+                $receiptNumbers = collect($request->items)->pluck('receipt_number');
+                Item::where('order_id', $order->id)->whereNotIn('receipt_number', $receiptNumbers)->delete();
+
+                $order->update([
+                    'updated_at' => now(),
+                ]);
             }
 
             History::create([
                 'id' => Str::uuid(),
                 'user_id' => Auth::id(),
-                'action' => 'menambahkan pesanan',
+                'action' => 'memperbarui pesanan',
             ]);
 
             return redirect()->route('orders.index')->with('meta', [
                 'status' => true,
-                'title' => 'Berhasil menambahkan pesanan',
+                'title' => 'Berhasil memperbarui pesanan',
             ]);
-        } catch (\Exception $e) {
-            return redirect()->route('orders.index')->with('meta', [
-                'status' => false,
-                'title' => 'Gagal menambahkan pesanan',
-            ]);
+        } else {
+            try {
+                if ($request->file("file")) {
+                    Excel::import(new OrdersImport($request), $request->file('file'));
+                } else {
+                    $order = Order::create([
+                        'id' => Str::uuid(),
+                        'status' => $request->status,
+                        'customer_id' => Auth::id(),
+                    ]);
+
+                    foreach ($request->items as $item) {
+                        Item::create([
+                            'receipt_number' => $item["receipt_number"],
+                            'order_id' => $order->id,
+                        ]);
+                    }
+                }
+
+                History::create([
+                    'id' => Str::uuid(),
+                    'user_id' => Auth::id(),
+                    'action' => 'menambahkan pesanan',
+                ]);
+
+                return redirect()->route('orders.index')->with('meta', [
+                    'status' => true,
+                    'title' => 'Berhasil menambahkan pesanan',
+                ]);
+            } catch (\Exception $e) {
+                return redirect()->route('orders.index')->with('meta', [
+                    'status' => false,
+                    'title' => 'Gagal menambahkan pesanan',
+                ]);
+            }
         }
     }
 
@@ -128,80 +179,9 @@ class OrderController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Order $order)
+    public function updates(Request $request, Order $order)
     {
-        try {
-            $order->update([
-                'status' => $request->status,
-                'customer_id' => Auth::id(),
-            ]);
-
-            if ($request->file("file")) {
-                Excel::import(new OrdersImport($request), $request->file('file'));
-
-                $receiptNumbers = collect($request->items)->pluck('receipt_number');
-                Item::where('order_id', $order->id)->whereNotIn('receipt_number', $receiptNumbers)->delete();
-
-                $order->update([
-                    'updated_at' => now(),
-                ]);
-            } else {
-                if ($order->id) {
-                    foreach ($request->items as $item) {
-                        $itemToUpdate = Item::where('receipt_number', $item['receipt_number'])->first();
-                        if ($itemToUpdate) {
-                            // Update existing item
-                            $itemToUpdate->update([
-                                'receipt_number' => $item["receipt_number"],
-                                'order_id' => $order->id,
-                            ]);
-                        } else {
-                            // Create new item
-                            Item::create([
-                                'receipt_number' => $item["receipt_number"],
-                                'order_id' => $order->id,
-                            ]);
-                        }
-                    }
-
-                    $receiptNumbers = collect($request->items)->pluck('receipt_number');
-                    Item::where('order_id', $order->id)->whereNotIn('receipt_number', $receiptNumbers)->delete();
-
-                    $order->update([
-                        'updated_at' => now(),
-                    ]);
-                } else {
-                    $order = Order::create([
-                        'id' => Str::uuid(),
-                        'status' => $request->status,
-                        'customer_id' => Auth::id(),
-                    ]);
-
-                    foreach ($request->items as $item) {
-                        Item::create([
-                            'receipt_number' => $item["receipt_number"],
-                            'order_id' => $order->id,
-                        ]);
-                    }
-                }
-            }
-
-            History::create([
-                'id' => Str::uuid(),
-                'user_id' => Auth::id(),
-                'action' => 'mengubah pesanan',
-            ]);
-
-            return redirect()->route('orders.index')->with('meta', [
-                'status' => true,
-                'title' => 'Berhasil mengubah pesanan',
-            ]);
-        } catch (\Exception $e) {
-            return redirect()->route('orders.index')->with('meta', [
-                'status' => false,
-                'title' => 'Gagal mengubah pesanan',
-            ]);
-        }
+    
     }
 
     /**

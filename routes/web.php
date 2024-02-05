@@ -104,6 +104,8 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     Route::patch('/settings', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/settings', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+//    Route::patch('/orders/{order}', [OrderController::class, 'updates'])->name('orders.updates');
+
     Route::resources([
         'couriers' => CourierController::class,
         'customers' => CustomerController::class,

@@ -58,7 +58,7 @@ class CourierController extends Controller
     {
         try {
             foreach ($request->couriers as $courier) {
-                User::create([
+                $c = User::create([
                     'id' => Str::uuid(),
                     'full_name' => $courier['full_name'],
                     'role' => 'kurir',
@@ -69,7 +69,7 @@ class CourierController extends Controller
                 History::create([
                     'id' => Str::uuid(),
                     'user_id' => auth()->user()->id,
-                    'activity' => 'menambahkan kurir',
+                    'action' => "menambahkan {$c->full_name} ({$c->role})",
                 ]);
             }
 
@@ -123,7 +123,7 @@ class CourierController extends Controller
         History::create([
             'id' => Str::uuid(),
             'user_id' => auth()->user()->id,
-            'action' => 'mengubah kurir',
+            'action' => "mengubah {$courier->full_name} ({$courier->role})",
         ]);
 
         return redirect()->route('couriers.index')->with('meta', [
@@ -142,7 +142,7 @@ class CourierController extends Controller
 
             return redirect()->route('couriers.index')->with('meta', [
                 'status' => true,
-                'title' => 'Berhasil menghapus kurir',
+                'title' => "menghapus {$courier->full_name} ({$courier->role})",
             ]);
         } catch (\Throwable $th) {
             return redirect()->back()->with('meta', [
