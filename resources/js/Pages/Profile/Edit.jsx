@@ -3,31 +3,26 @@ import { AppLayout } from "@/Layouts/AppLayout";
 import { useForm } from "@inertiajs/react";
 import {
     AspectRatio,
-    Box,
     Button,
     Divider,
     Flex,
     Grid,
-    Group,
     Kbd,
     NumberInput,
     Paper,
     PasswordInput,
-    SimpleGrid,
     Stack,
-    Text,
     TextInput,
     Textarea,
-    Title,
+    Title, Select,
 } from "@mantine/core";
-import { notifications } from "@mantine/notifications";
 import {
     IconAt,
     IconCornerDownLeft,
     IconHome,
     IconId,
     IconPassword,
-    IconPhone,
+    IconPhone, IconStatusChange, IconSwitch, IconSwitch3, IconWeight,
 } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 
@@ -37,29 +32,14 @@ const Edit = (props) => {
         latitude: props.auth.user.latitude || 0,
     });
 
-    console.log(currentPosition);
-
-    // useEffect(() => {
-    //     if (navigator.geolocation) {
-    //         navigator.geolocation.getCurrentPosition((position) => {
-    //             setCurrentPosition({
-    //                 longitude: position.coords.longitude,
-    //                 latitude: position.coords.latitude,
-    //             });
-    //         });
-    //     } else {
-    //         console.log("Geolocation is not supported by this browser.");
-    //     }
-    // }, []);
-
-    console.log(currentPosition);
-
     const form = useForm({
         full_name: props.auth.user.full_name || "",
         phone_number: props.auth.user.phone_number || "",
         address: props.auth.user.address || "",
         longitude: currentPosition.longitude,
         latitude: currentPosition.latitude,
+        transportation_type:  props.auth.user.transportation_type || "",
+        transportation_capacity: props.auth.user.transportation_capacity || 0,
         username: props.auth.user.username || "",
         password: props.auth.user.password || "",
     });
@@ -234,6 +214,89 @@ const Edit = (props) => {
                                                     }
                                                 />
                                             </AspectRatio>
+                                        </>
+                                    )}
+
+                                    {props.auth.user.role === "kurir" && (
+                                        <>
+                                            <Select
+                                                label="Jenis Transportasi"
+                                                placeholder="Pilih jenis transportasi"
+                                                variant="filled"
+                                                radius="xl"
+                                                data={['Motor', 'Mobil']}
+                                                leftSection={
+                                                    <IconSwitch3 size={16} />
+                                                }
+                                                styles={{
+                                                    label: {
+                                                        marginBottom: 8,
+                                                    },
+                                                    input: {
+                                                        height: 40,
+                                                    },
+                                                }}
+                                                value={form.data.transportation_type}
+                                                onChange={(value) => {
+                                                    form.setData(
+                                                        "transportation_type",
+                                                        value
+                                                    );
+
+                                                    if (!value) {
+                                                        form.setError({
+                                                            transportation_type:
+                                                                "Jenis transportasi tidak boleh kosong.",
+                                                        });
+                                                    } else {
+                                                        form.clearErrors(
+                                                            "transportation_type"
+                                                        );
+                                                    }
+                                                }}
+                                                error={form.errors.transportation_type}
+                                            />
+
+                                            <NumberInput
+                                                label="Kapasitas Kendaraan"
+                                                placeholder="Masukkan kapasitas kendaraan"
+                                                leftSection={
+                                                    <IconWeight size={16} />
+                                                }
+                                                hideControls
+                                                allowNegative={false}
+                                                allowDecimal={false}
+                                                variant="filled"
+                                                radius="xl"
+                                                styles={{
+                                                    label: {
+                                                        marginBottom: 8,
+                                                        color: "#212529",
+                                                    },
+                                                    input: {
+                                                        height: 40,
+                                                    },
+                                                }}
+                                                value={form.data.transportation_capacity}
+                                                onChange={(value) => {
+                                                    form.setData(
+                                                        "transportation_capacity",
+                                                        value
+                                                    );
+
+                                                    if (!value) {
+                                                        form.setError({
+                                                            transportation_capacity:
+                                                                "Kapasitas kendaraan tidak boleh kosong.",
+                                                        });
+                                                    } else {
+                                                        form.clearErrors(
+                                                            "transportation_capacity"
+                                                        );
+                                                    }
+                                                }}
+                                                error={form.errors.transportation_capacity}
+                                            />
                                         </>
                                     )}
                                 </Stack>

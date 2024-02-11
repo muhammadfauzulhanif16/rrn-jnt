@@ -53,9 +53,11 @@ const Create = (props) => {
             items_count: props.order.items.length,
         },
         schedule: {
-            courier_id: "",
+            taken_on: new Date(),
         },
     });
+
+    console.log(form.data);
 
     return (
         <AppLayout title={props.title} auth={props.auth.user} meta={props.meta}>
@@ -157,56 +159,90 @@ const Create = (props) => {
                         >
                             <Paper p={32} radius={20} withBorder>
                                 <Stack gap={24}>
-                                    <Select
-                                        label="Kurir"
-                                        placeholder="Pilih kurir"
-                                        variant="filled"
-                                        radius="xl"
-                                        checkIconPosition="right"
-                                        withScrollArea={false}
-                                        value={form.data.schedule.courier_id}
-                                        data={props.couriers.map(
-                                            ({ id, full_name }) => ({
-                                                label: full_name,
-                                                value: id,
-                                            })
-                                        )}
-                                        leftSection={
-                                            <IconStatusChange size={16} />
-                                        }
+                                    <DateTimePicker
                                         styles={{
                                             label: {
                                                 marginBottom: 8,
                                             },
-                                            dropdown: {
-                                                padding: 4,
+                                            input: {
                                                 borderRadius: 20,
-                                            },
-
-                                            option: {
-                                                borderRadius: 20,
-                                            },
+                                                height: 40,
+                                            }
                                         }}
+                                        defaultValue={new Date()}
+                                        label="Waktu Pengambilan"
+                                        placeholder="Masukkan waktu pengambilan"
                                         onChange={(value) => {
                                             form.setData((prevForm) => {
                                                 return {
                                                     ...prevForm,
                                                     schedule: {
                                                         ...prevForm.schedule,
-                                                        courier_id: value,
+                                                        taken_on: value,
                                                     },
                                                 };
                                             });
 
                                             if (!value) {
                                                 form.setError(
-                                                    "schedule.courier_id",
-                                                    "Kurir tidak boleh kosong"
+                                                    "schedule.taken_on",
+                                                    "Waktu pengambilan tidak boleh kosong"
                                                 );
                                             }
                                         }}
-                                        error={form.errors.schedule?.courier_id}
+                                        error={form.errors.schedule?.taken_on}
                                     />
+
+                                    {/*<Select*/}
+                                    {/*    label="Kurir"*/}
+                                    {/*    placeholder="Pilih kurir"*/}
+                                    {/*    variant="filled"*/}
+                                    {/*    radius="xl"*/}
+                                    {/*    checkIconPosition="right"*/}
+                                    {/*    withScrollArea={false}*/}
+                                    {/*    value={form.data.schedule.courier_id}*/}
+                                    {/*    data={props.couriers.map(*/}
+                                    {/*        ({ id, full_name }) => ({*/}
+                                    {/*            label: full_name,*/}
+                                    {/*            value: id,*/}
+                                    {/*        })*/}
+                                    {/*    )}*/}
+                                    {/*    leftSection={*/}
+                                    {/*        <IconStatusChange size={16} />*/}
+                                    {/*    }*/}
+                                    {/*    styles={{*/}
+                                    {/*        label: {*/}
+                                    {/*            marginBottom: 8,*/}
+                                    {/*        },*/}
+                                    {/*        dropdown: {*/}
+                                    {/*            padding: 4,*/}
+                                    {/*            borderRadius: 20,*/}
+                                    {/*        },*/}
+
+                                    {/*        option: {*/}
+                                    {/*            borderRadius: 20,*/}
+                                    {/*        },*/}
+                                    {/*    }}*/}
+                                    {/*    onChange={(value) => {*/}
+                                    {/*        form.setData((prevForm) => {*/}
+                                    {/*            return {*/}
+                                    {/*                ...prevForm,*/}
+                                    {/*                schedule: {*/}
+                                    {/*                    ...prevForm.schedule,*/}
+                                    {/*                    courier_id: value,*/}
+                                    {/*                },*/}
+                                    {/*            };*/}
+                                    {/*        });*/}
+
+                                    {/*        if (!value) {*/}
+                                    {/*            form.setError(*/}
+                                    {/*                "schedule.courier_id",*/}
+                                    {/*                "Kurir tidak boleh kosong"*/}
+                                    {/*            );*/}
+                                    {/*        }*/}
+                                    {/*    }}*/}
+                                    {/*    error={form.errors.schedule?.courier_id}*/}
+                                    {/*/>*/}
                                 </Stack>
                             </Paper>
                         </Grid.Col>

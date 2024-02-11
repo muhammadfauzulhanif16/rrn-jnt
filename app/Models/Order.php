@@ -19,7 +19,8 @@ class Order extends Model
         'customer_id',
         'courier_id',
         'updated_at',
-        'is_auto'
+        'is_auto',
+        'taken_on',
     ];
 
     public function items()

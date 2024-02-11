@@ -47,6 +47,8 @@ class ProfileController extends Controller
                 'address' => $request->address,
                 'longitude' => $request->longitude,
                 'latitude' => $request->latitude,
+                'transportation_type' => $request->transportation_type,
+                'transportation_capacity' => $request->transportation_capacity,
                 'username' => $request->username,
                 'password' => $request->password ? bcrypt($request->password) : $request->user()->password,
             ]

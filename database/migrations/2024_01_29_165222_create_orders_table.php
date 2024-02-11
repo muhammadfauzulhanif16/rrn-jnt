@@ -15,8 +15,9 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('status');
             $table->foreignUuid('customer_id')->constrained('users')->onDelete('cascade');
-            $table->uuid('courier_id')->constrained('users')->nullable();
+            $table->uuid('courier_id')->constrained('users')->nullable()->onDelete('cascade');
             $table->boolean('is_auto')->default(false);
+            $table->timestamp('taken_on')->nullable();
             $table->timestamps();
         });
     }

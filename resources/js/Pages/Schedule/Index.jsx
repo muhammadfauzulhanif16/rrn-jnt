@@ -28,7 +28,6 @@ import {
 import { useEffect, useMemo, useState } from "react";
 
 const Index = (props) => {
-    console.log(props);
     const [orders, setOrders] = useState(props.orders);
     useEffect(() => {
         const fetchCustomerDistances = async () => {
@@ -90,7 +89,8 @@ const Index = (props) => {
                     {row.status}
                 </Pill>
             )),
-            createColumn("courier_name", "Kurir", (row) => row.courier_name)
+            createColumn("courier_name", "Kurir", (row) => row.courier_name),
+            createColumn("taken_on", "Harus Diambil Pada", (row) => row.taken_on)
         );
     }
 
@@ -113,7 +113,8 @@ const Index = (props) => {
                 >
                     {row.status}
                 </Pill>
-            ))
+            )),
+            createColumn("taken_on", "Harus Diambil Pada", (row) => row.taken_on)
         );
     }
 
@@ -132,7 +133,8 @@ const Index = (props) => {
                     {row.status}
                 </Pill>
             )),
-            createColumn("courier_name", "Kurir", (row) => row.courier_name)
+            createColumn("courier_name", "Kurir", (row) => row.courier_name),
+            createColumn("taken_on", "Harus Diambil Pada", (row) => row.taken_on)
         );
     }
 

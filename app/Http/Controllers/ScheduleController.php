@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\History;
 use App\Models\Order;
 use App\Models\User;
+use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -28,6 +29,7 @@ class ScheduleController extends Controller
                     'items_count' => $order->items->count(),
                     'status' => $order->status,
                     'courier_name' => $order->courier->full_name,
+                    'taken_on' => $order->taken_on ? Carbon::parse($order->taken_on)->format('d-m-Y H:i:s') : '-',
                     'updated_at' => $order->updated_at->format('d-m-Y H:i:s'),
                     'created_at' => $order->created_at->format('d-m-Y H:i:s'),
                     'customer' => $order->customer,
@@ -43,6 +45,7 @@ class ScheduleController extends Controller
                     'items_count' => $order->items->count(),
                     'status' => $order->status,
                     'courier_name' => $order->courier->full_name,
+                    'taken_on' => $order->taken_on ? Carbon::parse($order->taken_on)->format('d-m-Y H:i:s') : '-',
                     'updated_at' => $order->updated_at->format('d-m-Y H:i:s'),
                     'created_at' => $order->created_at->format('d-m-Y H:i:s'),
                     'customer' => $order->customer,
@@ -58,6 +61,7 @@ class ScheduleController extends Controller
                     'customer_name' => $order->customer->full_name,
                     'items_count' => $order->items->count(),
                     'status' => $order->status,
+                    'taken_on' => $order->taken_on ? Carbon::parse($order->taken_on)->format('d-m-Y H:i:s') : '-',
                     'updated_at' => $order->updated_at->format('d-m-Y H:i:s'),
                     'created_at' => $order->created_at->format('d-m-Y H:i:s'),
                     'customer' => $order->customer,
@@ -85,18 +89,55 @@ class ScheduleController extends Controller
 
     public function store(Request $request, Order $order)
     {
-        $order->update([
-            'courier_id' => $request->schedule['courier_id'],
-            'status' => 'Belum Diambil'
-        ]);
+        // Retrieve all couriers with the type of transportation "motorbike"
+        $couriers = User::where('role', 'kurir')->where('transportation_type', 'Motor')->get();
 
-        History::create([
-            'id' => Str::uuid(),
-            'user_id' => Auth::id(),
-            'action' => 'menambahkan jadwal',
-        ]);
+        $selectedCourier = null;
 
-        return redirect()->route('schedule.index')->with('meta', ['status' => true, 'title' => 'Berhasil menambahkan jadwal']);
+        foreach ($couriers as $courier) {
+            // Calculate the total items_count of the courier's orders
+            $totalItemsCount = Order::where('courier_id', $courier->id)->withCount('items')->get()->sum('items_count');
+
+            // Check if the courier's transportation capacity minus the total items_count is greater than or equal to the items_count of the new order
+            if ($courier->transportation_capacity - $totalItemsCount >= $order->items()->count()) {
+                $selectedCourier = $courier;
+                break;
+            }
+        }
+
+        // If no courier with "motorbike" type of transportation was selected, try to select a courier with "car" type of transportation
+        if (!$selectedCourier) {
+            $couriers = User::where('role', 'kurir')->where('transportation_type', 'Mobil')->get();
+
+            foreach ($couriers as $courier) {
+                // Calculate the total items_count of the courier's orders
+                $totalItemsCount = Order::where('courier_id', $courier->id)->withCount('items')->get()->sum('items_count');
+
+                // Check if the courier's transportation capacity minus the total items_count is greater than or equal to the items_count of the new order
+                if ($courier->transportation_capacity - $totalItemsCount >= $order->items()->count()) {
+                    $selectedCourier = $courier;
+                    break;
+                }
+            }
+        }
+
+        if ($selectedCourier) {
+            $order->update([
+                'courier_id' => $selectedCourier->id,
+                'taken_on' => Carbon::parse($request->schedule['taken_on'])->format('Y-m-d H:i:s'),
+                'status' => 'Belum Diambil'
+            ]);
+
+            History::create([
+                'id' => Str::uuid(),
+                'user_id' => Auth::id(),
+                'action' => 'menambahkan jadwal',
+            ]);
+
+            return redirect()->route('schedule.index')->with('meta', ['status' => true, 'title' => 'Berhasil menambahkan jadwal']);
+        } else {
+            return redirect()->route('schedule.index')->with('meta', ['status' => false, 'title' => 'Tidak ada kurir yang tersedia']);
+        }
     }
 
     public function update(Order $order)
