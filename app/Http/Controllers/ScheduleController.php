@@ -87,6 +87,59 @@ class ScheduleController extends Controller
         ]);
     }
 
+//    public function store(Request $request, Order $order)
+//    {
+//        // Retrieve all couriers with the type of transportation "motorbike"
+//        $couriers = User::where('role', 'kurir')->where('transportation_type', 'Motor')->get();
+//
+//        $selectedCourier = null;
+//
+//        foreach ($couriers as $courier) {
+//            // Calculate the total items_count of the courier's orders
+//            $totalItemsCount = Order::where('courier_id', $courier->id)->withCount('items')->get()->sum('items_count');
+//
+//            // Check if the courier's transportation capacity minus the total items_count is greater than or equal to the items_count of the new order
+//            if ($courier->transportation_capacity - $totalItemsCount >= $order->items()->count()) {
+//                $selectedCourier = $courier;
+//                break;
+//            }
+//        }
+//
+//        // If no courier with "motorbike" type of transportation was selected, try to select a courier with "car" type of transportation
+//        if (!$selectedCourier) {
+//            $couriers = User::where('role', 'kurir')->where('transportation_type', 'Mobil')->get();
+//
+//            foreach ($couriers as $courier) {
+//                // Calculate the total items_count of the courier's orders
+//                $totalItemsCount = Order::where('courier_id', $courier->id)->withCount('items')->get()->sum('items_count');
+//
+//                // Check if the courier's transportation capacity minus the total items_count is greater than or equal to the items_count of the new order
+//                if ($courier->transportation_capacity - $totalItemsCount >= $order->items()->count()) {
+//                    $selectedCourier = $courier;
+//                    break;
+//                }
+//            }
+//        }
+//
+//        if ($selectedCourier) {
+//            $order->update([
+//                'courier_id' => $selectedCourier->id,
+//                'taken_on' => Carbon::parse($request->schedule['taken_on'])->format('Y-m-d H:i:s'),
+//                'status' => 'Belum Diambil'
+//            ]);
+//
+//            History::create([
+//                'id' => Str::uuid(),
+//                'user_id' => Auth::id(),
+//                'action' => 'menambahkan jadwal',
+//            ]);
+//
+//            return redirect()->route('schedule.index')->with('meta', ['status' => true, 'title' => 'Berhasil menambahkan jadwal']);
+//        } else {
+//            return redirect()->route('schedule.index')->with('meta', ['status' => false, 'title' => 'Tidak ada kurir yang tersedia']);
+//        }
+//    }
+
     public function store(Request $request, Order $order)
     {
         // Retrieve all couriers with the type of transportation "motorbike"
@@ -94,12 +147,27 @@ class ScheduleController extends Controller
 
         $selectedCourier = null;
 
+        $takenOn = Carbon::parse($request->schedule['taken_on']);
+
         foreach ($couriers as $courier) {
-            // Calculate the total items_count of the courier's orders
-            $totalItemsCount = Order::where('courier_id', $courier->id)->withCount('items')->get()->sum('items_count');
+            // Calculate the total items_count of the courier's orders on the same "taken_on" date
+            $totalItemsCount = Order::where('courier_id', $courier->id)
+                ->whereDate('taken_on', $takenOn->format('Y-m-d'))
+                ->withCount('items')->get()->sum('items_count');
 
             // Check if the courier's transportation capacity minus the total items_count is greater than or equal to the items_count of the new order
             if ($courier->transportation_capacity - $totalItemsCount >= $order->items()->count()) {
+                // Check if the courier has already delivered goods to the customer on the same "taken_on" date
+                $previousOrder = Order::where('courier_id', $courier->id)
+                    ->where('customer_id', $order->customer_id)
+                    ->whereDate('taken_on', $takenOn->format('Y-m-d'))
+                    ->first();
+
+                if ($previousOrder) {
+                    // If the courier has already delivered goods to the customer on the same "taken_on" date, continue the loop to select another courier
+                    continue;
+                }
+
                 $selectedCourier = $courier;
                 break;
             }
@@ -110,11 +178,24 @@ class ScheduleController extends Controller
             $couriers = User::where('role', 'kurir')->where('transportation_type', 'Mobil')->get();
 
             foreach ($couriers as $courier) {
-                // Calculate the total items_count of the courier's orders
-                $totalItemsCount = Order::where('courier_id', $courier->id)->withCount('items')->get()->sum('items_count');
+                // Calculate the total items_count of the courier's orders on the same "taken_on" date
+                $totalItemsCount = Order::where('courier_id', $courier->id)
+                    ->whereDate('taken_on', $takenOn->format('Y-m-d'))
+                    ->withCount('items')->get()->sum('items_count');
 
                 // Check if the courier's transportation capacity minus the total items_count is greater than or equal to the items_count of the new order
                 if ($courier->transportation_capacity - $totalItemsCount >= $order->items()->count()) {
+                    // Check if the courier has already delivered goods to the customer on the same "taken_on" date
+                    $previousOrder = Order::where('courier_id', $courier->id)
+                        ->where('customer_id', $order->customer_id)
+                        ->whereDate('taken_on', $takenOn->format('Y-m-d'))
+                        ->first();
+
+                    if ($previousOrder) {
+                        // If the courier has already delivered goods to the customer on the same "taken_on" date, continue the loop to select another courier
+                        continue;
+                    }
+
                     $selectedCourier = $courier;
                     break;
                 }
@@ -124,7 +205,7 @@ class ScheduleController extends Controller
         if ($selectedCourier) {
             $order->update([
                 'courier_id' => $selectedCourier->id,
-                'taken_on' => Carbon::parse($request->schedule['taken_on'])->format('Y-m-d H:i:s'),
+                'taken_on' => $takenOn->format('Y-m-d H:i:s'),
                 'status' => 'Belum Diambil'
             ]);
 

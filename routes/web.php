@@ -83,17 +83,25 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     Route::get("/schedule/create/{order}", [ScheduleController::class, 'create'])->name("schedule.create");
     Route::post("/schedule/{order}", [ScheduleController::class, 'store'])->name("schedule.store");
     Route::get("/schedule/routes", function () {
+        $query = User::with('orders.customer')->whereHas('orders');
+
+        if (auth()->user()->role !== 'admin') {
+            $query->where('id', auth()->id());
+        }
+
+        $couriers = $query->get()
+            ->map(function ($courier) {
+                return [
+                    'courier' => $courier,
+                    'customers' => $courier->orders->map(function ($order) {
+                        return $order->customer;
+                    })->unique('id')->values()
+                ];
+            });
+
         return Inertia::render('Schedule/Routes', [
             'title' => 'Rute Pengiriman',
-            // 'meta' => session('meta'),
-            'customers' => Order::where('courier_id', Auth::user()->id)
-                ->whereIn('status', ['Belum Diambil'])
-                ->get()
-                ->map(function ($order) {
-                    return $order->customer;
-                })
-                ->unique('id')
-                ->values()
+            'couriers' => $couriers
         ]);
     })->name("schedule.routes");
     Route::put("/schedule/{order}", [ScheduleController::class, 'update'])->name("schedule.update");

@@ -153,7 +153,7 @@ const Index = (props) => {
             <PageHeader
                 title={props.title}
                 actions={
-                    props.auth.user.role === "kurir" && (
+                    props.auth.user.role !== "pelanggan" && (
                         <>
                             <Button
                                 disabled={
