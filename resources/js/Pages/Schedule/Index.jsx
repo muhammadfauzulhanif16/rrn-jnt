@@ -28,6 +28,7 @@ import {
 import { useEffect, useMemo, useState } from "react";
 
 const Index = (props) => {
+    console.log(props);
     const [orders, setOrders] = useState(props.orders);
     useEffect(() => {
         const fetchCustomerDistances = async () => {

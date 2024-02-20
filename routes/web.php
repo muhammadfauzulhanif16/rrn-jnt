@@ -84,11 +84,11 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     Route::post("/schedule/{order}", [ScheduleController::class, 'store'])->name("schedule.store");
     Route::get("/schedule/routes", function () {
         $query = User::with('orders.customer')->whereHas('orders');
-
+    
         if (auth()->user()->role !== 'admin') {
             $query->where('id', auth()->id());
         }
-
+    
         $couriers = $query->get()
             ->map(function ($courier) {
                 return [
@@ -98,7 +98,11 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
                     })->unique('id')->values()
                 ];
             });
-
+    
+        if (auth()->user()->role !== 'admin') {
+            $couriers = $couriers->first();
+        }
+    
         return Inertia::render('Schedule/Routes', [
             'title' => 'Rute Pengiriman',
             'couriers' => $couriers

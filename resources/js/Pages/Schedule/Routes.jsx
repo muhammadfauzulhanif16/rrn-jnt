@@ -1,19 +1,22 @@
 import { MapRoutes } from "@/Components/Map/MapRoutes";
 import { PageHeader } from "@/Components/PageHeader";
 import { AppLayout } from "@/Layouts/AppLayout";
-import {ActionIcon, AspectRatio, Button, Paper, Select} from "@mantine/core";
+import { ActionIcon, AspectRatio, Button, Paper, Select } from "@mantine/core";
 import { useState, useEffect } from "react";
-import {IconRoute, IconSwitch3, IconUser} from "@tabler/icons-react";
-import {router} from "@inertiajs/react";
+import { IconRoute, IconSwitch3, IconUser } from "@tabler/icons-react";
+import { router } from "@inertiajs/react";
 
 const Index = (props) => {
+    // console.log(
+    //     props.couriers.find(({ courier }) => courier.id === props.auth.user.id)
+    // );
+    console.log(props);
     const [currentPosition, setCurrentPosition] = useState({
         longitude: 0,
         latitude: 0,
     });
 
-
-    const [courier, setCourier] = useState({});
+    const [courier, setCourier] = useState(props.couriers || {});
     const [customers, setCustomers] = useState([]);
 
     useEffect(() => {
@@ -61,42 +64,49 @@ const Index = (props) => {
         fetchCustomerDistances(courier.customers);
     }, [courier, currentPosition]);
 
-
     return (
         <AppLayout title={props.title} auth={props.auth.user} meta={props.meta}>
-            <PageHeader title={props.title} actions={
-                props.auth.user.role === "admin" && (
-                    <Select
-                        placeholder="Pilih kurir"
-                        variant="filled"
-                        radius="xl"
-                        data={props.couriers.map(({courier}) => {
-                            return {
-                                value: courier.id,
-                                label: courier.full_name,
-                            }
-                        })}
-                        leftSection={
-                            <IconUser size={16} />
-                        }
-                        styles={{
-                            label: {
-                                marginBottom: 8,
-                            },
-                            input: {
-                                height: 40,
-                            },
-                        }}
-                        onChange={(value) => {
-                            setCourier(props.couriers.find(({courier}) => courier.id === value));
-                        }}
-                    />
-                )
-            } />
+            <PageHeader
+                title={props.title}
+                actions={
+                    props.auth.user.role === "admin" && (
+                        <Select
+                            placeholder="Pilih kurir"
+                            variant="filled"
+                            radius="xl"
+                            data={props.couriers.map(({ courier }) => {
+                                return {
+                                    value: courier.id,
+                                    label: courier.full_name,
+                                };
+                            })}
+                            leftSection={<IconUser size={16} />}
+                            styles={{
+                                label: {
+                                    marginBottom: 8,
+                                },
+                                input: {
+                                    height: 40,
+                                },
+                            }}
+                            onChange={(value) => {
+                                setCourier(
+                                    props.couriers.find(
+                                        ({ courier }) => courier.id === value
+                                    )
+                                );
+                            }}
+                        />
+                    )
+                }
+            />
 
             <Paper radius={20} withBorder p={32}>
                 <AspectRatio ratio={16 / 9}>
-                    <MapRoutes customers={customers} />
+                    <MapRoutes
+                        customers={customers}
+                        isAdmin={props.auth.user.role === "admin"}
+                    />
                 </AspectRatio>
             </Paper>
         </AppLayout>

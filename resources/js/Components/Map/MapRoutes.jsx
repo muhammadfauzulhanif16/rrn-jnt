@@ -7,8 +7,6 @@ mapboxgl.accessToken =
     "pk.eyJ1IjoiZWZ6ZWRlbDE2IiwiYSI6ImNscnhiN2NzYjBiNnQycW51Zmx3ajVjeG8ifQ.EM_vVs0ALH-nDkRQb-WSiA";
 
 export const MapRoutes = (props) => {
-    console.log(props, "props")
-    // console.log(props.customers, "customers");
     const mapContainer = useRef(null);
     const map = useRef(null);
     const markers = useRef([]);
@@ -17,7 +15,6 @@ export const MapRoutes = (props) => {
         if (map.current) return;
 
         if (!props.customers || props.customers.length === 0) {
-
             return;
         }
 
@@ -55,7 +52,8 @@ export const MapRoutes = (props) => {
                     const el = document.createElement("div");
                     el.className =
                         index === 0 ? "marker start-marker" : "marker";
-                    el.style.backgroundColor = index === 0 ? "#FF6B6B" : "#339AF0";
+                    el.style.backgroundColor =
+                        index === 0 ? "#FF6B6B" : "#339AF0";
                     el.style.width = "30px";
                     el.style.height = "30px";
                     el.style.borderRadius = "50%";
@@ -76,46 +74,6 @@ export const MapRoutes = (props) => {
                 updateRoute();
             });
         });
-    }, [props.customers]);
-
-    useEffect(() => {
-        if (map.current && props.customers && props.customers.length > 0) {
-            // Remove existing markers from the map
-            markers.current.forEach((marker) => marker.remove());
-            markers.current = [];
-
-            // Add new markers to the map
-            const coordinates = [
-                [map.current.getCenter().lng, map.current.getCenter().lat],
-                ...props.customers.map((customer) => [
-                    customer.longitude,
-                    customer.latitude,
-                ]),
-            ];
-
-            coordinates.forEach((coordinate, index) => {
-                const el = document.createElement('div');
-                el.className = index === 0 ? 'marker start-marker' : 'marker';
-                el.style.backgroundColor = index === 0 ? '#FF6B6B' : '#339AF0';
-                el.style.width = '30px';
-                el.style.height = '30px';
-                el.style.borderRadius = '50%';
-                el.style.display = 'flex';
-                el.style.justifyContent = 'center';
-                el.style.alignItems = 'center';
-                el.style.color = 'white';
-                el.innerText = index;
-
-                const marker = new mapboxgl.Marker(el)
-                    .setLngLat(coordinate)
-                    .addTo(map.current);
-
-                markers.current.push(marker);
-            });
-
-            // Update the route
-            updateRoute();
-        }
     }, [props.customers]);
 
     const updateRoute = () => {
@@ -168,8 +126,6 @@ export const MapRoutes = (props) => {
                             },
                         });
                     }
-
-
                 } else {
                     console.error(
                         "No routes returned from the Mapbox Directions API"

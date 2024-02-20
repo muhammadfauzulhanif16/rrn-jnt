@@ -28,7 +28,7 @@ class ScheduleController extends Controller
                     'customer_name' => $order->customer->full_name,
                     'items_count' => $order->items->count(),
                     'status' => $order->status,
-                    'courier_name' => $order->courier->full_name,
+                    'courier_name' => "{$order->courier->full_name} ({$order->courier->transportation_type} - maks {$order->courier->transportation_capacity} barang)",
                     'taken_on' => $order->taken_on ? Carbon::parse($order->taken_on)->format('d-m-Y H:i:s') : '-',
                     'updated_at' => $order->updated_at->format('d-m-Y H:i:s'),
                     'created_at' => $order->created_at->format('d-m-Y H:i:s'),
@@ -44,7 +44,7 @@ class ScheduleController extends Controller
                     'id' => $order->id,
                     'items_count' => $order->items->count(),
                     'status' => $order->status,
-                    'courier_name' => $order->courier->full_name,
+                    'courier_name' => "{$order->courier->full_name} ({$order->courier->transportation_type} - maks {$order->courier->transportation_capacity} barang)",
                     'taken_on' => $order->taken_on ? Carbon::parse($order->taken_on)->format('d-m-Y H:i:s') : '-',
                     'updated_at' => $order->updated_at->format('d-m-Y H:i:s'),
                     'created_at' => $order->created_at->format('d-m-Y H:i:s'),
@@ -86,59 +86,6 @@ class ScheduleController extends Controller
             'couriers' => User::where('role', 'kurir')->orderBy('full_name', 'asc')->get()
         ]);
     }
-
-//    public function store(Request $request, Order $order)
-//    {
-//        // Retrieve all couriers with the type of transportation "motorbike"
-//        $couriers = User::where('role', 'kurir')->where('transportation_type', 'Motor')->get();
-//
-//        $selectedCourier = null;
-//
-//        foreach ($couriers as $courier) {
-//            // Calculate the total items_count of the courier's orders
-//            $totalItemsCount = Order::where('courier_id', $courier->id)->withCount('items')->get()->sum('items_count');
-//
-//            // Check if the courier's transportation capacity minus the total items_count is greater than or equal to the items_count of the new order
-//            if ($courier->transportation_capacity - $totalItemsCount >= $order->items()->count()) {
-//                $selectedCourier = $courier;
-//                break;
-//            }
-//        }
-//
-//        // If no courier with "motorbike" type of transportation was selected, try to select a courier with "car" type of transportation
-//        if (!$selectedCourier) {
-//            $couriers = User::where('role', 'kurir')->where('transportation_type', 'Mobil')->get();
-//
-//            foreach ($couriers as $courier) {
-//                // Calculate the total items_count of the courier's orders
-//                $totalItemsCount = Order::where('courier_id', $courier->id)->withCount('items')->get()->sum('items_count');
-//
-//                // Check if the courier's transportation capacity minus the total items_count is greater than or equal to the items_count of the new order
-//                if ($courier->transportation_capacity - $totalItemsCount >= $order->items()->count()) {
-//                    $selectedCourier = $courier;
-//                    break;
-//                }
-//            }
-//        }
-//
-//        if ($selectedCourier) {
-//            $order->update([
-//                'courier_id' => $selectedCourier->id,
-//                'taken_on' => Carbon::parse($request->schedule['taken_on'])->format('Y-m-d H:i:s'),
-//                'status' => 'Belum Diambil'
-//            ]);
-//
-//            History::create([
-//                'id' => Str::uuid(),
-//                'user_id' => Auth::id(),
-//                'action' => 'menambahkan jadwal',
-//            ]);
-//
-//            return redirect()->route('schedule.index')->with('meta', ['status' => true, 'title' => 'Berhasil menambahkan jadwal']);
-//        } else {
-//            return redirect()->route('schedule.index')->with('meta', ['status' => false, 'title' => 'Tidak ada kurir yang tersedia']);
-//        }
-//    }
 
     public function store(Request $request, Order $order)
     {
