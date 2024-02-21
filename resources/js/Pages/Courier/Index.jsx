@@ -27,6 +27,14 @@ const Index = (props) => {
                 header: "Nama Lengkap",
             },
             {
+                accessorKey: "transportation_type", //access nested data with dot notation
+                header: "Tipe Transporasi",
+            },
+            {
+                accessorKey: "transportation_capacity", //access nested data with dot notation
+                header: "Kapasitas Transporasi (barang)",
+            },
+            {
                 accessorFn: (row) => (
                     <Text
                         style={{

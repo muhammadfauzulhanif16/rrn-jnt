@@ -32,6 +32,8 @@ class CourierController extends Controller
                     return [
                         'id' => $user->id,
                         'full_name' => $user->full_name,
+                        'transportation_type' => $user->transportation_type,
+                        'transportation_capacity' => $user->transportation_capacity . ' barang',
                         'created_at' => Carbon::parse($user->created_at)->format('d-m-Y H:i:s'),
                         'updated_at' => Carbon::parse($user->updated_at)->format('d-m-Y H:i:s'),
                     ];
